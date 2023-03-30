@@ -1,4 +1,4 @@
-package com.gmech.test;
+package com.gmech.auth.validation;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,9 +7,8 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public class Test {
-    private String name;
-    private String profession;
+@AllArgsConstructor
+public class ValidationRequest {
+    private String token;
 }
