@@ -26,6 +26,10 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        userRepository.findByEmail(request.getEmail()).ifPresent(u -> {
+            throw new RuntimeException("Email already taken!");
+        });
+
         var user = User.builder()
             .email(request.getEmail())
             .firstName(request.getFirstName())
@@ -33,9 +37,9 @@ public class AuthenticationService {
             .password(passwordEncoder.encode(request.getPassword()))
             .role(Role.Mechanic)
             .build();
-
-        var token = jwtService.generateToken(user);
+            
         userRepository.save(user);
+        var token = jwtService.generateToken(user);
         saveUserToken(user, token);
     
         return AuthenticationResponse.builder()
