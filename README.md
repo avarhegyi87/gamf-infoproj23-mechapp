@@ -50,7 +50,7 @@ Az alábbi táblázatban megtekinthetőek az alkalmazás főbb funkciói:
 
 
 
-## Felhasználói tevékenység áramlása UML diagram segítségével
+## Felhasználói tevékenység leírása UML diagram segítségével
 
 ```mermaid
 graph LR
@@ -72,4 +72,5 @@ C --> M[Gépjármű adatok módosítása]
 C --> N[Új alkatrész hozzáadás]
 B --> O[Kijelentkezés]
 C --> O
+O --> A
 ```
