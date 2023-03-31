@@ -19,6 +19,10 @@ spring:
         locator:
           enabled: true
       routes:
+        - id: test-service
+          uri: lb://test-service
+          predicates:
+            - Path=/api/v1/test/testendpoint
         - id: auth-service-register
           uri: lb://auth-service
           predicates:
@@ -35,7 +39,3 @@ spring:
           uri: lb://auth-service
           predicates:
           - Path=/api/v1/auth/validate
-        - id: test-service
-          uri: lb://test-service
-          predicates:
-            - Path=/api/v1/test/testendpoint
