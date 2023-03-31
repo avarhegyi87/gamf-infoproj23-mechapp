@@ -7,12 +7,11 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
 import com.gmech.auth.exception.DuplicateException;
+import com.gmech.auth.exception.IncorrectCredentialsException;
 import com.gmech.auth.jwt.JwtService;
 import com.gmech.auth.token.TokenRepository;
 import com.gmech.auth.token.TokenType;
 import com.gmech.auth.user.UserRepository;
-
-import jakarta.ws.rs.NotFoundException;
 
 import com.gmech.auth.token.Token;
 import com.gmech.auth.user.Role;
@@ -55,7 +54,7 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         //ha nem létezik ilyen email az adatbázisban, akkor HttpStatus.NOT_FOUND(404-es kód)
         var user = userRepository.findByEmail(request.getEmail())
-            .orElseThrow(() -> new NotFoundException("Incorrect email!"));
+            .orElseThrow(() -> new IncorrectCredentialsException("Incorrect email!"));
         
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
