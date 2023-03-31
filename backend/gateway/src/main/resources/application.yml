@@ -35,3 +35,7 @@ spring:
           uri: lb://auth-service
           predicates:
           - Path=/api/v1/auth/validate
+        - id: test-service
+          uri: lb://test-service
+          predicates:
+            - Path=/api/v1/test/testendpoint
