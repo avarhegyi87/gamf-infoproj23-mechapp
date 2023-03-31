@@ -6,10 +6,14 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 
+import com.gmech.auth.exception.DuplicateException;
 import com.gmech.auth.jwt.JwtService;
 import com.gmech.auth.token.TokenRepository;
 import com.gmech.auth.token.TokenType;
 import com.gmech.auth.user.UserRepository;
+
+import jakarta.ws.rs.NotFoundException;
+
 import com.gmech.auth.token.Token;
 import com.gmech.auth.user.Role;
 import com.gmech.auth.user.User;
@@ -26,8 +30,9 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        //ha már létezik ilyen email az adatbázisban, akkor HttpStatus.UNPROCESSABLY_ENTITY(422-es kód)
         userRepository.findByEmail(request.getEmail()).ifPresent(u -> {
-            throw new RuntimeException("Email already taken!");
+            throw new DuplicateException("Email already taken!");
         });
 
         var user = User.builder()
@@ -37,7 +42,7 @@ public class AuthenticationService {
             .password(passwordEncoder.encode(request.getPassword()))
             .role(Role.Mechanic)
             .build();
-            
+
         userRepository.save(user);
         var token = jwtService.generateToken(user);
         saveUserToken(user, token);
@@ -48,8 +53,9 @@ public class AuthenticationService {
     }
     
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
+        //ha nem létezik ilyen email az adatbázisban, akkor HttpStatus.NOT_FOUND(404-es kód)
         var user = userRepository.findByEmail(request.getEmail())
-            .orElseThrow();
+            .orElseThrow(() -> new NotFoundException("Incorrect email!"));
         
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(
