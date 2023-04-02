@@ -31,7 +31,7 @@ public class AuthenticationService {
     public AuthenticationResponse register(RegisterRequest request) {
         //ha már létezik ilyen email az adatbázisban, akkor HttpStatus.UNPROCESSABLY_ENTITY(422-es kód)
         userRepository.findByEmail(request.getEmail()).ifPresent(u -> {
-            throw new DuplicateException("Email already taken!");
+            throw new DuplicateException("Az email már használatban van!");
         });
 
         var user = User.builder()
@@ -54,7 +54,7 @@ public class AuthenticationService {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         //ha nem létezik ilyen email az adatbázisban, akkor HttpStatus.NOT_FOUND(404-es kód)
         var user = userRepository.findByEmail(request.getEmail())
-            .orElseThrow(() -> new IncorrectCredentialsException("Incorrect email!"));
+            .orElseThrow(() -> new IncorrectCredentialsException("Hibás email!"));
         
         authenticationManager.authenticate(
             new UsernamePasswordAuthenticationToken(

@@ -1,15 +1,12 @@
 server:
-  port: 9501
+  port: 9502
   error:
     include-message: always
     include-binding-errors: always
 
-jwt:
-  secret: ${JWT_SECRET_KEY}
-
 spring:
   application:
-    name: auth-service
+    name: worksheet-service
   datasource:
     url: jdbc:postgresql://localhost:5432/gmech
     username: ${GMECH_PG_USER}
@@ -38,3 +35,4 @@ eureka:
       defaultZone: http://localhost:9000/eureka
       fetch-registry: true
       register-with-eureka: true
+
