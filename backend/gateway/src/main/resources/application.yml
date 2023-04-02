@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 9500
 
 management:
   endpoint:
@@ -19,10 +19,6 @@ spring:
         locator:
           enabled: true
       routes:
-        - id: test-service
-          uri: lb://test-service
-          predicates:
-            - Path=/api/v1/test/testendpoint
         - id: auth-service-register
           uri: lb://auth-service
           predicates:
@@ -39,3 +35,18 @@ spring:
           uri: lb://auth-service
           predicates:
           - Path=/api/v1/auth/validate
+        - id: worksheet-service-save
+          uri: lb://worksheet-service
+          predicates:
+          - Path=/api/v1/worksheet/save        
+        - id: worksheet-service-all
+          uri: lb://worksheet-service
+          predicates:
+          - Path=/api/v1/worksheet/all
+          
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9000/eureka
+      fetch-registry: true
+      register-with-eureka: true

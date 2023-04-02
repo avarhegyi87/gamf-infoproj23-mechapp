@@ -1,0 +1,77 @@
+version: '3'
+services:
+  PostgreSQL:
+    container_name: gmechpg
+    image: postgres:latest
+    environment:
+      - PGDATA=/data/postgres
+      - POSTGRES_USER=${GMECH_PG_USER}
+      - POSTGRES_PASSWORD=${GMECH_PG_PASSWORD}
+      - POSTGRES_DB=gmech
+    volumes:
+      - postgres:/data/postgres
+    expose:
+      - 5432
+    ports:
+      - "5432:5432"
+    networks:
+      - postgres
+  service-discovery:
+    container_name: service-discovery
+    build: ./service-discovery
+    image: service-discovery:latest
+    ports:
+      - "9000:9000"
+    networks:
+      - spring
+  gateway:
+    container_name: gateway
+    build: ./gateway
+    image: gateway:latest
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery:9000/eureka   
+    ports:
+      - "9500:9500"
+    networks:
+      - spring
+    depends_on: 
+      - service-discovery
+  auth-microservice:
+    container_name: auth-microservice
+    build: ./auth-microservice
+    image: auth:latest
+    ports:
+      - "9501:9501"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/gmech
+      - SPRING_DATASOURCE_USERNAME=${GMECH_PG_USER}
+      - SPRING_DATASOURCE_PASSWORD=${GMECH_PG_PASSWORD}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery:9000/eureka   
+    networks:
+      - spring
+      - postgres
+  worksheet:
+    container_name: worksheet-microservice
+    build: ./worksheet
+    image: worksheet:latest
+    ports:
+      - "9502:9502"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/gmech
+      - SPRING_DATASOURCE_USERNAME=${GMECH_PG_USER}
+      - SPRING_DATASOURCE_PASSWORD=${GMECH_PG_PASSWORD}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery:9000/eureka   
+    networks:
+      - spring    
+      - postgres
+
+
+networks:
+  postgres:
+    driver: bridge
+  spring:
+    driver: bridge
+
+volumes:
+  postgres:
