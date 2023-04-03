@@ -6,7 +6,7 @@ server:
 
 spring:
   application:
-    name: worksheet-service
+    name: customer-service
   datasource:
     url: jdbc:postgresql://localhost:5432/gmech
     username: ${GMECH_PG_USER}

@@ -6,7 +6,7 @@ ADD ${JAR_FILE} service-discovery.jar
 CMD ["java", "-jar", "service-discovery.jar"]
 #################################################################################################################################
 # docker build -t service-discovery -f Dockerfile .                                                                             #
-# docker run -p 8761:8761 -d service-discovery                                                                                  #
+# docker run -p 9000:9000 -d service-discovery                                                                                  #
 # -t = tag                                                                                                                      #
 # -f = Dockerfile                                                                                                               #
 # -p = port -> ezt exposoljuk a www-nek                                                                                         #

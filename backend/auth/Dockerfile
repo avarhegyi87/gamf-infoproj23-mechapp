@@ -6,9 +6,9 @@ ADD ${JAR_FILE} auth.jar
 CMD ["java", "-jar", "auth.jar"]
 #################################################################################################################################
 # docker build -t auth -f Dockerfile .                                                                                          #
-# docker run -p 0 -d auth                                                                                                       #
+# docker run -p 9501 -d auth                                                                                                    #
 # -t = tag                                                                                                                      #
 # -f = Dockerfile                                                                                                               #
-# -p = port -> ezt exposoljuk a www-nek (itt 0, mert a service gateway mögött van)                                              #
+# -p = port -> ezt exposoljuk a www-nek (itt 9501, mert a service gateway mögött van)                                           #
 # -d = detached -> background process, Dockerben lehet megnézni a service-t, ha simán írjuk, akkor elveszi a terminal sessionünk# 
 #################################################################################################################################

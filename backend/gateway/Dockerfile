@@ -6,7 +6,7 @@ ADD ${JAR_FILE} gateway.jar
 CMD ["java", "-jar", "gateway.jar"]
 #################################################################################################################################
 # docker build -t gateway -f Dockerfile .                                                                                       #
-# docker run -p 8080:8080 -d gateway                                                                                            #
+# docker run -p 9500:9500 -d gateway                                                                                            #
 # -t = tag                                                                                                                      #
 # -f = Dockerfile                                                                                                               #
 # -p = port -> ezt exposoljuk a www-nek                                                                                         #

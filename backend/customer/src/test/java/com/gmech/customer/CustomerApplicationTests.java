@@ -1,10 +1,10 @@
-package com.gmech.worksheet;
+package com.gmech.customer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class WorksheetApplicationTests {
+class CustomerApplicationTests {
 
 	@Test
 	void contextLoads() {
