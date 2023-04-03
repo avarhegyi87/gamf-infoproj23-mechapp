@@ -27,7 +27,6 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
             }
 
             String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
-            System.out.println(authHeader);
             String[] parts = authHeader.split(" ");
 
             if(parts.length != 2 || !"Bearer".equals(parts[0])){
