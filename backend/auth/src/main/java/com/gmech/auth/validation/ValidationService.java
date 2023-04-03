@@ -19,16 +19,17 @@ public class ValidationService {
     private final TokenRepository tokenRepository;
     private final UserDetailsService userDetailsService;
      
-    public ValidationResponse validate(String token){;
-        final String userEmail = jwtService.extractUsername(token);
+    public ValidationResponse validate(ValidationRequest request){;
+        final String jwt = request.getToken();
+        final String userEmail = jwtService.extractUsername(jwt);
          
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(userEmail);
         
-        var isTokenValid = tokenRepository.findByToken(token)
+        var isTokenValid = tokenRepository.findByToken(jwt)
             .map(t -> !t.isExpired() && !t.isRevoked())
             .orElse(false); 
         
-        if(jwtService.isTokenValid(token, userDetails) && isTokenValid) {
+        if(jwtService.isTokenValid(jwt, userDetails) && isTokenValid) {
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                 userDetails,
                 null,

@@ -4,8 +4,12 @@ import java.util.stream.Collectors;
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
+import java.util.Map;
+import java.util.HashMap;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.stereotype.Component;
+import org.springframework.http.MediaType;
+import org.springframework.web.reactive.function.BodyInserters;
 
 import com.gmech.gateway.validation.ValidationResponse;
 
@@ -32,10 +36,14 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
             if(parts.length != 2 || !"Bearer".equals(parts[0])){
                 throw new RuntimeException("Wrong Authorization structure!");
             }
+            Map<String, String> validationRequestBody = new HashMap<String, String>();
+            validationRequestBody.put("token", parts[1]);
 
             return webClientBuilder.build()
                 .post()
-                .uri("http://auth-service:9501/api/v1/auth/validate?token=" + parts[1])
+                .uri("http://auth-service:9501/api/v1/auth/validate")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromValue(validationRequestBody))
                 .retrieve().bodyToMono(ValidationResponse.class)
                 .map(validationResponse -> {
                     exchange.getRequest()
