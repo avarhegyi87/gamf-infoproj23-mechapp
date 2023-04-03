@@ -51,10 +51,10 @@ services:
     networks:
       - spring
       - postgres
-  worksheet:
-    container_name: worksheet-microservice
-    build: ./worksheet
-    image: worksheet:latest
+  customer:
+    container_name: customer-microservice
+    build: ./customer
+    image: customer:latest
     ports:
       - "9502:9502"
     environment:

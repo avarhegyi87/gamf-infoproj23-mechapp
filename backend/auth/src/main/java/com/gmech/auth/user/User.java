@@ -1,8 +1,6 @@
 package com.gmech.auth.user;
 
 import java.util.List;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

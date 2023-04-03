@@ -1,11 +1,12 @@
 package com.gmech.auth.validation;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping(value = "/api/v1/auth")
@@ -16,8 +17,8 @@ public class ValidationController {
 
     @PostMapping(value = "/validate")
     public ResponseEntity<ValidationResponse> validate(
-      @RequestBody ValidationRequest request
+      @RequestParam(name = "token", required = true) String token
     ) {
-      return ResponseEntity.ok(service.validate(request));
+      return ResponseEntity.ok(service.validate(token));
     }
 }

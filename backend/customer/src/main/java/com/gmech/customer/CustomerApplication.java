@@ -1,4 +1,4 @@
-package com.gmech.worksheet;
+package com.gmech.customer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -6,10 +6,10 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-public class WorksheetApplication {
+public class CustomerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(WorksheetApplication.class, args);
+		SpringApplication.run(CustomerApplication.class, args);
 	}
 
 }
