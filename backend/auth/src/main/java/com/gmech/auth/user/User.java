@@ -32,7 +32,6 @@ public class User implements UserDetails {
     private Integer id;
     
     private String email;
-
     private String firstName;
     private String lastName;
     private String password;
