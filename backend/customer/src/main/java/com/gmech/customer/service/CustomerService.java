@@ -25,10 +25,6 @@ public class CustomerService {
             throw new DuplicateException("A megadott email címmel már rendelkezik ügyfél!");
         });
 
-        customerRepository.findByName(request.getName()).ifPresent(c -> {
-            throw new DuplicateException("A megadott névvel már rendelkezik ügyfél!");
-        });
-
         customerRepository.findByPhoneNumber(request.getPhoneNumber()).ifPresent(c -> {
             throw new DuplicateException("A megadott telefonszámmal már rendelkezik ügyfél!");
         });
