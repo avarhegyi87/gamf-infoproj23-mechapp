@@ -19,7 +19,7 @@ public class ValidationService {
     private final TokenRepository tokenRepository;
     private final UserDetailsService userDetailsService;
      
-    public ValidationResponse validate(ValidationRequest request){
+    public ValidationResponse validate(ValidationRequest request){;
         final String jwt = request.getToken();
         final String userEmail = jwtService.extractUsername(jwt);
          

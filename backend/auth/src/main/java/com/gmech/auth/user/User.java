@@ -1,8 +1,6 @@
 package com.gmech.auth.user;
 
 import java.util.List;
-
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -34,7 +32,6 @@ public class User implements UserDetails {
     private Integer id;
     
     private String email;
-
     private String firstName;
     private String lastName;
     private String password;

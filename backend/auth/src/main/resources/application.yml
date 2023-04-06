@@ -1,5 +1,5 @@
 server:
-  port: 0
+  port: 9501
   error:
     include-message: always
     include-binding-errors: always
@@ -35,4 +35,6 @@ spring:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://localhost:9000/eureka
+      fetch-registry: true
+      register-with-eureka: true
