@@ -19,7 +19,7 @@ import com.gmech.stock.stock.StockResponse;
 @RequestMapping(value = "/api/v1/stock")
 @RequiredArgsConstructor
 @Validated
-public class VehiclesController {
+public class StockController {
 
     private final StockService service;
 

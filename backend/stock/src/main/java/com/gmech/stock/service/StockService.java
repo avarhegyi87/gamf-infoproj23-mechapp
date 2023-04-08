@@ -26,19 +26,14 @@ public class StockService {
         });
 
         var stock = Stock.builder()
-                .vin(request.getVin())
-                .licenceplate(request.getLicenceplate())
-                .owner(request.getOwner())
-                .production_year(request.getProduction_year())
-                .mileage(request.getMileage())
-                .car_brand(request.getCar_brand())
-                .car_make(request.getCar_make())
-                .displacement(request.getDisplacement())
-                .fuel_type(request.getFuel_type())
+                .materialnumber(request.getMaterialnumber())
+                .description(request.getDescription())
+                .currentstock(request.getCurrentstock())
+                .netprice(request.getNetprice())
                 .build();
 
         return this.modelMapper.map(
-                vehiclesRepository.save(vehicles),
-                VehiclesResponse.class);
+                stockRepository.save(stock),
+                StockResponse.class);
     }
 }

@@ -15,7 +15,9 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Stock {
 
+    @Id
     private String materialnumber;
+
     private String description;
     private Integer currentstock;
     private Float netprice;
