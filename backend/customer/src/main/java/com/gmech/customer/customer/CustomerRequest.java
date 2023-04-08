@@ -47,5 +47,5 @@ public class CustomerRequest {
     private String phoneNumber;
         
     @Pattern(regexp = "^\\d{11}$", message = "Az adószám pontosan 11 számjegyből áll!")
-    private Integer taxNumber; 
+    private String taxNumber; 
 }
