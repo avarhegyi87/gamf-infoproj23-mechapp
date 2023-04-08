@@ -13,10 +13,10 @@ public class CustomerResponse {
     private Integer id;
     private String name;
     private String country;
-    private String postCode;
+    private Integer postCode;
     private String street;
     private String houseNumber;
     private String email;
     private String phoneNumber;
-    private Integer taxNumber; 
+    private Long taxNumber;
 }

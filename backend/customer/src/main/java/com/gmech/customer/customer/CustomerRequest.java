@@ -4,6 +4,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Digits;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,38 +15,38 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CustomerRequest {
-    
+
     @NotBlank
-    @Size(min = 8, max = 16, message = "A névnek 8-16 karakternek kell lennie")
+    @Size(min = 3, max = 40, message = "A név hosszúsága 3 és 40 karakter között lehet!")
     private String name;
-    
+
     @NotBlank
-    @Size(min = 8, max = 16, message = "Az országnévnek 4-20 karakternek kell lennie")    
+    @Size(min = 3, max = 16, message = "Az országnév hosszúsága 3 és 20 karakter között lehet!")
     private String country;
-    
+
     @NotBlank
-    @Size(min = 4, max = 4, message = "Az irányítószámnak 4 karakternek kell lennie")
-    private String postCode;
-    
+    @Digits(integer = 5, fraction = 0, message = "Az irányítószámnak számnak kell lennie (maximum 5 számjegy)!")
+    private Integer postCode;
+
     @NotBlank
-    @Size(min = 4, max = 16, message = "Az utcanévnek 4-16 karakternek kell lennie")    
+    @Size(min = 3, max = 25, message = "Az utcanév hosszúsága 3 és 25 karakter között lehet!")
     private String street;
-    
+
     @NotBlank
-    @Size(min = 1, max = 10, message = "Az házszámnak 1-10 karakternek kell lennie")    
+    @Size(min = 1, max = 5, message = "A házszám hosszúsága 3 és 40 karakter között lehet!")
     private String houseNumber;
-    
+
     @NotBlank
-    @Email
+    @Email(message = "Kérjük a formátumnak megfelelő e-mail címet adjon meg!")
     private String email;
-    
+
     // telefonszám és ország hívó szám előtte, 11 karakter hosszúságra összes pl:
     // +36 70 123 4567
     // +111 (202) 555-0125 (., space, - támogatott a formátumnál)
     @NotBlank
-    @Pattern(regexp = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$", message = "Helytelen telefonszám!")    
+    @Pattern(regexp = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$", message = "Helytelen telefonszám!")
     private String phoneNumber;
-        
-    @Pattern(regexp = "^\\d{11}$", message = "Az adószám pontosan 11 számjegyből áll!")
-    private String taxNumber; 
+
+    @Digits(integer = 11, fraction = 0, message = "Az adószám pontosan 11 számjegyből áll!")
+    private Long taxNumber;
 }
