@@ -20,10 +20,10 @@ public class Customer {
 
     private String name;
     private String country;
-    private String postCode;
+    private Integer postCode;
     private String street;
     private String houseNumber;
     private String email;
     private String phoneNumber;
-    private String taxNumber; 
+    private Long taxNumber;
 }
