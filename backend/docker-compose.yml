@@ -79,6 +79,20 @@ services:
     networks:
       - spring    
       - postgres
+  stock:
+    container_name: stock-microservice
+    build: ./stock
+    image: stock:latest
+    ports:
+      - "9504:9504"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/gmech
+      - SPRING_DATASOURCE_USERNAME=${GMECH_PG_USER}
+      - SPRING_DATASOURCE_PASSWORD=${GMECH_PG_PASSWORD}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery:9000/eureka   
+    networks:
+      - spring    
+      - postgres
 
 
 networks:
