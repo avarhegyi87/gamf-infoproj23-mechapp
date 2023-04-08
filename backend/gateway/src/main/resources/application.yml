@@ -41,6 +41,16 @@ spring:
             - Path=/api/v1/customer/create   
           filters:
             - AuthenticationFilter  
+        - id: customer-service-get
+          uri: lb://customer-service
+          predicates:
+            - Path=/api/v1/customer/get   
+          filters:
+            - AuthenticationFilter
+        - id: vehicles-service-create
+          uri: lb://vehicles-service
+          predicates:
+          - Path=/api/v1/vehicles/create  
 
 eureka:
   client:

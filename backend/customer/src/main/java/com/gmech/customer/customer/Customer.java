@@ -25,5 +25,5 @@ public class Customer {
     private String houseNumber;
     private String email;
     private String phoneNumber;
-    private Integer taxNumber; 
+    private String taxNumber; 
 }
