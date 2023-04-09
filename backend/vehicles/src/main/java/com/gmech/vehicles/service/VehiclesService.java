@@ -10,6 +10,7 @@ import com.gmech.vehicles.vehicles.VehiclesRepository;
 import com.gmech.vehicles.vehicles.VehiclesRequest;
 import com.gmech.vehicles.vehicles.VehiclesResponse;
 import com.gmech.vehicles.exception.DuplicateException;
+import com.gmech.vehicles.exception.IncorrectIdException;
 
 @Service
 @RequiredArgsConstructor
@@ -45,4 +46,22 @@ public class VehiclesService {
                 vehiclesRepository.save(vehicles),
                 VehiclesResponse.class);
     }
+
+    public VehiclesResponse get(Integer id) {
+        var vehicles = vehiclesRepository.findById(id)
+            .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
+        return this.modelMapper.map(
+            vehicles,
+            VehiclesResponse.class  
+        );
+    }
+
+    public VehiclesResponse getAll() {
+        var vehicles = vehiclesRepository.findAll();
+        return this.modelMapper.map(
+            vehicles,
+            VehiclesResponse.class  
+        );
+    }
+
 }

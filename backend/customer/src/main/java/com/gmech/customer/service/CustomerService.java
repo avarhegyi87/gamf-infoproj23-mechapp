@@ -15,9 +15,9 @@ import com.gmech.customer.exception.IncorrectIdException;
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
-    
+
     private final CustomerRepository customerRepository;
-    
+
     @Autowired
     private final ModelMapper modelMapper;
 
@@ -35,28 +35,33 @@ public class CustomerService {
         });
 
         var customer = Customer.builder()
-            .name(request.getName())
-            .country(request.getCountry())
-            .postCode(request.getPostCode())
-            .street(request.getStreet())
-            .houseNumber(request.getHouseNumber())
-            .email(request.getEmail())
-            .phoneNumber(request.getPhoneNumber())
-            .taxNumber(request.getTaxNumber())
-            .build();
+                .name(request.getName())
+                .country(request.getCountry())
+                .postCode(request.getPostCode())
+                .street(request.getStreet())
+                .houseNumber(request.getHouseNumber())
+                .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
+                .taxNumber(request.getTaxNumber())
+                .build();
 
         return this.modelMapper.map(
-            customerRepository.save(customer), 
-            CustomerResponse.class
-        );
+                customerRepository.save(customer),
+                CustomerResponse.class);
     }
 
     public CustomerResponse get(Integer id) {
         var customer = customerRepository.findById(id)
-            .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
+                .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
         return this.modelMapper.map(
-            customer,
-            CustomerResponse.class  
-        );
+                customer,
+                CustomerResponse.class);
+    }
+
+    public CustomerResponse getAll() {
+        var customer = customerRepository.findAll();
+        return this.modelMapper.map(
+                customer,
+                CustomerResponse.class);
     }
 }

@@ -34,4 +34,9 @@ public class CustomerController {
     public ResponseEntity<CustomerResponse> get(@RequestParam Integer id) {
         return ResponseEntity.ok(service.get(id));
     }
+
+    @GetMapping(value = "/getall")
+    public ResponseEntity<CustomerResponse> getAll() {
+        return ResponseEntity.ok(service.getAll());
+    }
 }
