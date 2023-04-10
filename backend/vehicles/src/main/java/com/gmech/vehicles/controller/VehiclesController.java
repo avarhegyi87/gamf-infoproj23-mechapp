@@ -1,5 +1,7 @@
 package com.gmech.vehicles.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,7 +38,7 @@ public class VehiclesController {
     }
 
     @GetMapping(value = "/getall")
-    public ResponseEntity<VehiclesResponse> getAll() {
+    public ResponseEntity<List<VehiclesResponse>> getAll() {
         return ResponseEntity.ok(service.getAll());
     }
 }

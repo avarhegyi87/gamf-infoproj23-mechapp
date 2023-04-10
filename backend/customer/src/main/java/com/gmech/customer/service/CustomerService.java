@@ -1,5 +1,9 @@
 package com.gmech.customer.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -33,7 +37,6 @@ public class CustomerService {
         customerRepository.findByPhoneNumber(request.getPhoneNumber()).ifPresent(c -> {
             throw new DuplicateException("A megadott telefonszámmal már rendelkezik ügyfél!");
         });
-
         var customer = Customer.builder()
                 .name(request.getName())
                 .country(request.getCountry())
@@ -58,10 +61,12 @@ public class CustomerService {
                 CustomerResponse.class);
     }
 
-    public CustomerResponse getAll() {
-        var customer = customerRepository.findAll();
-        return this.modelMapper.map(
-                customer,
-                CustomerResponse.class);
+    public List<CustomerResponse> getAll() {
+        var customers = customerRepository.findAll();
+
+        return customers.stream().map((customer) -> modelMapper.map(customer, CustomerResponse.class))
+                .collect(Collectors.toList());
+
     }
+
 }
