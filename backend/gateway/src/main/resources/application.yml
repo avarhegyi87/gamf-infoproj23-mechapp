@@ -47,10 +47,48 @@ spring:
             - Path=/api/v1/customer/get   
           filters:
             - AuthenticationFilter
+        - id: customer-service-getall
+          uri: lb://customer-service
+          predicates:
+            - Path=/api/v1/customer/getall  
+          filters:
+            - AuthenticationFilter
         - id: vehicles-service-create
           uri: lb://vehicles-service
           predicates:
-          - Path=/api/v1/vehicles/create  
+          - Path=/api/v1/vehicles/create
+          filters:
+            - AuthenticationFilter
+        - id: vehicles-service-get
+          uri: lb://vehicles-service
+          predicates:
+          - Path=/api/v1/vehicles/get
+          filters:
+            - AuthenticationFilter
+        - id: vehicles-service-getall
+          uri: lb://vehicles-service
+          predicates:
+          - Path=/api/v1/vehicles/getall
+          filters:
+            - AuthenticationFilter
+        - id: stock-service-create
+          uri: lb://stock-service
+          predicates:
+          - Path=/api/v1/stock/create
+          filters:
+            - AuthenticationFilter
+        - id: stock-service-get
+          uri: lb://stock-service
+          predicates:
+          - Path=/api/v1/stock/get
+          filters:
+            - AuthenticationFilter
+        - id: stock-service-getall
+          uri: lb://stock-service
+          predicates:
+          - Path=/api/v1/stock/getall
+          filters:
+            - AuthenticationFilter
 
 eureka:
   client:

@@ -2,9 +2,12 @@ package com.gmech.customer.customer;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.Digits;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,8 +27,9 @@ public class CustomerRequest {
     @Size(min = 3, max = 16, message = "Az országnév hosszúsága 3 és 20 karakter között lehet!")
     private String country;
 
-    @NotBlank
-    @Digits(integer = 5, fraction = 0, message = "Az irányítószámnak számnak kell lennie (maximum 5 számjegy)!")
+    @NotNull
+    @Max(99999)
+    @Min(1000)
     private Integer postCode;
 
     @NotBlank
@@ -47,6 +51,7 @@ public class CustomerRequest {
     @Pattern(regexp = "^(\\+\\d{1,3}( )?)?((\\(\\d{3}\\))|\\d{3})[- .]?\\d{3}[- .]?\\d{4}$", message = "Helytelen telefonszám!")
     private String phoneNumber;
 
+    @NotNull
     @Digits(integer = 11, fraction = 0, message = "Az adószám pontosan 11 számjegyből áll!")
     private Long taxNumber;
 }

@@ -1,5 +1,8 @@
 package com.gmech.vehicles.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +13,7 @@ import com.gmech.vehicles.vehicles.VehiclesRepository;
 import com.gmech.vehicles.vehicles.VehiclesRequest;
 import com.gmech.vehicles.vehicles.VehiclesResponse;
 import com.gmech.vehicles.exception.DuplicateException;
+import com.gmech.vehicles.exception.IncorrectIdException;
 
 @Service
 @RequiredArgsConstructor
@@ -45,4 +49,21 @@ public class VehiclesService {
                 vehiclesRepository.save(vehicles),
                 VehiclesResponse.class);
     }
+
+    public VehiclesResponse get(Integer id) {
+        var vehicles = vehiclesRepository.findById(id)
+                .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
+        return this.modelMapper.map(
+                vehicles,
+                VehiclesResponse.class);
+    }
+
+    public List<VehiclesResponse> getAll() {
+        var vehicles = vehiclesRepository.findAll();
+
+        return vehicles.stream().map((vehicle) -> modelMapper.map(vehicle, VehiclesResponse.class))
+                .collect(Collectors.toList());
+
+    }
+
 }

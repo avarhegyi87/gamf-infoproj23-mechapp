@@ -1,5 +1,7 @@
 package com.gmech.customer.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,7 +24,7 @@ import com.gmech.customer.customer.CustomerResponse;
 @RequiredArgsConstructor
 @Validated
 public class CustomerController {
-    
+
     private final CustomerService service;
 
     @PostMapping(value = "/create")
@@ -33,5 +35,10 @@ public class CustomerController {
     @GetMapping(value = "/get")
     public ResponseEntity<CustomerResponse> get(@RequestParam Integer id) {
         return ResponseEntity.ok(service.get(id));
+    }
+
+    @GetMapping(value = "/getall")
+    public ResponseEntity<List<CustomerResponse>> getAll() {
+        return ResponseEntity.ok(service.getAll());
     }
 }

@@ -1,5 +1,9 @@
 package com.gmech.customer.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +19,9 @@ import com.gmech.customer.exception.IncorrectIdException;
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
-    
+
     private final CustomerRepository customerRepository;
-    
+
     @Autowired
     private final ModelMapper modelMapper;
 
@@ -33,30 +37,36 @@ public class CustomerService {
         customerRepository.findByPhoneNumber(request.getPhoneNumber()).ifPresent(c -> {
             throw new DuplicateException("A megadott telefonszámmal már rendelkezik ügyfél!");
         });
-
         var customer = Customer.builder()
-            .name(request.getName())
-            .country(request.getCountry())
-            .postCode(request.getPostCode())
-            .street(request.getStreet())
-            .houseNumber(request.getHouseNumber())
-            .email(request.getEmail())
-            .phoneNumber(request.getPhoneNumber())
-            .taxNumber(request.getTaxNumber())
-            .build();
+                .name(request.getName())
+                .country(request.getCountry())
+                .postCode(request.getPostCode())
+                .street(request.getStreet())
+                .houseNumber(request.getHouseNumber())
+                .email(request.getEmail())
+                .phoneNumber(request.getPhoneNumber())
+                .taxNumber(request.getTaxNumber())
+                .build();
 
         return this.modelMapper.map(
-            customerRepository.save(customer), 
-            CustomerResponse.class
-        );
+                customerRepository.save(customer),
+                CustomerResponse.class);
     }
 
     public CustomerResponse get(Integer id) {
         var customer = customerRepository.findById(id)
-            .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
+                .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
         return this.modelMapper.map(
-            customer,
-            CustomerResponse.class  
-        );
+                customer,
+                CustomerResponse.class);
     }
+
+    public List<CustomerResponse> getAll() {
+        var customers = customerRepository.findAll();
+
+        return customers.stream().map((customer) -> modelMapper.map(customer, CustomerResponse.class))
+                .collect(Collectors.toList());
+
+    }
+
 }
