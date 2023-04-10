@@ -32,13 +32,13 @@ public class VehiclesService {
         var vehicles = Vehicles.builder()
                 .vin(request.getVin())
                 .licenceplate(request.getLicenceplate())
-                .owner(request.getOwner())
-                .production_year(request.getProduction_year())
+                .customerId(request.getCustomerId())
+                .productionYear(request.getProdoctionYear())
                 .mileage(request.getMileage())
-                .car_brand(request.getCar_brand())
-                .car_make(request.getCar_make())
+                .carBrand(request.getCarBrand())
+                .carMake(request.getCarMake())
+                .fuelType(request.getFuelType())
                 .displacement(request.getDisplacement())
-                .fuel_type(request.getFuel_type())
                 .build();
 
         return this.modelMapper.map(

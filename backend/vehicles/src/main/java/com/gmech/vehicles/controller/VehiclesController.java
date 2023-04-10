@@ -27,4 +27,5 @@ public class VehiclesController {
     public ResponseEntity<VehiclesResponse> create(@RequestBody @Valid VehiclesRequest request) {
         return ResponseEntity.ok(service.create(request));
     }
+
 }

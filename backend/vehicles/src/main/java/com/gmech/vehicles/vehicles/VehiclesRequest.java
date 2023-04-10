@@ -1,6 +1,7 @@
 package com.gmech.vehicles.vehicles;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Digits;
@@ -23,32 +24,32 @@ public class VehiclesRequest {
     @Size(min = 6, max = 7, message = "A rendszám 6 vagy 7 karakter hosszú lehet!")
     private String licenceplate;
 
-    @NotBlank
+    @NotNull
     @Digits(integer = 7, fraction = 0, message = "A tulajdonos azonosítónak számnak kell lennie!")
-    private Integer owner;
+    private Integer customerId;
 
-    @NotBlank
+    @NotNull
     @PastOrPresent(message = "Helytelen gyártási év!")
-    private Integer production_year;
+    private Integer prodoctionYear;
 
-    @NotBlank
+    @NotNull
     @Digits(integer = 7, fraction = 0, message = "A futásteljesítménynek számnak kell lennie!")
     private Integer mileage;
 
     @NotBlank
     @Size(min = 3, max = 20, message = "A gyártmány megnevezése 3-tól 20 karakter hosszú lehet!")
-    private String car_brand;
+    private String carBrand;
 
     @NotBlank
     @Size(min = 3, max = 20, message = "A típus megnevezése 3-tól 20 karakter hosszú lehet!")
-    private String car_make;
+    private String carMake;
 
-    @NotBlank
+    @NotNull
     @Digits(integer = 5, fraction = 0, message = "A hengerűrtartalomnak számnak kell lennie!")
     private Integer displacement;
 
     @NotBlank
     @Size(min = 3, max = 10, message = "Az üzemanyag típus megnevezése 3-tól 10 karakter hosszú lehet!")
-    private String fuel_type;
+    private String fuelType;
 
 }

@@ -20,12 +20,12 @@ public class Vehicles {
 
     private String vin;
     private String licenceplate;
-    private Integer owner;
-    private Integer production_year;
+    private Integer customerId;
+    private Integer productionYear;
     private Integer mileage;
-    private String car_brand;
-    private String car_make;
+    private String carBrand;
+    private String carMake;
     private Integer displacement;
-    private String fuel_type;
+    private String fuelType;
 
 }
