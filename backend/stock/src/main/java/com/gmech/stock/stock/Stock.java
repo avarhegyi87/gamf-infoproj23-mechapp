@@ -16,9 +16,9 @@ import lombok.NoArgsConstructor;
 public class Stock {
 
     @Id
-    private String materialnumber;
+    private String materialNumber;
 
     private String description;
-    private Integer currentstock;
-    private Float netprice;
+    private Integer currentStock;
+    private Float netPrice;
 }

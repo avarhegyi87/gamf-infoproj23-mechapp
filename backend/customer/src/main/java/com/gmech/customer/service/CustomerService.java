@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import com.gmech.customer.customer.Customer;
 import com.gmech.customer.customer.CustomerRepository;
 import com.gmech.customer.customer.CustomerRequest;
+import com.gmech.customer.customer.CustomerRequestPut;
 import com.gmech.customer.customer.CustomerResponse;
 import com.gmech.customer.exception.DuplicateException;
 import com.gmech.customer.exception.IncorrectIdException;
@@ -67,6 +68,34 @@ public class CustomerService {
         return customers.stream().map((customer) -> modelMapper.map(customer, CustomerResponse.class))
                 .collect(Collectors.toList());
 
+    }
+
+    public CustomerResponse put(CustomerRequestPut request) {
+
+        var customer = customerRepository.findById(request.getId())
+                .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
+
+        customer.setName(request.getName());
+        customer.setCountry(request.getCountry());
+        customer.setPostCode(request.getPostCode());
+        customer.setStreet(request.getStreet());
+        customer.setHouseNumber(request.getHouseNumber());
+        customer.setEmail(request.getEmail());
+        customer.setPhoneNumber(request.getPhoneNumber());
+        customer.setTaxNumber(request.getTaxNumber());
+
+        customerRepository.save(customer);
+        return this.modelMapper.map(
+                customer,
+                CustomerResponse.class);
+
+    }
+
+    public void delete(Integer id) {
+        customerRepository.findById(id)
+                .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
+
+        customerRepository.deleteById(id);
     }
 
 }

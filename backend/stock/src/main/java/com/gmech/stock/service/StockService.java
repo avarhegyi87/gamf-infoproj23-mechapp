@@ -25,15 +25,15 @@ public class StockService {
     private final ModelMapper modelMapper;
 
     public StockResponse create(StockRequest request) {
-        stockRepository.findByMaterialnumber(request.getMaterialnumber()).ifPresent(c -> {
+        stockRepository.findByMaterialNumber(request.getMaterialNumber()).ifPresent(c -> {
             throw new DuplicateException("A megadott cikkszámmal már rendelkezik jármű!");
         });
 
         var stock = Stock.builder()
-                .materialnumber(request.getMaterialnumber())
+                .materialNumber(request.getMaterialNumber())
                 .description(request.getDescription())
-                .currentstock(request.getCurrentstock())
-                .netprice(request.getNetprice())
+                .currentStock(request.getCurrentStock())
+                .netPrice(request.getNetPrice())
                 .build();
 
         return this.modelMapper.map(
@@ -41,8 +41,8 @@ public class StockService {
                 StockResponse.class);
     }
 
-    public StockResponse get(String materialnumber) {
-        var stock = stockRepository.findByMaterialnumber(materialnumber)
+    public StockResponse get(String materialNumber) {
+        var stock = stockRepository.findByMaterialNumber(materialNumber)
                 .orElseThrow(() -> new IncorrectMatnumberException("A megadott aznosító nem létezik!"));
         return this.modelMapper.map(
                 stock,
@@ -55,5 +55,28 @@ public class StockService {
         return stocks.stream().map((stock) -> modelMapper.map(stock, StockResponse.class))
                 .collect(Collectors.toList());
 
+    }
+
+    public StockResponse put(StockRequest request) {
+
+        var stock = stockRepository.findByMaterialNumber(request.getMaterialNumber())
+                .orElseThrow(() -> new IncorrectMatnumberException("A megadott aznosító nem létezik!"));
+
+        stock.setDescription(request.getDescription());
+        stock.setCurrentStock(request.getCurrentStock());
+        stock.setNetPrice(request.getNetPrice());
+
+        stockRepository.save(stock);
+        return this.modelMapper.map(
+                stock,
+                StockResponse.class);
+
+    }
+
+    public void delete(String materialNumber) {
+        stockRepository.findByMaterialNumber(materialNumber)
+                .orElseThrow(() -> new IncorrectMatnumberException("A megadott aznosító nem létezik!"));
+
+        stockRepository.deleteByMaterialNumber(materialNumber);
     }
 }

@@ -11,7 +11,11 @@ import lombok.RequiredArgsConstructor;
 import com.gmech.vehicles.vehicles.Vehicles;
 import com.gmech.vehicles.vehicles.VehiclesRepository;
 import com.gmech.vehicles.vehicles.VehiclesRequest;
+import com.gmech.vehicles.vehicles.VehiclesRequestPut;
 import com.gmech.vehicles.vehicles.VehiclesResponse;
+
+import ch.qos.logback.core.joran.conditional.ElseAction;
+
 import com.gmech.vehicles.exception.DuplicateException;
 import com.gmech.vehicles.exception.IncorrectIdException;
 
@@ -29,20 +33,20 @@ public class VehiclesService {
             throw new DuplicateException("A megadott alvázszámmal már rendelkezik jármű!");
         });
 
-        vehiclesRepository.findByLicenceplate(request.getLicenceplate()).ifPresent(c -> {
+        vehiclesRepository.findByLicencePlate(request.getLicencePlate()).ifPresent(c -> {
             throw new DuplicateException("A megadott rendszámmal már rendelkezik jármű!");
         });
 
         var vehicles = Vehicles.builder()
                 .vin(request.getVin())
-                .licenceplate(request.getLicenceplate())
-                .owner(request.getOwner())
-                .production_year(request.getProduction_year())
+                .licencePlate(request.getLicencePlate())
+                .customerId(request.getCustomerId())
+                .productionYear(request.getProductionYear())
                 .mileage(request.getMileage())
-                .car_brand(request.getCar_brand())
-                .car_make(request.getCar_make())
+                .carBrand(request.getCarBrand())
+                .carMake(request.getCarMake())
                 .displacement(request.getDisplacement())
-                .fuel_type(request.getFuel_type())
+                .fuelType(request.getFuelType())
                 .build();
 
         return this.modelMapper.map(
@@ -64,6 +68,42 @@ public class VehiclesService {
         return vehicles.stream().map((vehicle) -> modelMapper.map(vehicle, VehiclesResponse.class))
                 .collect(Collectors.toList());
 
+    }
+
+    public List<VehiclesResponse> getAllForCustomerId(Integer customerId) {
+        var vehicles = vehiclesRepository.findAllVehiclesByCustomerId(customerId);
+
+        return vehicles.stream().map((vehicle) -> modelMapper.map(vehicle, VehiclesResponse.class))
+                .collect(Collectors.toList());
+
+    }
+
+    public VehiclesResponse put(VehiclesRequestPut request) {
+
+        var vehicle = vehiclesRepository.findById(request.getId())
+                .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
+        vehicle.setVin(request.getVin());
+        vehicle.setLicencePlate(request.getLicencePlate());
+        vehicle.setCustomerId(request.getCustomerId());
+        vehicle.setProductionYear(request.getProductionYear());
+        vehicle.setMileage(request.getMileage());
+        vehicle.setCarBrand(request.getCarBrand());
+        vehicle.setCarMake(request.getCarMake());
+        vehicle.setDisplacement(request.getDisplacement());
+        vehicle.setFuelType(request.getFuelType());
+
+        vehiclesRepository.save(vehicle);
+        return this.modelMapper.map(
+                request,
+                VehiclesResponse.class);
+
+    }
+
+    public void delete(Integer id) {
+        vehiclesRepository.findById(id)
+                .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
+
+        vehiclesRepository.deleteById(id);
     }
 
 }

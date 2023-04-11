@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StockRepository extends JpaRepository<Stock, String> {
 
-    Optional<Stock> findByMaterialnumber(String materialnumber);
+    Optional<Stock> findByMaterialNumber(String materialNumber);
 
+    Long deleteByMaterialNumber(String materialNumber);
 }

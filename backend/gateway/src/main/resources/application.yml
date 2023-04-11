@@ -53,6 +53,18 @@ spring:
             - Path=/api/v1/customer/getall  
           filters:
             - AuthenticationFilter
+        - id: customer-service-put
+          uri: lb://customer-service
+          predicates:
+          - Path=/api/v1/customer/put
+          filters:
+            - AuthenticationFilter
+        - id: customer-service-delete
+          uri: lb://customer-service
+          predicates:
+          - Path=/api/v1/customer/delete
+          filters:
+            - AuthenticationFilter
         - id: vehicles-service-create
           uri: lb://vehicles-service
           predicates:
@@ -71,6 +83,24 @@ spring:
           - Path=/api/v1/vehicles/getall
           filters:
             - AuthenticationFilter
+        - id: vehicles-service-put
+          uri: lb://vehicles-service
+          predicates:
+          - Path=/api/v1/vehicles/put
+          filters:
+            - AuthenticationFilter
+        - id: vehicles-service-delete
+          uri: lb://vehicles-service
+          predicates:
+          - Path=/api/v1/vehicles/delete
+          filters:
+            - AuthenticationFilter
+        - id: vehicles-service-getallbycust
+          uri: lb://vehicles-service
+          predicates:
+          - Path=/api/v1/vehicles/getallbycust
+          filters:
+            - AuthenticationFilter
         - id: stock-service-create
           uri: lb://stock-service
           predicates:
@@ -87,6 +117,18 @@ spring:
           uri: lb://stock-service
           predicates:
           - Path=/api/v1/stock/getall
+          filters:
+            - AuthenticationFilter
+        - id: stock-service-put
+          uri: lb://stock-service
+          predicates:
+          - Path=/api/v1/stock/put
+          filters:
+            - AuthenticationFilter
+        - id: stock-service-delete
+          uri: lb://stock-service
+          predicates:
+          - Path=/api/v1/stock/delete
           filters:
             - AuthenticationFilter
 

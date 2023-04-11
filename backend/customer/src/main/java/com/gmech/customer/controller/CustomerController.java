@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,7 @@ import jakarta.ws.rs.core.Response;
 
 import com.gmech.customer.service.CustomerService;
 import com.gmech.customer.customer.CustomerRequest;
+import com.gmech.customer.customer.CustomerRequestPut;
 import com.gmech.customer.customer.CustomerResponse;
 
 @RestController
@@ -40,5 +43,15 @@ public class CustomerController {
     @GetMapping(value = "/getall")
     public ResponseEntity<List<CustomerResponse>> getAll() {
         return ResponseEntity.ok(service.getAll());
+    }
+
+    @PutMapping(value = "/put")
+    public ResponseEntity<CustomerResponse> put(@RequestBody @Valid CustomerRequestPut request) {
+        return ResponseEntity.ok(service.put(request));
+    }
+
+    @DeleteMapping(value = "/delete")
+    public void delete(@RequestParam Integer id) {
+        service.delete(id);
     }
 }
