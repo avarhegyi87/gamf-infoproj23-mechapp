@@ -19,7 +19,11 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class VehiclesRequest {
+public class VehiclesRequestPut {
+
+    @NotNull
+    @Digits(integer = 7, fraction = 0, message = "Az azonosítónak számnak kell lennie!")
+    private Integer id;
 
     @NotBlank
     @Size(min = 17, max = 17, message = "Az alvázszám 17 karakter hosszú lehet!")

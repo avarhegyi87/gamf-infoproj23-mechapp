@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StockResponse {
 
-    private String materialnumber;
+    private String materialNumber;
     private String description;
-    private Integer currentstock;
-    private Float netprice;
+    private Integer currentStock;
+    private Float netPrice;
 }
