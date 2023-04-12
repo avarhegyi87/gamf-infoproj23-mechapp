@@ -69,7 +69,7 @@ public class VehiclesService {
     }
 
     public List<VehiclesResponse> getAllForCustomerId(Integer customerId) {
-        var vehicles = vehiclesRepository.findAllVehiclesByCustomerId(customerId);
+        var vehicles = vehiclesRepository.findAllByCustomerId(customerId);
 
         return vehicles.stream().map((vehicle) -> modelMapper.map(vehicle, VehiclesResponse.class))
                 .collect(Collectors.toList());
