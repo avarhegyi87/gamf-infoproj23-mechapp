@@ -10,5 +10,5 @@ public interface VehiclesRepository extends JpaRepository<Vehicles, Integer> {
 
     Optional<Vehicles> findByLicencePlate(String licencePlate);
 
-    List<Vehicles> findAllVehiclesByCustomerId(Integer customerId);
+    List<Vehicles> findAllByCustomerId(Integer customerId);
 }

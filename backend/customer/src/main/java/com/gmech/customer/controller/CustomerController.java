@@ -2,6 +2,7 @@ package com.gmech.customer.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 import jakarta.validation.Valid;
-import jakarta.ws.rs.core.Response;
 
 import com.gmech.customer.service.CustomerService;
 import com.gmech.customer.customer.CustomerRequest;
@@ -51,7 +51,9 @@ public class CustomerController {
     }
 
     @DeleteMapping(value = "/delete")
-    public void delete(@RequestParam Integer id) {
+    public ResponseEntity<Void> delete(@RequestParam Integer id) {
         service.delete(id);
+        //204-es kód - no content ha sikerült a törlés, voidból fronton nem veszünk ki semmit :D
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 }

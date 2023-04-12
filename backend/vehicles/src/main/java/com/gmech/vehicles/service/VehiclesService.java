@@ -14,8 +14,6 @@ import com.gmech.vehicles.vehicles.VehiclesRequest;
 import com.gmech.vehicles.vehicles.VehiclesRequestPut;
 import com.gmech.vehicles.vehicles.VehiclesResponse;
 
-import ch.qos.logback.core.joran.conditional.ElseAction;
-
 import com.gmech.vehicles.exception.DuplicateException;
 import com.gmech.vehicles.exception.IncorrectIdException;
 
@@ -71,7 +69,7 @@ public class VehiclesService {
     }
 
     public List<VehiclesResponse> getAllForCustomerId(Integer customerId) {
-        var vehicles = vehiclesRepository.findAllVehiclesByCustomerId(customerId);
+        var vehicles = vehiclesRepository.findAllByCustomerId(customerId);
 
         return vehicles.stream().map((vehicle) -> modelMapper.map(vehicle, VehiclesResponse.class))
                 .collect(Collectors.toList());
@@ -102,7 +100,6 @@ public class VehiclesService {
     public void delete(Integer id) {
         vehiclesRepository.findById(id)
                 .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
-
         vehiclesRepository.deleteById(id);
     }
 

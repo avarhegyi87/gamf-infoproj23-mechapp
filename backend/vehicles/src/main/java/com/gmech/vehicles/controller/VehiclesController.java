@@ -2,6 +2,7 @@ package com.gmech.vehicles.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,7 +57,8 @@ public class VehiclesController {
     }
 
     @DeleteMapping(value = "/delete")
-    public void delete(@RequestParam Integer id) {
+    public ResponseEntity<Void> delete(@RequestParam Integer id) {
         service.delete(id);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 }
