@@ -1,7 +1,6 @@
 package com.gmech.customer.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
@@ -93,8 +92,7 @@ public class CustomerService {
 
     public void delete(Integer id) {
         customerRepository.findById(id)
-                .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
-
+            .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
         customerRepository.deleteById(id);
     }
 

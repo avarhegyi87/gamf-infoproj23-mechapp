@@ -2,6 +2,7 @@ package com.gmech.stock.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,8 +51,9 @@ public class StockController {
     }
 
     @DeleteMapping(value = "/delete")
-    public void delete(@RequestParam String materialNumber) {
+    public ResponseEntity<Void> delete(@RequestParam String materialNumber) {
         service.delete(materialNumber);
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
     }
 
 }
