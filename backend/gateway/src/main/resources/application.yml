@@ -131,6 +131,12 @@ spring:
           - Path=/api/v1/stock/delete
           filters:
             - AuthenticationFilter
+        - id: quotation-service-create
+          uri: lb://quotation-service
+          predicates:
+          - Path=/api/v1/quotation/create
+          filters:
+            - AuthenticationFilter
 
 eureka:
   client:
