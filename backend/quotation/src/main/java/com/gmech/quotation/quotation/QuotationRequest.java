@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.gmech.quotation.job.JobDto;
 import com.gmech.quotation.stock.StockDto;
 
 @Data
@@ -15,10 +16,10 @@ import com.gmech.quotation.stock.StockDto;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuotationRequest {
-   
+   private Integer id;   
    private Integer vehicleId;
    private Integer customerId;
    //munkadij + alkatreszek
-   private List<Integer> costs;
+   private List<JobDto> jobs = new ArrayList<JobDto>();
    private List<StockDto> parts = new ArrayList<StockDto>();
 }
