@@ -1,6 +1,9 @@
 package com.gmech.quotation.quotation;
 
 import java.util.List;
+
+import org.hibernate.annotations.DynamicUpdate;
+
 import java.util.ArrayList;
 
 import jakarta.persistence.ElementCollection;
@@ -12,6 +15,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import com.gmech.quotation.job.JobDto;
 import com.gmech.quotation.stock.StockDto;
 
 @Data
@@ -19,6 +23,7 @@ import com.gmech.quotation.stock.StockDto;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@DynamicUpdate
 public class Quotation {
     
     @Id
@@ -28,8 +33,8 @@ public class Quotation {
     private Integer vehicleId;
     private Integer customerId;
     
-    //munkadij + alkatreszek
-    private List<Integer> costs;
+    @ElementCollection
+    private List<JobDto> jobs = new ArrayList<JobDto>();
     
     @ElementCollection
     private List<StockDto> parts = new ArrayList<StockDto>();
