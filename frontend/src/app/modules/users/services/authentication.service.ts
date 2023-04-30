@@ -24,11 +24,11 @@ export class AuthenticationService {
     return this.currentUserSubject.value;
   }
 
-  login(email: string, token: string) {
+  login(email: string, password: string) {
     return this.http
-      .post<any>(`${environment.baseApiUrl}/v1/login`, {
+      .post<any>(`${environment.baseApiUrl}/v1/auth/login`, {
         email,
-        token,
+        password,
       })
       .pipe(
         map(user => {
