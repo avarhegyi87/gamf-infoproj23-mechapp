@@ -1,0 +1,180 @@
+<mat-toolbar color="primary">
+  <button
+    mat-icon-button
+    class="menu-toggler"
+    (click)="sidenav.toggle()"
+    aria-label="Menu"
+  >
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>MechApp</span>
+  <span class="spacer"></span>
+
+  <div class="menu-items">
+    <button mat-button [matMenuTriggerFor]="quotationMenu">Ajánlat</button>
+    <button mat-button [matMenuTriggerFor]="garageMenu">Garázsok</button>
+    <button mat-button [matMenuTriggerFor]="clientMenu">Partnerek</button>
+    <button mat-button [matMenuTriggerFor]="worksheetMenu">Munkalapok</button>
+    <button mat-button [matMenuTriggerFor]="vehicleMenu">Gépjárművek</button>
+    <button mat-button [matMenuTriggerFor]="carPartsMenu">Alkatrészek</button>
+    <button mat-button [matMenuTriggerFor]="invoiceMenu">Számlák</button>
+
+    <mat-menu #quotationMenu="matMenu">
+      <button mat-menu-item routerLink="/quotations">
+        Ajánlat megtekintése
+      </button>
+      <button mat-menu-item routerLink="/new-quotation">
+        Ajánlat készítése
+      </button>
+    </mat-menu>
+
+    <mat-menu #garageMenu="matMenu">
+      <button mat-menu-item routerLink="/garages">Garázs ellenőrzése</button>
+    </mat-menu>
+
+    <mat-menu #clientMenu="matMenu">
+      <button mat-menu-item routerLink="/clients">
+        Partnerek megtekintése
+      </button>
+      <button mat-menu-item routerLink="/new-client">
+        Új partner felvétele
+      </button>
+    </mat-menu>
+
+    <mat-menu #worksheetMenu="matMenu">
+      <button mat-menu-item routerLink="/new-worksheet">
+        Munkalap készítése
+      </button>
+      <button mat-menu-item routerLink="/worksheets-modify">
+        Munkalap módosítása
+      </button>
+      <button mat-menu-item routerLink="/worksheets-modify-closed">
+        Lezárt munkalap módosítása
+      </button>
+    </mat-menu>
+
+    <mat-menu #vehicleMenu="matMenu">
+      <button mat-menu-item routerLink="/vehicles">Gépjárművek</button>
+      <button mat-menu-item routerLink="/new-vehicle">
+        Új gépjármű felvétele
+      </button>
+    </mat-menu>
+
+    <mat-menu #carPartsMenu="matMenu">
+      <button mat-menu-item routerLink="/car-parts">Alkatrészek</button>
+      <button mat-menu-item routerLink="/new-car-part">
+        Alkatrész hozzáadása
+      </button>
+    </mat-menu>
+
+    <mat-menu #invoiceMenu="matMenu">
+      <button mat-menu-item routerLink="/invoices">Számlák megtekintése</button>
+      <button mat-menu-item routerLink="/new-invoice">Számlázás</button>
+    </mat-menu>
+  </div>
+
+  <button mat-icon-button [matMenuTriggerFor]="profileMenu">
+    <mat-icon>account_circle</mat-icon>
+  </button>
+  <mat-menu #profileMenu="matMenu">
+    <button mat-menu-item routerLink="/login">
+      <mat-icon>Login</mat-icon>
+      <span>Login</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      <span>Settings</span>
+    </button>
+    <button mat-menu-item>
+      <mat-icon>help</mat-icon>
+      <span>Help</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+
+<mat-sidenav-container class="container">
+  <mat-sidenav #sidenav mode="over" class="sidenav">
+    <div class="mobile-menu">
+      <button mat-menu-item [matMenuTriggerFor]="quotationMenuMobile">
+        Ajánlat
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="garageMenuMobile">
+        Garázsok
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="clientMenuMobile">
+        Partnerek
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="worksheetMenuMobile">
+        Munkalapok
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="vehicleMenuMobile">
+        Gépjárművek
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="carPartsMenuMobile">
+        Alkatrészek
+      </button>
+      <button mat-menu-item [matMenuTriggerFor]="invoiceMenuMobile">
+        Számlák
+      </button>
+
+      <mat-menu #quotationMenuMobile="matMenu">
+        <button mat-menu-item routerLink="/quotation/view">
+          Ajánlat megtekintése
+        </button>
+        <button mat-menu-item routerLink="/quotation/create">
+          Ajánlat készítése
+        </button>
+      </mat-menu>
+
+      <mat-menu #garageMenuMobile="matMenu">
+        <button mat-menu-item routerLink="/garages">Garázs ellenőrzése</button>
+      </mat-menu>
+
+      <mat-menu #clientMenuMobile="matMenu">
+        <button mat-menu-item routerLink="/clients">
+          Partnerek megtekintése
+        </button>
+        <button mat-menu-item routerLink="/new-client">
+          Új partner felvétele
+        </button>
+      </mat-menu>
+
+      <mat-menu #worksheetMenuMobile="matMenu">
+        <button mat-menu-item routerLink="/new-worksheet">
+          Munkalap készítése
+        </button>
+        <button mat-menu-item routerLink="/worksheets-modify">
+          Munkalap módosítása
+        </button>
+        <button mat-menu-item routerLink="/worksheets-modify-closed">
+          Lezárt munkalap módosítása
+        </button>
+      </mat-menu>
+
+      <mat-menu #vehicleMenuMobile="matMenu">
+        <button mat-menu-item routerLink="/vehicles">Gépjárművek</button>
+        <button mat-menu-item routerLink="/new-vehicle">
+          Új gépjármű felvétele
+        </button>
+      </mat-menu>
+
+      <mat-menu #carPartsMenuMobile="matMenu">
+        <button mat-menu-item routerLink="/car-parts">Alkatrészek</button>
+        <button mat-menu-item routerLink="/new-car-part">
+          Alkatrész hozzáadása
+        </button>
+      </mat-menu>
+
+      <mat-menu #invoiceMenuMobile="matMenu">
+        <button mat-menu-item routerLink="/invoices">
+          Számlák megtekintése
+        </button>
+        <button mat-menu-item routerLink="/new-invoice">Számlázás</button>
+      </mat-menu>
+    </div>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>
