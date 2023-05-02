@@ -12,11 +12,12 @@ import { first } from 'rxjs';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  formGroup!: FormGroup;
+  loginFormGroup!: FormGroup;
   currentUser!: User;
   users: User[] | any;
   error = false;
   loading = false;
+  hide = true;
 
   private _credentials = { username: '', password: '' };
 
@@ -33,14 +34,23 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loading = false;
 
-    this.formGroup = this.formBuilder.group({
+    this.loginFormGroup = this.formBuilder.group({
       username: [
         '',
-        Validators.compose([Validators.email, Validators.required]),
+        Validators.compose([
+          Validators.minLength(5),
+          Validators.maxLength(10),
+          Validators.required,
+        ]),
       ],
       password: [
         '',
-        Validators.compose([Validators.required, Validators.minLength(8)]),
+        Validators.compose([
+          Validators.required,
+          Validators.pattern(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,25}$/,
+          ),
+        ]),
       ],
     });
 
@@ -54,8 +64,8 @@ export class LoginComponent implements OnInit {
   }
 
   login(): boolean {
-    this._credentials.username = this.formGroup.get('username')?.value;
-    this._credentials.password = this.formGroup.get('password')?.value;
+    this._credentials.username = this.loginFormGroup.get('username')?.value;
+    this._credentials.password = this.loginFormGroup.get('password')?.value;
     this.authService
       .login(this._credentials.username, this._credentials.password)
       .pipe(first())

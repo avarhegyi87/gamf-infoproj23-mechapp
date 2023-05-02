@@ -1,0 +1,31 @@
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 20px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 400px;
+}
+
+.submit-button {
+  width: 100%;
+  max-width: 400px;
+  margin-top: 2rem;
+}
+
+.input-field {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.mat-icon {
+  margin-right: 8px;
+}
