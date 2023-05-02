@@ -1,8 +1,32 @@
-<p>
-  <mat-form-field appearance="outline">
-    <mat-label>Outline form field</mat-label>
-    <input matInput placeholder="Placeholder">
-    <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
-    <mat-hint>Hint</mat-hint>
-  </mat-form-field>
-</p>
+<div class="login-container">
+  <form (ngSubmit)="login()" [formGroup]="loginFormGroup" class="login-form">
+    <mat-form-field class="input-field">
+      <mat-icon matPrefix>person</mat-icon>
+      <mat-label>Felhasználónév</mat-label>
+      <input matInput formControlName="username">
+      <mat-hint>Legalább 5, legfeljebb 10 karakter</mat-hint>
+      <mat-error *ngIf="loginFormGroup.controls['username'].invalid &&
+        (loginFormGroup.controls['username'].dirty || loginFormGroup.controls['username'].touched)">
+        Érvénytelen felhasználónév!
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field class="input-field">
+      <mat-icon matPrefix>key</mat-icon>
+      <mat-label>Jelszó</mat-label>
+      <input matInput formControlName="password" [type]="hide ? 'password' : 'text'">
+      <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Jelszó elrejtése'"
+        [attr.aria-pressed]="hide">
+        <mat-icon>{{ hide ? 'visibility_off' : 'visibility' }}</mat-icon>
+      </button>
+      <mat-hint>Hossz: 8-25 karakter. Min. 1-1 ékezet nélküli kis- ill.
+        nagybetű, min. 1 számjegy</mat-hint>
+      <mat-error *ngIf="loginFormGroup.controls['password'].invalid &&
+        (loginFormGroup.controls['password'].dirty || loginFormGroup.controls['password'].touched)">
+        Érvénytelen jelszó!
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" [disabled]="loginFormGroup.invalid" class="submit-button">Belépés</button>
+  </form>
+</div>
