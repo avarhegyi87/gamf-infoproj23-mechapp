@@ -34,6 +34,7 @@ export class AuthenticationService {
         map(user => {
           localStorage.setItem('currentUser', JSON.stringify(user));
           this.currentUserSubject.next(user);
+          window.location.reload();
           return user;
         }),
       );
@@ -42,5 +43,6 @@ export class AuthenticationService {
   logout() {
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next(null as any);
+    window.location.reload();
   }
 }

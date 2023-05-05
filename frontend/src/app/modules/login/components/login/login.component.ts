@@ -15,8 +15,9 @@ export class LoginComponent implements OnInit {
   loginFormGroup!: FormGroup;
   currentUser!: User;
   users: User[] | any;
-  error = false;
+  error = '';
   loading = false;
+  submitted = false;
   hide = true;
 
   private _credentials = { username: '', password: '' };
@@ -29,6 +30,8 @@ export class LoginComponent implements OnInit {
     private authService: AuthenticationService,
   ) {
     authService.getCurrentUser.subscribe(x => (this.currentUser = x));
+    if (this.currentUser && this.currentUser.$id)
+      this.router.navigate(['/']);
   }
 
   ngOnInit(): void {
@@ -38,8 +41,8 @@ export class LoginComponent implements OnInit {
       username: [
         '',
         Validators.compose([
-          Validators.minLength(5),
-          Validators.maxLength(10),
+          Validators.email,
+          Validators.pattern(/@mechapp.hu$/),
           Validators.required,
         ]),
       ],
@@ -53,32 +56,37 @@ export class LoginComponent implements OnInit {
         ]),
       ],
     });
-
-    this.userService
-      .getAll()
-      .pipe(first())
-      .subscribe(users => {
-        this.loading = false;
-        this.users = users;
-      });
   }
 
-  login(): boolean {
+  onKeyDown(event: { keyCode: number; }) {
+    if (event.keyCode === 13) this.onSubmit();
+  }
+
+  onSubmit() {
+    this.submitted = true;
+    if (this.loginFormGroup.invalid) return;
+
+    this.loading = true;
     this._credentials.username = this.loginFormGroup.get('username')?.value;
     this._credentials.password = this.loginFormGroup.get('password')?.value;
+
     this.authService
       .login(this._credentials.username, this._credentials.password)
       .pipe(first())
       .subscribe({
         next: () => {
-          const returnUrl = this.route.snapshot.queryParams['/homepage'] || '/';
-          this.router.navigate([returnUrl]);
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/login';
+          this.router.navigate(['/']);
         },
         error: error => {
           this.error = error;
           this.loading = false;
         },
       });
-    return false;
+  }
+
+  onLogout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
   }
 }

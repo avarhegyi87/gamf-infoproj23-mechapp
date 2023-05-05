@@ -7,11 +7,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatTabsModule } from "@angular/material/tabs";
+import { RouterModule } from '@angular/router';
+import { LoginModule } from '../modules/login/login.module';
 
 @NgModule({
   declarations: [HeaderComponent],
   imports: [
     CommonModule,
+    RouterModule,
+    LoginModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,

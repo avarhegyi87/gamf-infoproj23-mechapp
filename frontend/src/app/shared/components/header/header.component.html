@@ -6,12 +6,17 @@
   <span class="spacer"></span>
 
   <div class="menu-items">
-    <button mat-button [matMenuTriggerFor]="quotationMenu">Ajánlat</button>
-    <button mat-button [matMenuTriggerFor]="garageMenu">Garázsok</button>
-    <button mat-button [matMenuTriggerFor]="clientMenu">Partnerek</button>
-    <button mat-button [matMenuTriggerFor]="worksheetMenu">Munkalapok</button>
-    <button mat-button [matMenuTriggerFor]="vehicleMenu">Gépjárművek</button>
-    <button mat-button [matMenuTriggerFor]="carPartsMenu">Alkatrészek</button>
+    <button mat-button routerLink="/">Kezdőlap</button>
+    <button mat-button [matMenuTriggerFor]="quotationMenu"
+      *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Ajánlat</button>
+    <button mat-button [matMenuTriggerFor]="garageMenu" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Garázsok</button>
+    <button mat-button [matMenuTriggerFor]="clientMenu" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Partnerek</button>
+    <button mat-button [matMenuTriggerFor]="worksheetMenu"
+      *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Munkalapok</button>
+    <button mat-button [matMenuTriggerFor]="vehicleMenu"
+      *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Gépjárművek</button>
+    <button mat-button [matMenuTriggerFor]="carPartsMenu"
+      *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Alkatrészek</button>
     <button mat-button [matMenuTriggerFor]="invoiceMenu" *ngIf="canSeeMenuItem(accessLevels.Manager)">Számlák</button>
 
     <mat-menu #quotationMenu="matMenu">
@@ -21,7 +26,7 @@
       <button mat-menu-item routerLink="/quotation/create" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Ajánlat készítése
       </button>
-      <button mat-menu-item routerLink="/quotation/update" *ngIf="canSeeMenuItem(accessLevels.Manager)">
+      <button mat-menu-item routerLink="/quotation/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
         Ajánlat módosítása
       </button>
     </mat-menu>
@@ -38,8 +43,8 @@
       <button mat-menu-item routerLink="/customer/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Új partner felvétele
       </button>
-      <button mat-menu-item routerLink="/customer/update" *ngIf="canSeeMenuItem(accessLevels.Manager)">
-        Új partner felvétele
+      <button mat-menu-item routerLink="/customer/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
+        Partner módosítása
       </button>
     </mat-menu>
 
@@ -50,10 +55,10 @@
       <button mat-menu-item routerLink="/worksheet/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Munkalap készítése
       </button>
-      <button mat-menu-item routerLink="/worksheet/update" *ngIf="canSeeMenuItem(accessLevels.Manager)">
+      <button mat-menu-item routerLink="/worksheet/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
         Munkalap módosítása
       </button>
-      <button mat-menu-item routerLink="/worksheet/update-closed" *ngIf="canSeeMenuItem(accessLevels.Manager)">
+      <button mat-menu-item routerLink="/worksheet/edit-closed" *ngIf="canSeeMenuItem(accessLevels.Manager)">
         Lezárt munkalap módosítása
       </button>
     </mat-menu>
@@ -64,7 +69,7 @@
       <button mat-menu-item routerLink="/vehicle/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Új gépjármű felvétele
       </button>
-      <button mat-menu-item routerLink="/vehicle/update" *ngIf="canSeeMenuItem(accessLevels.Manager)">
+      <button mat-menu-item routerLink="/vehicle/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
         Gépjármű adatainak módosítása
       </button>
     </mat-menu>
@@ -88,7 +93,7 @@
     <mat-icon>account_circle</mat-icon>
   </button>
   <mat-menu #profileMenu="matMenu">
-    <button mat-menu-item routerLink="/login">
+    <button mat-menu-item routerLink="/login" *ngIf="!loggedIn">
       <mat-icon>login</mat-icon>
       <span>Login</span>
     </button>
@@ -100,7 +105,7 @@
       <mat-icon>help</mat-icon>
       <span>Help</span>
     </button>
-    <button mat-menu-item routerLink="/logout">
+    <button mat-menu-item *ngIf="loggedIn" (click)="onLogout()">
       <mat-icon>logout</mat-icon>
       <span>Logout</span>
     </button>
@@ -110,6 +115,7 @@
 <mat-sidenav-container class="container">
   <mat-sidenav #sidenav mode="over" class="sidenav">
     <div class="mobile-menu">
+      <button mat-menu-item routerLink="/">Kezdőlap</button>
       <button mat-menu-item [matMenuTriggerFor]="quotationMenuMobile">
         Ajánlat
       </button>
@@ -139,7 +145,7 @@
         <button mat-menu-item routerLink="/quotation/create" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
           Ajánlat készítése
         </button>
-        <button mat-menu-item routerLink="/quotation/update" *ngIf="canSeeMenuItem(accessLevels.Manager)">
+        <button mat-menu-item routerLink="/quotation/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
           Ajánlat készítése
         </button>
       </mat-menu>
@@ -156,7 +162,7 @@
         <button mat-menu-item routerLink="/customer/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
           Új partner felvétele
         </button>
-        <button mat-menu-item routerLink="/customer/update" *ngIf="canSeeMenuItem(accessLevels.Manager)">
+        <button mat-menu-item routerLink="/customer/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
           Partner módosítása
         </button>
       </mat-menu>
@@ -168,10 +174,10 @@
         <button mat-menu-item routerLink="/worksheet/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
           Munkalap készítése
         </button>
-        <button mat-menu-item routerLink="/worksheet/update" *ngIf="canSeeMenuItem(accessLevels.Manager)">
+        <button mat-menu-item routerLink="/worksheet/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
           Munkalap módosítása
         </button>
-        <button mat-menu-item routerLink="/worksheet/update-closed" *ngIf="canSeeMenuItem(accessLevels.Manager)">
+        <button mat-menu-item routerLink="/worksheet/edit-closed" *ngIf="canSeeMenuItem(accessLevels.Manager)">
           Lezárt munkalap módosítása
         </button>
       </mat-menu>
@@ -182,7 +188,7 @@
         <button mat-menu-item routerLink="/vehicle/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
           Új gépjármű felvétele
         </button>
-        <button mat-menu-item routerLink="/vehicle/update" *ngIf="canSeeMenuItem(accessLevels.Manager)">
+        <button mat-menu-item routerLink="/vehicle/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
           Gépjármű módosítása
         </button>
       </mat-menu>
