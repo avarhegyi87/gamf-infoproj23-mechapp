@@ -9,7 +9,6 @@ import {
 } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { Role } from '../models/role.model';
-import { User } from '../models/user.model';
 import {
   HTTP_INTERCEPTORS,
   HttpEvent,
