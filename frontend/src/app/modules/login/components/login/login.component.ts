@@ -26,7 +26,6 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService,
     private authService: AuthenticationService,
   ) {
     authService.getCurrentUser.subscribe(x => (this.currentUser = x));
