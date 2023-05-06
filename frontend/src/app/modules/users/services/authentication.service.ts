@@ -26,7 +26,7 @@ export class AuthenticationService {
 
   login(email: string, password: string) {
     return this.http
-      .post<any>(`${environment.baseApiUrl}/v1/auth/login`, {
+      .post<any>(`${environment.baseApiUrl}/auth/login`, {
         email,
         password,
       })
