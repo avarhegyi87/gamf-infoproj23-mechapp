@@ -1,4 +1,11 @@
+<h1>Ügyféllista</h1>
 <ng-container *ngIf="customersLoaded$ | async; else templateLoading">
+  <mat-form-field class="filter-input">
+    <mat-label>Keresés</mat-label>
+    <mat-icon matSuffix>filter_alt</mat-icon>
+    <input matInput (keyup)="applyFilter($any($event.target).value)">
+  </mat-form-field>
+
   <table mat-table [dataSource]="customers" matSort (matSortChange)="announceSortChange($event)"
     class="mat-elevation-z8 customer-table">
     <ng-container matColumnDef="$id">

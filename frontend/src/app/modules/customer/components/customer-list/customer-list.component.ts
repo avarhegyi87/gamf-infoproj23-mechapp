@@ -88,4 +88,9 @@ export class CustomerListComponent implements OnInit {
       this._liveAnnouncer.announce('Sorbarendezés törölve');
     }
   }
+
+  applyFilter(value: string) {
+    value = value.trim().toLowerCase();
+    this.customers.filter = value;
+  }
 }
