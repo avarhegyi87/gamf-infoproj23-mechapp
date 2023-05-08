@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Customer } from '../../models/customer.model';
 import { User } from 'src/app/modules/users/models/user.model';
 import { CustomerService } from '../../services/customer.service';
@@ -16,14 +16,15 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './customer-list.component.html',
   styleUrls: ['./customer-list.component.scss'],
 })
-export class CustomerListComponent implements OnInit, AfterViewInit {
+export class CustomerListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  customers: MatTableDataSource<Customer> | undefined;
+  @ViewChild(MatSort)
+  sort: MatSort = new MatSort();
+  customers = new MatTableDataSource<Customer>([]);
   currentUser: User | undefined;
   displayedColumns: Array<keyof Customer> = [];
 
-  private customersLoaded$ = new BehaviorSubject<boolean>(false);
+  customersLoaded$ = new BehaviorSubject<boolean>(false);
 
   constructor(
     private customerService: CustomerService,
@@ -38,35 +39,36 @@ export class CustomerListComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.customerService.getAllCustomers().subscribe({
       next: customers => {
-        if (customers && customers.length > 0) {
-          this.customers = new MatTableDataSource<Customer>(customers);
-          this.displayedColumns = Object.keys(this.customers.data[0]) as Array<
-            keyof Customer
-          >;
-          this.customers.sortingDataAccessor = (item: Customer, property: string) => {
-            switch (property) {
-              case '$id':
-                return item.$id;
-              case 'name':
-              case 'country':
-              case 'city':
-              case 'street':
-              case 'houseNumber':
-              case 'email':
-                return item[property]?.toLowerCase() ?? '';
-              case 'postCode':
-              case 'phoneNumber':
-              case 'taxNumber':
-                return item[property] ?? '';
-              default:
-                return '';
-            }
-          };
-          this.customersLoaded$.next(true);
-        } else {
-          this.customers = undefined;
-          this.customersLoaded$.next(true);
-        }
+        this.customers.data = customers;
+        this.displayedColumns = Object.keys(this.customers.data[0]) as Array<keyof Customer>;
+        this.customersLoaded$.next(true);
+
+        this.customers.sortingDataAccessor = (
+          item: Customer,
+          property: string,
+        ) => {
+          switch (property) {
+            case '$id':
+              return item.$id;
+            case 'name':
+            case 'country':
+            case 'city':
+            case 'street':
+            case 'houseNumber':
+            case 'email':
+              return item[property]?.toLowerCase() ?? '';
+            case 'postCode':
+            case 'phoneNumber':
+            case 'taxNumber':
+              return item[property] ?? '';
+            default:
+              return '';
+          }
+        };
+        setTimeout(() => {
+          this.customers.sort = this.sort;
+          this.customers.paginator = this.paginator;
+        }, 0);
       },
       error: response => {
         this.snackBar.open(response, 'Close', {
@@ -75,19 +77,6 @@ export class CustomerListComponent implements OnInit, AfterViewInit {
         });
       },
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.customersLoaded$.subscribe(loaded => {
-      if (loaded && this.customers) {
-        this.customers.sort = this.sort;
-        this.customers.paginator = this.paginator;
-      }
-    });
-
-    console.log('customers', this.customers);
-    console.log('this.sort', this.sort);
-    console.log('this.paginator', this.paginator);
   }
 
   announceSortChange(sortState: Sort) {

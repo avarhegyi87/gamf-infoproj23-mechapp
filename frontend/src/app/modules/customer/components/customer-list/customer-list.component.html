@@ -1,4 +1,4 @@
-<ng-container *ngIf="customers; else noCustomerTemplate">
+<ng-container *ngIf="customersLoaded$ | async; else templateLoading">
   <table mat-table [dataSource]="customers" matSort (matSortChange)="announceSortChange($event)"
     class="mat-elevation-z8 customer-table">
     <ng-container matColumnDef="$id">
@@ -61,6 +61,6 @@
   </mat-paginator>
 </ng-container>
 
-<ng-template #noCustomerTemplate>
-  <p>Nincsen regisztrált ügyfél.</p>
+<ng-template #templateLoading>
+  <p>Töltés...</p>
 </ng-template>
