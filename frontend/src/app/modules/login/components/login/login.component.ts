@@ -12,7 +12,7 @@ import { first } from 'rxjs';
 })
 export class LoginComponent implements OnInit {
   loginFormGroup!: FormGroup;
-  currentUser!: User;
+  currentUser: User | undefined;
   users: User[] | any;
   error = '';
   loading = false;
@@ -73,8 +73,8 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: () => {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/login';
-          this.router.navigate(['/']);
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+          this.router.navigate([returnUrl]);
         },
         error: error => {
           this.error = error;

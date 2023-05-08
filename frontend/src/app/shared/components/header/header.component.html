@@ -116,22 +116,22 @@
   <mat-sidenav #sidenav mode="over" class="sidenav">
     <div class="mobile-menu">
       <button mat-menu-item routerLink="/">Kezdőlap</button>
-      <button mat-menu-item [matMenuTriggerFor]="quotationMenuMobile">
+      <button mat-menu-item [matMenuTriggerFor]="quotationMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Ajánlat
       </button>
-      <button mat-menu-item [matMenuTriggerFor]="garageMenuMobile">
+      <button mat-menu-item [matMenuTriggerFor]="garageMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Garázsok
       </button>
-      <button mat-menu-item [matMenuTriggerFor]="clientMenuMobile">
+      <button mat-menu-item [matMenuTriggerFor]="clientMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Partnerek
       </button>
-      <button mat-menu-item [matMenuTriggerFor]="worksheetMenuMobile">
+      <button mat-menu-item [matMenuTriggerFor]="worksheetMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Munkalapok
       </button>
-      <button mat-menu-item [matMenuTriggerFor]="vehicleMenuMobile">
+      <button mat-menu-item [matMenuTriggerFor]="vehicleMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Gépjárművek
       </button>
-      <button mat-menu-item [matMenuTriggerFor]="carPartsMenuMobile">
+      <button mat-menu-item [matMenuTriggerFor]="carPartsMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Alkatrészek
       </button>
       <button mat-menu-item [matMenuTriggerFor]="invoiceMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Manager)">

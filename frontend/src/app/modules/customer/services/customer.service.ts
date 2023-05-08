@@ -7,25 +7,26 @@ import { Customer } from '../models/customer.model';
 @Injectable({providedIn: 'root'})
 export class CustomerService {
   baseApiUrl: string = environment.baseApiUrl;
+  entityName = 'customer';
   constructor(private http: HttpClient) {}
 
   getAllCustomers(): Observable<Customer[]> {
-    return this.http.get<Customer[]>(this.baseApiUrl + 'customer/getall');
+    return this.http.get<Customer[]>(this.baseApiUrl + this.entityName + '/getall');
   }
 
   getCustomer(id: string): Observable<Customer> {
-    return this.http.get<Customer>(this.baseApiUrl + 'customer/get/' + id);
+    return this.http.get<Customer>(this.baseApiUrl + this.entityName + '/get/' + id);
   }
 
   addCustomer(addCustomerRequest: Customer): Observable<Customer> {
-    return this.http.post<Customer>(this.baseApiUrl + 'customer/create', addCustomerRequest);
+    return this.http.post<Customer>(this.baseApiUrl + this.entityName + '/create', addCustomerRequest);
   }
 
   updateCustomer(id: string, updateCustomerRequest: Customer): Observable<Customer> {
-    return this.http.put<Customer>(this.baseApiUrl + 'customer/put/' + id, updateCustomerRequest);
+    return this.http.put<Customer>(this.baseApiUrl + this.entityName + '/put/' + id, updateCustomerRequest);
   }
 
   deleteCustomer(id: string): Observable<Customer> {
-    return this.http.delete<Customer>(this.baseApiUrl + 'delete/' + id);
+    return this.http.delete<Customer>(this.baseApiUrl + this.entityName + '/delete/' + id);
   }
 }

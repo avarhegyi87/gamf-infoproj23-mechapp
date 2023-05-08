@@ -15,7 +15,7 @@ import {
   HttpClientModule,
 } from '@angular/common/http';
 import { UserService } from './modules/users/services/user.service';
-import { ErrorInterceptor, FakeBackendInterceptor, JwtInterceptor, fakeBackendProvider } from './modules/users/helpers';
+import { ErrorInterceptor, FakeBackendInterceptor, JwtInterceptor, fakeBackendProvider } from './shared/helpers';
 
 @NgModule({
   declarations: [AppComponent],
