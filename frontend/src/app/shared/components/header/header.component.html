@@ -93,9 +93,9 @@
     <mat-icon>account_circle</mat-icon>
   </button>
   <mat-menu #profileMenu="matMenu">
-    <button mat-menu-item routerLink="/login" *ngIf="!loggedIn">
+    <button mat-menu-item routerLink="/login" *ngIf="!isLoggedIn()">
       <mat-icon>login</mat-icon>
-      <span>Login</span>
+      <span>Bejelentkezés</span>
     </button>
     <button mat-menu-item>
       <mat-icon>settings</mat-icon>
@@ -103,11 +103,11 @@
     </button>
     <button mat-menu-item>
       <mat-icon>help</mat-icon>
-      <span>Help</span>
+      <span>Segítség</span>
     </button>
-    <button mat-menu-item *ngIf="loggedIn" (click)="onLogout()">
+    <button mat-menu-item *ngIf="isLoggedIn()" (click)="onLogout()">
       <mat-icon>logout</mat-icon>
-      <span>Logout</span>
+      <span>Kijelentkezés</span>
     </button>
   </mat-menu>
 </mat-toolbar>
