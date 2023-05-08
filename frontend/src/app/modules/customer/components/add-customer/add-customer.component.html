@@ -1,1 +1,87 @@
-<p>add-customer works!</p>
+<h1>Új ügyfél felvétele</h1>
+<h3>Adja meg az ügyfél adatait!</h3>
+<div class="form-container">
+  <form (ngSubmit)="onSubmit()" [formGroup]="addCustomerForm" class="customer-form">
+    <div class="input-container">
+      <mat-form-field class="input-field">
+        <mat-label>Név</mat-label>
+        <input matInput formControlName="name">
+        <mat-error *ngIf="isInvalid('name')">
+          Adja meg az ügyfél nevét (3-40 karakter)!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Irányítószám</mat-label>
+        <input matInput formControlName="country">
+        <mat-error *ngIf="isInvalid('country')">
+          Adjon meg érvényes országnevet (3-20 betű)!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Irányítószám</mat-label>
+        <input matInput formControlName="postCode">
+        <mat-error *ngIf=" isInvalid('postCode')">
+          Adjon meg érvényes irányítószámot (4-5 számjegy)!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Város</mat-label>
+        <input matInput formControlName="city">
+        <mat-error *ngIf="isInvalid('city')">
+          Adja meg a helység nevét!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Közerület neve</mat-label>
+        <input matInput formControlName="street">
+        <mat-error *ngIf="isInvalid('street')">
+          Adja meg a közterület nevét (3-25 karakter)!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Házszám</mat-label>
+        <input matInput formControlName="houseNumber">
+        <mat-error *ngIf="isInvalid('houseNumber')">
+          Adja meg a házszámot (3-25 karakter)!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-icon matSuffix>alternate_email</mat-icon>
+        <mat-label>Email cím</mat-label>
+        <input matInput formControlName="email" placeholder="email@domain.hu">
+        <mat-error *ngIf="isInvalid('email')">
+          Adjon meg érvényes email címet!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-icon matSuffix>phone</mat-icon>
+        <mat-label>Telefonszám</mat-label>
+        <input matInput formControlName="phoneNumber" placeholder="+36201234567">
+        <mat-error *ngIf="isInvalid('phoneNumber')">
+          Adjon meg érvényes telefonszámot!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Adószám</mat-label>
+        <input matInput formControlName="taxNumber" placeholder="12345654321">
+        <mat-error *ngIf="isInvalid('taxNumber')">
+          Adjon meg érvényes adószámot (11 számjegy)!
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="button-container">
+      <button mat-raised-button color="primary" [disabled]="addCustomerForm.invalid"
+        class="submit-button">Mentés</button>
+      <!-- <button mat-raised-button color="warn" class="cancel-button">Mégse</button> -->
+    </div>
+  </form>
+</div>

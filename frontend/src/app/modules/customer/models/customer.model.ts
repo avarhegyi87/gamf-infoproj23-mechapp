@@ -3,6 +3,7 @@ export interface Customer {
   name: string;
   country: string;
   postCode: number;
+  city: string;
   street: string;
   houseNumber: string;
   email: string;

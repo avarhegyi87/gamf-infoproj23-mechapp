@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from './../../../users/services/authentication.service';
-import { UserService } from '../../../users/services/user.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { User } from '../../../users/models/user.model';
 import { first } from 'rxjs';
@@ -13,7 +12,7 @@ import { first } from 'rxjs';
 })
 export class LoginComponent implements OnInit {
   loginFormGroup!: FormGroup;
-  currentUser!: User;
+  currentUser: User | undefined;
   users: User[] | any;
   error = '';
   loading = false;
@@ -26,7 +25,6 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private userService: UserService,
     private authService: AuthenticationService,
   ) {
     authService.getCurrentUser.subscribe(x => (this.currentUser = x));
@@ -75,8 +73,8 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: () => {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/login';
-          this.router.navigate(['/']);
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+          this.router.navigate([returnUrl]);
         },
         error: error => {
           this.error = error;
