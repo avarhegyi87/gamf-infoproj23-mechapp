@@ -15,10 +15,9 @@ import { environment } from 'src/environments/environment';
 })
 export class HeaderComponent implements OnInit {
   @ViewChild(MatSidenav) sidenav!: MatSidenav;
-  loggedIn = false;
   opened = false;
   currentUser: User | undefined;
-  userRole: Role | undefined;
+  userRole: Role;
 
   constructor(
     private userService: UserService,
@@ -28,8 +27,7 @@ export class HeaderComponent implements OnInit {
     this.authService
       .getCurrentUser
       .subscribe(user => (this.currentUser = user));
-    this.userRole = this.currentUser?.role;
-    this.loggedIn = this.userRole ? true : false;
+    this.userRole = this.currentUser ? this.currentUser.role : Role.Guest;
   }
 
   ngOnInit(): void {}
@@ -39,20 +37,16 @@ export class HeaderComponent implements OnInit {
   }
 
   isLoggedIn(): boolean {
-    return this.loggedIn;
+    return this.userRole > Role.Guest;
   }
 
   canSeeMenuItem(required: Role) {
-    return (
-      (this.currentUser || environment) &&
-      this.userRole &&
-      this.userRole >= required
-    );
+    return this.userRole >= required;
   }
 
   onLogout() {
     this.authService.logout();
-    this.loggedIn = false;
+    this.userRole = Role.Guest;
     this.router.navigate(['/login']);
   }
 }
