@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="auth" />
+        <module name="vehicles" />
+        <module name="stock" />
+        <module name="quotation" />
+        <module name="gateway" />
+        <module name="service-discovery" />
+        <module name="customer" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="auth" target="1.5" />
+      <module name="customer" target="1.5" />
+      <module name="gateway" target="1.5" />
+      <module name="quotation" target="1.5" />
+      <module name="service-discovery" target="1.5" />
+      <module name="stock" target="1.5" />
+      <module name="vehicles" target="1.5" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
