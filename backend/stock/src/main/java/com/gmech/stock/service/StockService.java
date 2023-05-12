@@ -56,7 +56,7 @@ public class StockService {
         public List<StockResponse> getAll() {
                 var stocks = stockRepository.findAll();
                 return stocks.stream().map(
-                        (stock) -> this.modelMapper.map(stock, StockResponse.class))
+                                (stock) -> this.modelMapper.map(stock, StockResponse.class))
                                 .collect(Collectors.toList());
         }
 
@@ -64,12 +64,11 @@ public class StockService {
                 var stock = stockRepository.findByMaterialNumber(request.getMaterialNumber())
                                 .orElseThrow(() -> new IncorrectMatnumberException("A megadott aznosító nem létezik!"));
 
-                stock.setDescription(request.getDescription());
-                stock.setCurrentStock(request.getCurrentStock());
-                stock.setNetPrice(request.getNetPrice());
+                this.modelMapper.getConfiguration().setSkipNullEnabled(true);
+                this.modelMapper.map(request, stock);
 
                 return this.modelMapper.map(
-                        stockRepository.save(stock),
+                                stockRepository.save(stock),
                                 StockResponse.class);
         }
 
