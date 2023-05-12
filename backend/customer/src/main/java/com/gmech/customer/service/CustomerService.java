@@ -73,26 +73,16 @@ public class CustomerService {
 
         var customer = customerRepository.findById(request.getId())
                 .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
-
-        customer.setName(request.getName());
-        customer.setCountry(request.getCountry());
-        customer.setPostCode(request.getPostCode());
-        customer.setStreet(request.getStreet());
-        customer.setHouseNumber(request.getHouseNumber());
-        customer.setEmail(request.getEmail());
-        customer.setPhoneNumber(request.getPhoneNumber());
-        customer.setTaxNumber(request.getTaxNumber());
-
-        customerRepository.save(customer);
+        this.modelMapper.getConfiguration().setSkipNullEnabled(true);
+        this.modelMapper.map(request, customer);
         return this.modelMapper.map(
-                customer,
+                customerRepository.save(customer),
                 CustomerResponse.class);
-
     }
 
     public void delete(Integer id) {
         customerRepository.findById(id)
-            .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
+                .orElseThrow(() -> new IncorrectIdException("A megadott aznosító nem létezik!"));
         customerRepository.deleteById(id);
     }
 
