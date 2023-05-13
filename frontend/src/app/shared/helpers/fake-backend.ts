@@ -80,6 +80,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       .pipe(dematerialize());
 
     function handleRoute() {
+      const parsedID = parseInt(url.split('?').slice(-1)[0]);
       switch (true) {
         case url.endsWith('auth/login') && method === 'POST':
           return authenticate();
@@ -88,6 +89,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         case url.endsWith('/customer/getall') && method === 'GET':
           return getAllCustomer();
+        case url.includes('/customer/get') && method === 'GET':
+          return getCustomer(parsedID);
+        case url.includes('/customer/put') && method === 'PUT':
+          return updateCustomer(parsedID);
         case url.endsWith('/customer/create') && method === 'POST':
           return addCustomer();
 
@@ -137,6 +142,26 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function getAllCustomer() {
       if (!isLoggedIn()) return unauthorized();
       return ok(customers);
+    }
+
+    function getCustomer(id: number) {
+      if (!isLoggedIn()) return unauthorized();
+      const customer = customers.find(customer => customer.$id === id);
+      return ok(customer);
+    }
+
+    function updateCustomer(id: number) {
+      if (!isLoggedIn()) return unauthorized();
+      let customer = customers.find(customer => customer.$id === id);
+      if (!customer) return error('Nem találjuk a megadott partnert.');
+      const {name, country, postCode, city, street, houseNumber, email, phoneNumber, taxNumber} = body;
+      const newData = {
+        $id: customer.$id,
+        name, country, postCode, city, street, houseNumber, email, phoneNumber, taxNumber,
+      }
+      customer = newData;
+
+      return ok();
     }
 
     function addCustomer() {
