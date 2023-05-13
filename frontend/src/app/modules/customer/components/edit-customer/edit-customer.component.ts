@@ -4,6 +4,8 @@ import { CustomerService } from '../../services/customer.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Customer } from '../../models/customer.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
+import { DeletionModalComponent } from 'src/app/shared/components/deletion-modal/deletion-modal.component';
 
 @Component({
   selector: 'app-edit-customer',
@@ -33,6 +35,7 @@ export class EditCustomerComponent implements OnInit {
     private customerService: CustomerService,
     private router: Router,
     private snackBar: MatSnackBar,
+    public dialog: MatDialog,
   ) {
     this.editCustomerForm = this.formBuilder.group({
       name: [
@@ -120,6 +123,11 @@ export class EditCustomerComponent implements OnInit {
     );
   }
 
+  onSubmit() {
+    const submitButton = document.activeElement as HTMLButtonElement;
+    if (submitButton.classList.contains('submit-button')) this.onUpdate();
+  }
+
   onUpdate() {
     this.submitted = true;
     if (this.editCustomerForm.invalid) return;
@@ -129,7 +137,7 @@ export class EditCustomerComponent implements OnInit {
       .subscribe({
         next: customer => {
           this.snackBar.open(
-            `Partner ${this.customerDetails.$id} adatai sikeresen módosítva`,
+            `${this.customerDetails.$id} - ${this.customerDetails.name} adatai sikeresen módosítva.`,
             'OK',
             {
               duration: 3000,
@@ -140,11 +148,40 @@ export class EditCustomerComponent implements OnInit {
         },
         error: error => {
           this.error = error;
-          this.snackBar.open(this.error, 'Close', {
+          this.snackBar.open(this.error, 'Bezár', {
             duration: 5000,
             panelClass: ['mat-toolbar', 'mat-warn'],
           });
         },
       });
+  }
+
+  openDeletionModal() {
+    const dialogRef = this.dialog.open(DeletionModalComponent, {
+      data: { id: this.customerDetails.$id, name: this.customerDetails.name },
+    });
+
+    dialogRef.componentInstance.deleteClicked.subscribe((shouldDelete: boolean) => {
+      if (shouldDelete) this.onDelete();
+    })
+  }
+
+  onDelete() {
+    this.customerService.deleteCustomer(this.customerDetails.$id).subscribe({
+      next: response => {
+        this.snackBar.open(
+          `${this.customerDetails.$id} - ${this.customerDetails.name} sikeresen törölve.`, 'OK', {
+            duration: 3000, panelClass: ['mat-toolbar', 'mat-primary'],
+          },
+        );
+        this.router.navigate(['customer/list']);
+      },
+      error: error => {
+        this.error = error;
+        this.snackBar.open(this.error, 'Bezár', {
+          duration: 5000, panelClass: ['mat-toolbar', 'mat-warn'],
+        })
+      },
+    });
   }
 }

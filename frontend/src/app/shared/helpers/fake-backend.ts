@@ -87,14 +87,16 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         case url.endsWith('/users') && method === 'GET':
           return getUsers();
 
+        case url.endsWith('/customer/create') && method === 'POST':
+          return addCustomer();
         case url.endsWith('/customer/getall') && method === 'GET':
           return getAllCustomer();
         case url.includes('/customer/get') && method === 'GET':
           return getCustomer(parsedID);
         case url.includes('/customer/put') && method === 'PUT':
           return updateCustomer(parsedID);
-        case url.endsWith('/customer/create') && method === 'POST':
-          return addCustomer();
+        case url.includes('/customer/delete') && method === 'DELETE':
+          return deleteCustomer(parsedID);
 
         default:
           return next.handle(request);
@@ -139,31 +141,6 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       return headers.get('Authorization') === 'Bearer fake-jwt-token';
     }
 
-    function getAllCustomer() {
-      if (!isLoggedIn()) return unauthorized();
-      return ok(customers);
-    }
-
-    function getCustomer(id: number) {
-      if (!isLoggedIn()) return unauthorized();
-      const customer = customers.find(customer => customer.$id === id);
-      return ok(customer);
-    }
-
-    function updateCustomer(id: number) {
-      if (!isLoggedIn()) return unauthorized();
-      let customer = customers.find(customer => customer.$id === id);
-      if (!customer) return error('Nem találjuk a megadott partnert.');
-      const {name, country, postCode, city, street, houseNumber, email, phoneNumber, taxNumber} = body;
-      const newData = {
-        $id: customer.$id,
-        name, country, postCode, city, street, houseNumber, email, phoneNumber, taxNumber,
-      }
-      customer = newData;
-
-      return ok();
-    }
-
     function addCustomer() {
       if (!isLoggedIn()) return unauthorized();
 
@@ -194,6 +171,41 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       customers.push(newCustomer);
       return ok(newCustomer);
     }
+
+    function getAllCustomer() {
+      if (!isLoggedIn()) return unauthorized();
+      return ok(customers);
+    }
+
+    function getCustomer(id: number) {
+      if (!isLoggedIn()) return unauthorized();
+      const customer = customers.find(customer => customer.$id === id);
+      return ok(customer);
+    }
+
+    function updateCustomer(id: number) {
+      if (!isLoggedIn()) return unauthorized();
+      let customer = customers.find(customer => customer.$id === id);
+      if (!customer) return error('Nem találni a megadott partnert.');
+      const {name, country, postCode, city, street, houseNumber, email, phoneNumber, taxNumber} = body;
+      const newData = {
+        $id: customer.$id,
+        name, country, postCode, city, street, houseNumber, email, phoneNumber, taxNumber,
+      }
+      customer = newData;
+
+      return ok();
+    }
+
+    function deleteCustomer(id: number) {
+      if (!isLoggedIn()) return unauthorized();
+      const index = customers.findIndex(customer => customer.$id === id);
+      if (index === -1) return error('Nem találni a megadott partnert.');
+      customers.splice(index, 1);
+      return ok();
+    }
+
+
   }
 }
 

@@ -1,7 +1,7 @@
 <h1>Ügyfél adatainak módosítása</h1>
 <a mat-button routerLink="/customer/list"><mat-icon>arrow_back</mat-icon> Vissza az ügyféllistára</a>
 <div class="form-container">
-  <form (ngSubmit)="onUpdate()" [formGroup]="editCustomerForm" class="customer-form">
+  <form (ngSubmit)="onSubmit()" [formGroup]="editCustomerForm" class="customer-form">
     <div class="input-container">
       <mat-form-field class="input-field">
         <mat-label>Név</mat-label>
@@ -80,9 +80,9 @@
     </div>
 
     <div class="button-container">
-      <button mat-raised-button color="primary" [disabled]="editCustomerForm.invalid"
+      <button mat-raised-button color="primary" [disabled]="editCustomerForm.invalid" type="submit"
         class="submit-button">Módosítás</button>
-      <button mat-raised-button color="warn" class="cancel-button">Törlés</button>
+      <button mat-raised-button color="warn" class="cancel-button" (click)="openDeletionModal()">Törlés</button>
     </div>
   </form>
 </div>
