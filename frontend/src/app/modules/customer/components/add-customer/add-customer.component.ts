@@ -137,7 +137,7 @@ export class AddCustomerComponent implements OnInit {
       },
       error: error => {
         this.error = error;
-        this.snackBar.open(this.error, 'Close', {
+        this.snackBar.open(this.error, 'Bezár', {
           duration: 5000,
           panelClass: ['mat-toolbar', 'mat-warn'],
         });

@@ -74,7 +74,7 @@ export class CustomerListComponent implements OnInit {
         }, 0);
       },
       error: response => {
-        this.snackBar.open(response, 'Close', {
+        this.snackBar.open(response, 'Bezár', {
           duration: 5000,
           panelClass: ['mat-toolbar', 'mat-warn'],
         });
