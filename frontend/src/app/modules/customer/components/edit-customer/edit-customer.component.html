@@ -1,1 +1,88 @@
-<p>edit-customer works!</p>
+<h1>Ügyfél adatainak módosítása</h1>
+<a mat-button routerLink="/customer/list"><mat-icon>arrow_back</mat-icon> Vissza az ügyféllistára</a>
+<div class="form-container">
+  <form (ngSubmit)="onSubmit()" [formGroup]="editCustomerForm" class="customer-form">
+    <div class="input-container">
+      <mat-form-field class="input-field">
+        <mat-label>Név</mat-label>
+        <input matInput formControlName="name" [(ngModel)]="customerDetails.name">
+        <mat-error *ngIf="isInvalid('name')">
+          Adja meg az ügyfél nevét (3-40 karakter)!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Ország</mat-label>
+        <input matInput formControlName="country" [(ngModel)]="customerDetails.country">
+        <mat-error *ngIf="isInvalid('country')">
+          Adjon meg érvényes országnevet (3-20 betű)!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Irányítószám</mat-label>
+        <input matInput formControlName="postCode" [(ngModel)]="customerDetails.postCode">
+        <mat-error *ngIf=" isInvalid('postCode')">
+          Adjon meg érvényes irányítószámot (4-5 számjegy)!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Város</mat-label>
+        <input matInput formControlName="city" [(ngModel)]="customerDetails.city">
+        <mat-error *ngIf="isInvalid('city')">
+          Adja meg a helység nevét!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Közerület neve</mat-label>
+        <input matInput formControlName="street" [(ngModel)]="customerDetails.street">
+        <mat-error *ngIf="isInvalid('street')">
+          Adja meg a közterület nevét (3-25 karakter)!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Házszám</mat-label>
+        <input matInput formControlName="houseNumber" [(ngModel)]="customerDetails.houseNumber">
+        <mat-error *ngIf="isInvalid('houseNumber')">
+          Adja meg a házszámot (3-25 karakter)!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-icon matSuffix>alternate_email</mat-icon>
+        <mat-label>Email cím</mat-label>
+        <input matInput formControlName="email" placeholder="email@domain.hu" [(ngModel)]="customerDetails.email">
+        <mat-error *ngIf="isInvalid('email')">
+          Adjon meg érvényes email címet!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-icon matSuffix>phone</mat-icon>
+        <mat-label>Telefonszám</mat-label>
+        <input matInput formControlName="phoneNumber" placeholder="+36201234567"
+          [(ngModel)]="customerDetails.phoneNumber">
+        <mat-error *ngIf="isInvalid('phoneNumber')">
+          Adjon meg érvényes telefonszámot!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Adószám</mat-label>
+        <input matInput formControlName="taxNumber" placeholder="12345654321" [(ngModel)]="customerDetails.taxNumber">
+        <mat-error *ngIf="isInvalid('taxNumber')">
+          Adjon meg érvényes adószámot (11 számjegy)!
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="button-container">
+      <button mat-raised-button color="primary" [disabled]="editCustomerForm.invalid" type="submit"
+        class="submit-button">Módosítás</button>
+      <button mat-raised-button color="warn" class="cancel-button" (click)="openDeletionModal()">Törlés</button>
+    </div>
+  </form>
+</div>

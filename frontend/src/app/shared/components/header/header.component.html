@@ -37,14 +37,18 @@
     </mat-menu>
 
     <mat-menu #clientMenu="matMenu">
-      <button mat-menu-item routerLink="/customer/list" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
-        Partnerek megtekintése
-      </button>
+      <ng-container *ngIf="canSeeMenuItem(accessLevels.Manager); else nonManagerCustomerTemplate">
+        <button mat-menu-item routerLink="/customer/list" *ngIf="canSeeMenuItem(accessLevels.Manager)">
+          Partnerek megtekintése/módosítása
+        </button>
+      </ng-container>
+      <ng-template #nonManagerCustomerTemplate>
+        <button mat-menu-item routerLink="/customer/list" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
+          Partnerek megtekintése
+        </button>
+      </ng-template>
       <button mat-menu-item routerLink="/customer/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Új partner felvétele
-      </button>
-      <button mat-menu-item routerLink="/customer/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
-        Partner módosítása
       </button>
     </mat-menu>
 
@@ -156,14 +160,18 @@
       </mat-menu>
 
       <mat-menu #clientMenuMobile="matMenu">
-        <button mat-menu-item routerLink="/customer/list" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
-          Partnerek megtekintése
-        </button>
+        <ng-container *ngIf="canSeeMenuItem(accessLevels.Manager); else nonManagerCustomerMobileTemplate">
+          <button mat-menu-item routerLink="/customer/list" *ngIf="canSeeMenuItem(accessLevels.Manager)">
+            Partnerek megtekintése/módosítása
+          </button>
+        </ng-container>
+        <ng-template #nonManagerCustomerMobileTemplate>
+          <button mat-menu-item routerLink="/customer/list" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
+            Partnerek megtekintése
+          </button>
+        </ng-template>
         <button mat-menu-item routerLink="/customer/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
           Új partner felvétele
-        </button>
-        <button mat-menu-item routerLink="/customer/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
-          Partner módosítása
         </button>
       </mat-menu>
 

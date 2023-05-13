@@ -10,6 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { BehaviorSubject } from 'rxjs';
+import { Role } from 'src/app/modules/users/models/role.model';
 
 @Component({
   selector: 'app-customer-list',
@@ -22,7 +23,7 @@ export class CustomerListComponent implements OnInit {
   sort: MatSort = new MatSort();
   customers = new MatTableDataSource<Customer>([]);
   currentUser: User | undefined;
-  displayedColumns: Array<keyof Customer> = [];
+  displayedColumns: Array<keyof Customer | string> = [];
 
   customersLoaded$ = new BehaviorSubject<boolean>(false);
 
@@ -40,7 +41,9 @@ export class CustomerListComponent implements OnInit {
     this.customerService.getAllCustomers().subscribe({
       next: customers => {
         this.customers.data = customers;
-        this.displayedColumns = Object.keys(this.customers.data[0]) as Array<keyof Customer>;
+        this.displayedColumns = Object.keys(this.customers.data[0]) as Array<keyof Customer | string>;
+        if (this.currentUser && this.currentUser.role >= Role.Manager)
+          this.displayedColumns.push('edit');
         this.customersLoaded$.next(true);
 
         this.customers.sortingDataAccessor = (
@@ -71,7 +74,7 @@ export class CustomerListComponent implements OnInit {
         }, 0);
       },
       error: response => {
-        this.snackBar.open(response, 'Close', {
+        this.snackBar.open(response, 'Bezár', {
           duration: 5000,
           panelClass: ['mat-toolbar', 'mat-warn'],
         });
