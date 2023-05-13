@@ -111,20 +111,28 @@ export class AddCustomerComponent implements OnInit {
 
     this._addCustomerRequest.name = this.addCustomerForm.get('name')?.value;
     this._addCustomerRequest.country = this.addCustomerForm.get('name')?.value;
-    this._addCustomerRequest.postCode = this.addCustomerForm.get('postCode')?.value;
+    this._addCustomerRequest.postCode =
+      this.addCustomerForm.get('postCode')?.value;
     this._addCustomerRequest.city = this.addCustomerForm.get('city')?.value;
     this._addCustomerRequest.street = this.addCustomerForm.get('street')?.value;
-    this._addCustomerRequest.houseNumber = this.addCustomerForm.get('houseNumber')?.value;
+    this._addCustomerRequest.houseNumber =
+      this.addCustomerForm.get('houseNumber')?.value;
     this._addCustomerRequest.email = this.addCustomerForm.get('email')?.value;
-    this._addCustomerRequest.phoneNumber = this.addCustomerForm.get('phoneNumber')?.value
-    this._addCustomerRequest.taxNumber = this.addCustomerForm.get('taxNumber')?.value;
+    this._addCustomerRequest.phoneNumber =
+      this.addCustomerForm.get('phoneNumber')?.value;
+    this._addCustomerRequest.taxNumber =
+      this.addCustomerForm.get('taxNumber')?.value;
 
     this.customerService.addCustomer(this._addCustomerRequest).subscribe({
       next: customer => {
-        this.snackBar.open(`Customer successfully added with id ${customer.$id}`, 'OK', {
-          duration: 3000,
-          panelClass: ['mat-toolbar', 'mat-primary'],
-        })
+        this.snackBar.open(
+          `Partner sikeresen hozzáadva; azonosítója: ${customer.$id}`,
+          'OK',
+          {
+            duration: 3000,
+            panelClass: ['mat-toolbar', 'mat-primary'],
+          },
+        );
         this.router.navigate(['customer/list']);
       },
       error: error => {
