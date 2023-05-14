@@ -8,7 +8,7 @@ import {
   throwError,
 } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Role } from '../../modules/users/models/role.model';
+import { FAKE_USERS, FAKE_CUSTOMERS, FAKE_VEHICLES } from "./data/fake-data";
 import {
   HTTP_INTERCEPTORS,
   HttpEvent,
@@ -18,52 +18,11 @@ import {
   HttpResponse,
 } from '@angular/common/http';
 import { Customer } from 'src/app/modules/customer/models/customer.model';
+import { Vehicle } from 'src/app/modules/vehicle/models/vehicle.model';
 
-const users = [
-  {
-    $id: 1,
-    email: 'adamvm@mechapp.hu',
-    firstName: 'Adam',
-    lastName: 'Varhegyi-Milos',
-    role: Role.Manager,
-    password: 'Jelszo1234',
-  },
-  {
-    $id: 2,
-    email: 'albert.csabai@mechapp.hu',
-    firstName: 'Albert',
-    lastName: 'Csabai',
-    role: Role.Mechanic,
-    password: 'Jelszo1234',
-  },
-];
-
-const customers: Customer[] = [
-  {
-    $id: 1,
-    name: 'Cégem Kft.',
-    country: 'Magyarország',
-    postCode: 1142,
-    city: 'Budapest',
-    street: 'Rákosszeg park',
-    houseNumber: '5C',
-    email: 'info@cegem.hu',
-    phoneNumber: '+36203266674',
-    taxNumber: 12345654321,
-  },
-  {
-    $id: 2,
-    name: 'GAMF',
-    country: 'Magyarország',
-    postCode: 4000,
-    city: 'Kecskemét',
-    street: 'Izsáki út',
-    houseNumber: '1',
-    email: 'gamf@gamf.hu',
-    phoneNumber: '+36326382893',
-    taxNumber: 99998877666,
-  },
-];
+const users = FAKE_USERS;
+const customers: Customer[] = FAKE_CUSTOMERS;
+const vehicles: Vehicle[] = FAKE_VEHICLES;
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -97,6 +56,19 @@ export class FakeBackendInterceptor implements HttpInterceptor {
           return updateCustomer(parsedID);
         case url.includes('/customer/delete') && method === 'DELETE':
           return deleteCustomer(parsedID);
+
+        case url.endsWith('/vehicle/create') && method === 'POST':
+          return addVehicle();
+        case url.endsWith('/vehicle/getall') && method === 'GET':
+          return getAllVehicles();
+        case url.includes('/vehicle/getallbycust') && method === 'GET':
+          return getAllVehiclesByCustomer(parsedID);
+        case url.includes('/vehicle/get') && method === 'GET':
+          return getVehicle(parsedID);
+        case url.includes('/vehicle/put') && method === 'PUT':
+          return updateVehicle(parsedID);
+        case url.includes('/vehicle/delete') && method === 'DELETE':
+          return deleteVehicle(parsedID);
 
         default:
           return next.handle(request);
@@ -205,7 +177,61 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       return ok();
     }
 
+    function addVehicle() {
+      if (!isLoggedIn()) return unauthorized();
 
+      const lastId = vehicles.length ? vehicles[vehicles.length - 1].id : 0;
+      const { customer, vin, licencePlate, mileage, carBrand, carMake, displacement, productionYear, fuelType } = body;
+      const owner = customers.find(customerOptions => customerOptions.$id === customer.$id);
+      if (!owner) return error('Nem találni a megadott partnert.');
+      const newVehicle = {
+        id: lastId + 1,
+        customer: owner,
+        vin, licencePlate, mileage, carBrand, carMake, displacement, productionYear, fuelType,
+      };
+      vehicles.push(newVehicle);
+      return ok(newVehicle);
+    }
+
+    function getAllVehicles() {
+      if (!isLoggedIn()) return unauthorized();
+      return ok(vehicles);
+    }
+
+    function getAllVehiclesByCustomer(id: number) {
+      if (!isLoggedIn()) return unauthorized();
+      const vehiclesOfCustomer: Vehicle[] = vehicles.filter(vehicle => vehicle.customer.$id === id);
+      return ok (vehiclesOfCustomer);
+    }
+
+    function getVehicle(id: number) {
+      if (!isLoggedIn()) return unauthorized();
+      const vehicle = vehicles.find(vehicle => vehicle.id === id);
+      return ok(vehicle);
+    }
+
+    function updateVehicle(id: number) {
+      if (!isLoggedIn()) return unauthorized();
+      let vehicle = vehicles.find(vehicle => vehicle.id === id);
+      if (!vehicle) return error('Nem találni a megadott járművet.');
+      const {customer, vin, licencePlate, mileage, carBrand, carMake, displacement, productionYear, fuelType } = body;
+      const newData = {
+        id: vehicle.id,
+        customer: customers.find(customerOptions => customerOptions.$id === customer.$id) || vehicle.customer,
+        vin, licencePlate, mileage, carBrand, carMake, displacement, productionYear, fuelType,
+      }
+      vehicle = newData;
+
+      return ok();
+    }
+
+    function deleteVehicle(id: number) {
+      if (!isLoggedIn()) return unauthorized();
+      const index = vehicles.findIndex(vehicle => vehicle.id === id);
+      if (index === -1) return error('Nem találni a megadott járművet.');
+      vehicles.splice(index, 1);
+      return ok();
+    }
   }
 }
 

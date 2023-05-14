@@ -1,0 +1,95 @@
+<h1>Új jármű felvétele</h1>
+<h3>Adja meg a jármű adatait!</h3>
+<div class="form-container">
+  <form (ngSubmit)="onSubmit()" [formGroup]="addVehicleForm">
+    <div class="input-container">
+      <mat-form-field class="input-field double-width">
+        <mat-label>Partner</mat-label>
+        <input matInput [formControl]="customerControl" [matAutocomplete]="auto">
+        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onCustomerOptionSelected($event.option.value)">
+          <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer">
+            {{ customer.$id }}: {{ customer.name }} ({{ customer.postCode }} {{ customer.city }})
+          </mat-option>
+        </mat-autocomplete>
+        <mat-error *ngIf="isInvalid('customer')">Válasszon egy ügyfelet!</mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="input-container">
+      <mat-form-field class="input-field">
+        <mat-label>Alvázszám</mat-label>
+        <input matInput formControlName="vin" (input)="changeTextToUppercase('vin')">
+        <mat-error *ngIf="isInvalid('vin')">
+          Az alvázszám 17 karakterből áll (nagybetű vagy számjegy)!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Rendszám</mat-label>
+        <input matInput formControlName="licencePlate" (input)="changeTextToUppercase('licencePlate')">
+        <mat-error *ngIf="isInvalid('licencePlate')">
+          A rendszám 6 vagy 7 betűből és számból áll! Kötőjelet ne használjon!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Futásteljesítmény</mat-label>
+        <input matInput formControlName="mileage">
+        <mat-error *ngIf="isInvalid('mileage')">
+          Csak számot használhat!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Márka</mat-label>
+        <input matInput formControlName="carBrand">
+        <mat-error *ngIf="isInvalid('carBrand')">
+          3-20 karakter hosszú nevet használjon!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Modell</mat-label>
+        <input matInput formControlName="carMake">
+        <mat-error *ngIf="isInvalid('carMake')">
+          3-20 karakter hosszú szöveget írjon!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Lökettérfogat (ccm)</mat-label>
+        <input matInput formControlName="displacement">
+        <mat-error *ngIf="isInvalid('displacement')">
+          Csak számjegyeket használjon!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Gyártási év</mat-label>
+        <input matInput formControlName="productionYear">
+        <mat-error *ngIf="isInvalid('productionYear')">
+          1900 és 2023 közötti érték lehet.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Üzemanyagtípus</mat-label>
+        <mat-select formControlName="fuelType">
+          <mat-option *ngFor="let fuelTypeItem of fuelTypes" [value]="fuelTypeItem">
+            {{ fuelTypeMapping[fuelTypeItem] }}
+          </mat-option>
+        </mat-select>
+        <!-- <input matInput formControlName="fuelType"> -->
+        <mat-error *ngIf="isInvalid('fuelType')">
+          3-10 karakter hosszú szöveget írjon!
+        </mat-error>
+      </mat-form-field>
+
+    </div>
+
+    <div class="button-container">
+      <button mat-raised-button color="primary" [disabled]="addVehicleForm.invalid"
+        class="submit-button">Mentés</button>
+    </div>
+  </form>
+</div>
