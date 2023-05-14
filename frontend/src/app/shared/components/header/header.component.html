@@ -10,7 +10,8 @@
     <button mat-button [matMenuTriggerFor]="quotationMenu"
       *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Ajánlat</button>
     <button mat-button [matMenuTriggerFor]="garageMenu" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Garázsok</button>
-    <button mat-button [matMenuTriggerFor]="clientMenu" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Partnerek</button>
+    <button mat-button [matMenuTriggerFor]="customerMenu"
+      *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Partnerek</button>
     <button mat-button [matMenuTriggerFor]="worksheetMenu"
       *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Munkalapok</button>
     <button mat-button [matMenuTriggerFor]="vehicleMenu"
@@ -36,7 +37,7 @@
         ellenőrzése</button>
     </mat-menu>
 
-    <mat-menu #clientMenu="matMenu">
+    <mat-menu #customerMenu="matMenu">
       <ng-container *ngIf="canSeeMenuItem(accessLevels.Manager); else nonManagerCustomerTemplate">
         <button mat-menu-item routerLink="/customer/list" *ngIf="canSeeMenuItem(accessLevels.Manager)">
           Partnerek megtekintése/módosítása
@@ -68,13 +69,16 @@
     </mat-menu>
 
     <mat-menu #vehicleMenu="matMenu">
-      <button mat-menu-item routerLink="/vehicle/list"
-        *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Gépjárművek</button>
+      <ng-container *ngIf="canSeeMenuItem(accessLevels.Manager); else nonManagerVehicleTemplate">
+        <button mat-menu-item routerLink="/vehicle/list" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Gépjárművek
+          megtekint./mód.</button>
+      </ng-container>
+      <ng-template #nonManagerVehicleTemplate>
+        <button mat-menu-item routerLink="/vehicle/list" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Gépjárművek
+          megtekintése</button>
+      </ng-template>
       <button mat-menu-item routerLink="/vehicle/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Új gépjármű felvétele
-      </button>
-      <button mat-menu-item routerLink="/vehicle/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
-        Gépjármű adatainak módosítása
       </button>
     </mat-menu>
 
@@ -126,7 +130,7 @@
       <button mat-menu-item [matMenuTriggerFor]="garageMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Garázsok
       </button>
-      <button mat-menu-item [matMenuTriggerFor]="clientMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
+      <button mat-menu-item [matMenuTriggerFor]="customerMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Partnerek
       </button>
       <button mat-menu-item [matMenuTriggerFor]="worksheetMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
@@ -159,7 +163,7 @@
           ellenőrzése</button>
       </mat-menu>
 
-      <mat-menu #clientMenuMobile="matMenu">
+      <mat-menu #customerMenuMobile="matMenu">
         <ng-container *ngIf="canSeeMenuItem(accessLevels.Manager); else nonManagerCustomerMobileTemplate">
           <button mat-menu-item routerLink="/customer/list" *ngIf="canSeeMenuItem(accessLevels.Manager)">
             Partnerek megtekintése/módosítása
@@ -191,13 +195,16 @@
       </mat-menu>
 
       <mat-menu #vehicleMenuMobile="matMenu">
-        <button mat-menu-item routerLink="/vehicle/list"
-          *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Gépjárművek</button>
+        <ng-container *ngIf="canSeeMenuItem(accessLevels.Manager); else nonManagerVehicleMobileTemplate">
+          <button mat-menu-item routerLink="/vehicle/list" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Gépjárművek
+            megtekint./mód.</button>
+        </ng-container>
+        <ng-template #nonManagerVehicleMobileTemplate>
+          <button mat-menu-item routerLink="/vehicle/list" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Gépjárművek
+            megtekintése</button>
+        </ng-template>
         <button mat-menu-item routerLink="/vehicle/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
           Új gépjármű felvétele
-        </button>
-        <button mat-menu-item routerLink="/vehicle/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
-          Gépjármű módosítása
         </button>
       </mat-menu>
 

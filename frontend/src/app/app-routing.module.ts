@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, type Routes } from '@angular/router';
 import { LoginComponent } from './modules/login/components/login/login.component';
-import { AddCustomerComponent } from './modules/customer/components/add-customer/add-customer.component';
 import { HomeComponent } from './modules/home/home/home.component';
 
 const routes: Routes = [
@@ -13,6 +12,11 @@ const routes: Routes = [
       import('./modules/customer/customer.module').then(
         m => m.CustomerModule,
       ),
+  },
+  {
+    path: 'vehicle',
+    loadChildren: () =>
+      import('./modules/vehicle/vehicle.module').then(m => m.VehicleModule),
   },
   { path: '**', redirectTo: '' },
 ];
