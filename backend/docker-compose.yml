@@ -110,7 +110,7 @@ services:
   worksheet:
     container_name: worksheet-microservice
     build: ./worksheet
-    image: quotation:latest
+    image: worksheet:latest
     ports:
       - "9506:9506"
     environment:
@@ -121,6 +121,7 @@ services:
     networks:
       - spring    
       - postgres
+
 
 networks:
   postgres:

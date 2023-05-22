@@ -143,7 +143,30 @@ spring:
           - Path=/api/v1/quotation/create
           filters:
             - AuthenticationFilter
-
+        - id: worksheet-service-create
+          uri: lb://worksheet-service
+          predicates:
+          - Path=/api/v1/worksheet/create
+          filters:
+            - AuthenticationFilter
+        - id: worksheet-service-get
+          uri: lb://worksheet-service
+          predicates:
+          - Path=/api/v1/worksheet/get
+          filters:
+            - AuthenticationFilter
+        - id: worksheet-service-getall
+          uri: lb://worksheet-service
+          predicates:
+          - Path=/api/v1/worksheet/getall
+          filters:
+            - AuthenticationFilter
+        - id: worksheet-service-delete
+          uri: lb://worksheet-service
+          predicates:
+          - Path=/api/v1/worksheet/delete
+          filters:
+            - AuthenticationFilter
 eureka:
   client:
     serviceUrl:
