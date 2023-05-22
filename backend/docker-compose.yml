@@ -120,7 +120,8 @@ services:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery:9000/eureka   
     networks:
       - spring    
-      - postgres    
+      - postgres
+
 
 networks:
   postgres:
