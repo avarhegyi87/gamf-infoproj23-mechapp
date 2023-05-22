@@ -107,6 +107,20 @@ services:
     networks:
       - spring    
       - postgres
+  worksheet:
+    container_name: worksheet-microservice
+    build: ./worksheet
+    image: quotation:latest
+    ports:
+      - "9506:9506"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/gmech
+      - SPRING_DATASOURCE_USERNAME=${GMECH_PG_USER}
+      - SPRING_DATASOURCE_PASSWORD=${GMECH_PG_PASSWORD}
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://service-discovery:9000/eureka   
+    networks:
+      - spring    
+      - postgres
 
 networks:
   postgres:
