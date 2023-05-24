@@ -3,6 +3,10 @@ package com.gmech.quotation.quotation;
 import java.util.List;
 import java.util.ArrayList;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Max;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,10 +20,26 @@ import com.gmech.quotation.stock.StockDto;
 @NoArgsConstructor
 @AllArgsConstructor
 public class QuotationRequest {
-   private Integer id;   
+
+   @NotNull
+   @Max(99999)
+   @Min(0)
+   private Integer id;
+
+   @NotNull
+   @Max(99999)
+   @Min(0)
    private Integer vehicleId;
+
+   @NotNull
+   @Max(99999)
+   @Min(0)
    private Integer customerId;
-   //munkadij + alkatreszek
+
+   // munkadij + alkatreszek
+   @NotNull
    private List<JobDto> jobs = new ArrayList<JobDto>();
+
+   @NotNull
    private List<StockDto> parts = new ArrayList<StockDto>();
 }
