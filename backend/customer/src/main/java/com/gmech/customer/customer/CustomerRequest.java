@@ -37,7 +37,7 @@ public class CustomerRequest {
     private String street;
 
     @NotBlank
-    @Size(min = 1, max = 5, message = "A házszám hosszúsága 3 és 40 karakter között lehet!")
+    @Size(min = 1, max = 5, message = "A házszám hosszúsága 1 és 5 karakter között lehet!")
     private String houseNumber;
 
     @NotBlank
