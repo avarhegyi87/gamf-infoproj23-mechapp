@@ -2,16 +2,18 @@ import { NgModule } from '@angular/core';
 import { RouterModule, type Routes } from '@angular/router';
 import { LoginComponent } from './modules/login/components/login/login.component';
 import { HomeComponent } from './modules/home/home/home.component';
+import { AuthGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent, canActivate: [AuthGuard], },
   {
     path: 'customer',
     loadChildren: () =>
       import('./modules/customer/customer.module').then(
         m => m.CustomerModule,
       ),
+      
   },
   {
     path: 'vehicle',
