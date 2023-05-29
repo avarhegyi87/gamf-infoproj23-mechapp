@@ -23,7 +23,7 @@ export class CustomerService {
   }
 
   updateCustomer(id: number, updateCustomerRequest: Customer): Observable<Customer> {
-    return this.http.put<Customer>(this.baseApiUrl + this.entityName + '/put/' + id, updateCustomerRequest);
+    return this.http.post<Customer>(this.baseApiUrl + this.entityName + '/put/' + id, updateCustomerRequest);
   }
 
   deleteCustomer(id: number): Observable<Customer> {

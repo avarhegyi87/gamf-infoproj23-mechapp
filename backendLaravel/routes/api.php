@@ -32,8 +32,8 @@ Route::post('/auth/login', [UserController::class, 'login'])->name('login');
 Route::get('/customer/get/{customer}', [CustomerController::class, 'get'])->name('get');
 Route::get('/customer/getAll', [CustomerController::class, 'getAll'])->name('getAll');
 Route::post('/customer/create', [CustomerController::class, 'create'])->name('create');
-Route::post('/customer/{customer}', [CustomerController::class, 'update'])->name('update');
-Route::delete('/customer/{customer}', [CustomerController::class, 'delete'])->name('delete');
+Route::post('/customer/put/{customer}', [CustomerController::class, 'update'])->name('update');
+Route::delete('/customer/delete/{customer}', [CustomerController::class, 'delete'])->name('delete');
 
 //Stock routes
 Route::get('/stock/get/{stock}', [StockController::class, 'get'])->name('get');
