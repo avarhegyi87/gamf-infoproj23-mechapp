@@ -17,7 +17,7 @@ return new class extends Migration
             $table->timestamp('startDate');
             $table->timestamp('endDate')->nullable();
             $table->integer('garageId');
-            $table->integer('quotationId');
+            $table->foreignId('quotationId')->constrained('quotations', 'id')->onUpdate('cascade');
             $table->string('comment');
             $table->string('additionalWork');
             $table->string('additionalParts');

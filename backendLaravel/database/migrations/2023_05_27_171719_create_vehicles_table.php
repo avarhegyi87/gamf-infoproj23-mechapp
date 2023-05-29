@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('vin')->unique();
             $table->string('licencePlate')->unique();
-            $table->integer('customerId');
+            $table->foreignId('customerId')->constrained('customers', 'id')->onUpdate('cascade');
             $table->integer('productionYear');
             $table->integer('mileage');
             $table->string('carBrand');

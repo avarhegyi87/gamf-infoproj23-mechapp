@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('quotations', function (Blueprint $table) {
             $table->id();
-            $table->integer('vehicleId');
-            $table->integer('customerId');
+            $table->foreignId('vehicleId')->constrained('vehicles', 'id')->onUpdate('cascade');
+            $table->foreignId('customerId')->constrained('customers', 'id')->onUpdate('cascade');
             $table->string('jobList');
             $table->string('partList');
             $table->string('description');
