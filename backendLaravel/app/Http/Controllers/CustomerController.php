@@ -22,6 +22,7 @@ class CustomerController extends Controller
         $formFields = $request->validate([
             'name' => ['required', 'min:3', 'max:40'],
             'country' => ['required', 'min:3', 'max:16'],
+            'city' => ['required'],
             'postcode' => ['required'],
             'street' => ['required', 'min:3', 'max:25'],
             'houseNumber' => ['required', 'min:1', 'max:5'],
@@ -47,6 +48,7 @@ class CustomerController extends Controller
         $formFields = $request->validate([
             'name' => ['required', 'min:3', 'max:40'],
             'country' => ['required', 'min:3', 'max:16'],
+            'city' => ['required'],
             'postcode' => ['required'],
             'street' => ['required', 'min:3', 'max:25'],
             'houseNumber' => ['required', 'min:1', 'max:5'],
