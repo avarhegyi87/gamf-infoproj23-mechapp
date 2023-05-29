@@ -8,9 +8,9 @@
 
   <table mat-table [dataSource]="customers" matSort (matSortChange)="announceSortChange($event)"
     class="mat-elevation-z8 customer-table">
-    <ng-container matColumnDef="$id">
+    <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="ID szerint"> Partner ID </th>
-      <td mat-cell *matCellDef="let element"> {{ element.$id }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.id }} </td>
     </ng-container>
 
     <ng-container matColumnDef="name">
@@ -23,10 +23,10 @@
       <td mat-cell *matCellDef="let element"> {{ element.country }} </td>
     </ng-container>
 
-    <ng-container matColumnDef="postCode">
+    <ng-container matColumnDef="postcode">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Irányítószám szerint"> Irányítószám
       </th>
-      <td mat-cell *matCellDef="let element"> {{ element.postCode }} </td>
+      <td mat-cell *matCellDef="let element"> {{ element.postcode }} </td>
     </ng-container>
 
     <ng-container matColumnDef="city">
@@ -63,7 +63,7 @@
     <ng-container matColumnDef="edit">
       <th mat-header-cell *matHeaderCellDef> Módosítás </th>
       <td mat-cell class="edit-cell" *matCellDef="let element">
-        <a [routerLink]="'/customer/edit/' + element.$id">
+        <a [routerLink]="'/customer/edit/' + element.id">
           <mat-icon color="accent">edit</mat-icon>
         </a>
       </td>

@@ -8,7 +8,7 @@
         <input matInput [formControl]="customerControl" [matAutocomplete]="auto">
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="onCustomerOptionSelected($event.option.value)">
           <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer">
-            {{ customer.$id }}: {{ customer.name }} ({{ customer.postCode }} {{ customer.city }})
+            {{ customer.id }}: {{ customer.name }} ({{ customer.postcode }} {{ customer.city }})
           </mat-option>
         </mat-autocomplete>
         <mat-error *ngIf="isInvalid('customer')">Válasszon egy ügyfelet!</mat-error>

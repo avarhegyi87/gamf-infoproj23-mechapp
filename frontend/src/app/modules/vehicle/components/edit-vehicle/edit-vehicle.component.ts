@@ -67,7 +67,7 @@ export class EditVehicleComponent implements OnInit {
           Validators.pattern(/^[0-9A-Z]{6,7}$/),
         ]),
       ],
-      customer: [null, this.vehicleDetails.customer && this.vehicleDetails.customer.$id > 0],
+      customer: [null, this.vehicleDetails.customer && this.vehicleDetails.customer.id > 0],
       productionYear: [
         '',
         Validators.compose([

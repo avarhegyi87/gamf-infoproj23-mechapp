@@ -15,10 +15,10 @@ export class AddCustomerComponent implements OnInit {
   submitted = false;
 
   private _addCustomerRequest = {
-    $id: 0,
+    id: 0,
     name: '',
     country: '',
-    postCode: 0,
+    postcode: 0,
     city: '',
     street: '',
     houseNumber: '',
@@ -52,7 +52,7 @@ export class AddCustomerComponent implements OnInit {
           Validators.maxLength(20),
         ]),
       ],
-      postCode: [
+      postcode: [
         '',
         Validators.compose([
           Validators.required,
@@ -111,8 +111,8 @@ export class AddCustomerComponent implements OnInit {
 
     this._addCustomerRequest.name = this.addCustomerForm.get('name')?.value;
     this._addCustomerRequest.country = this.addCustomerForm.get('name')?.value;
-    this._addCustomerRequest.postCode =
-      this.addCustomerForm.get('postCode')?.value;
+    this._addCustomerRequest.postcode =
+      this.addCustomerForm.get('postcode')?.value;
     this._addCustomerRequest.city = this.addCustomerForm.get('city')?.value;
     this._addCustomerRequest.street = this.addCustomerForm.get('street')?.value;
     this._addCustomerRequest.houseNumber =
@@ -122,11 +122,12 @@ export class AddCustomerComponent implements OnInit {
       this.addCustomerForm.get('phoneNumber')?.value;
     this._addCustomerRequest.taxNumber =
       this.addCustomerForm.get('taxNumber')?.value;
-
+      console.log(this.addCustomerForm);
     this.customerService.addCustomer(this._addCustomerRequest).subscribe({
       next: customer => {
+        console.log(customer);
         this.snackBar.open(
-          `Partner sikeresen hozzáadva; azonosítója: ${customer.$id}`,
+          `Partner sikeresen hozzáadva; azonosítója: ${customer.id}`,
           'OK',
           {
             duration: 3000,
