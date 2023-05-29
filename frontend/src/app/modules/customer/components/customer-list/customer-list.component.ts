@@ -50,7 +50,6 @@ export class CustomerListComponent implements OnInit {
           item: Customer,
           property: string,
         ) => {
-          console.log(item.id);
           switch (property) {
             case 'id':
               return item.id;
