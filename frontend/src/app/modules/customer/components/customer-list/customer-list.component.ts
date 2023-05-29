@@ -41,7 +41,7 @@ export class CustomerListComponent implements OnInit {
     this.customerService.getAllCustomers().subscribe({
       next: customers => {
         this.customers.data = customers;
-        this.displayedColumns = Object.keys(this.customers.data[0]) as Array<keyof Customer | string>;
+        this.displayedColumns = ['id', 'name', 'country', 'postcode', 'street', 'houseNumber', 'email', 'phoneNumber', 'taxNumber'];
         if (this.currentUser && this.currentUser.role >= Role.Manager)
           this.displayedColumns.push('edit');
         this.customersLoaded$.next(true);
@@ -50,9 +50,10 @@ export class CustomerListComponent implements OnInit {
           item: Customer,
           property: string,
         ) => {
+          console.log(item.id);
           switch (property) {
-            case '$id':
-              return item.$id;
+            case 'id':
+              return item.id;
             case 'name':
             case 'country':
             case 'city':
@@ -60,7 +61,7 @@ export class CustomerListComponent implements OnInit {
             case 'houseNumber':
             case 'email':
               return item[property]?.toLowerCase() ?? '';
-            case 'postCode':
+            case 'postcode':
             case 'phoneNumber':
             case 'taxNumber':
               return item[property] ?? '';

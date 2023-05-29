@@ -7,11 +7,11 @@ import { Customer } from '../models/customer.model';
 @Injectable({providedIn: 'root'})
 export class CustomerService {
   baseApiUrl: string = environment.baseApiUrl;
-  entityName = 'customer';
+  entityName = '/customer';
   constructor(private http: HttpClient) {}
 
   getAllCustomers(): Observable<Customer[]> {
-    return this.http.get<Customer[]>(this.baseApiUrl + this.entityName + '/getall');
+    return this.http.get<Customer[]>(this.baseApiUrl + this.entityName + '/getAll');
   }
 
   getCustomer(id: string): Observable<Customer> {

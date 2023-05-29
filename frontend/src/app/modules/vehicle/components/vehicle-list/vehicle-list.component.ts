@@ -73,7 +73,7 @@ export class VehicleListComponent implements OnInit {
       next: vehicles => {
         this.vehicles.data = this.selectedCustomer
           ? vehicles.filter(
-            vehicle => vehicle.customer.$id === this.selectedCustomer?.$id,
+            vehicle => vehicle.customer.id === this.selectedCustomer?.id,
           )
           : vehicles;
         this.displayedColumns = Object.keys(this.vehicles.data[0]) as Array<
