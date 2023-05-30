@@ -5,7 +5,7 @@ import { Vehicle } from 'src/app/modules/vehicle/models/vehicle.model';
 
 export const FAKE_USERS = [
   {
-    $id: 1,
+    id: 1,
     email: 'adamvm@mechapp.hu',
     firstName: 'Adam',
     lastName: 'Varhegyi-Milos',
@@ -13,7 +13,7 @@ export const FAKE_USERS = [
     password: 'Jelszo1234',
   },
   {
-    $id: 2,
+    id: 2,
     email: 'albert.csabai@mechapp.hu',
     firstName: 'Albert',
     lastName: 'Csabai',
@@ -24,10 +24,10 @@ export const FAKE_USERS = [
 
 export const FAKE_CUSTOMERS: Customer[] = [
   {
-    $id: 1,
+    id: 1,
     name: 'Cégem Kft.',
     country: 'Magyarország',
-    postCode: 1142,
+    postcode: 1142,
     city: 'Budapest',
     street: 'Rákosszeg park',
     houseNumber: '5C',
@@ -36,10 +36,10 @@ export const FAKE_CUSTOMERS: Customer[] = [
     taxNumber: 12345654321,
   },
   {
-    $id: 2,
+    id: 2,
     name: 'GAMF',
     country: 'Magyarország',
-    postCode: 4000,
+    postcode: 4000,
     city: 'Kecskemét',
     street: 'Izsáki út',
     houseNumber: '1',

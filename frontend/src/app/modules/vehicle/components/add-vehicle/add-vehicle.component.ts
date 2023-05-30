@@ -22,19 +22,8 @@ export class AddVehicleComponent implements OnInit {
   fuelTypes = Object.values(FuelTypeEnum);
   error = '';
   submitted = false;
-
-  private _addVehicleRequest = {
-    id: 0,
-    vin: '',
-    licencePlate: '',
-    customer: this.customers[0],
-    productionYear: 0,
-    mileage: 0,
-    carBrand: '',
-    carMake: '',
-    displacement: 0,
-    fuelType: '',
-  };
+  private _addVehicleRequest: any;
+  
 
   constructor(
     private formBuilder: FormBuilder,
@@ -46,6 +35,19 @@ export class AddVehicleComponent implements OnInit {
     this.customerService.getAllCustomers().subscribe(customers => {
       this.customers = customers;
     });
+
+    this._addVehicleRequest = {
+    id: 0,
+    vin: '',
+    licencePlate: '',
+    customerId: 0,
+    productionYear: 0,
+    mileage: 0,
+    carBrand: '',
+    carMake: '',
+    displacement: 0,
+    fuelType: '',
+  };
   }
 
   ngOnInit(): void {
@@ -72,7 +74,7 @@ export class AddVehicleComponent implements OnInit {
           Validators.pattern(/^[0-9A-Z]{6,7}$/),
         ]),
       ],
-      customer: [null, this._addVehicleRequest.customer && this._addVehicleRequest.customer.$id > 0],
+      customer: [null, this._addVehicleRequest.customerId && this._addVehicleRequest.customerId > 0],
       productionYear: [
         '',
         Validators.compose([
@@ -126,7 +128,7 @@ export class AddVehicleComponent implements OnInit {
   }
 
   onCustomerOptionSelected(customer: Customer) {
-    this._addVehicleRequest.customer = customer;
+    this._addVehicleRequest.customerId = customer.id;
   }
 
   onFuelOptionSelected(option: string) {
@@ -166,6 +168,8 @@ export class AddVehicleComponent implements OnInit {
       this.addVehicleForm.get('displacement')?.value;
     this._addVehicleRequest.fuelType =
       this.addVehicleForm.get('fuelType')?.value;
+      
+      console.log(this._addVehicleRequest);
 
     this.vehicleService.addVehicle(this._addVehicleRequest).subscribe({
       next: vehicle => {

@@ -94,7 +94,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       if (!user) return error('Helytelen felhasználónév vagy jelszó');
       return ok({
-        $id: user.$id,
+        id: user.id,
         email: user.email,
         firstName: user.firstName,
         lastName: user.lastName,
@@ -127,11 +127,11 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function addCustomer() {
       if (!isLoggedIn()) return unauthorized();
 
-      const lastId = customers.length ? customers[customers.length - 1].$id : 0;
+      const lastId = customers.length ? customers[customers.length - 1].id : 0;
       const {
         name,
         country,
-        postCode,
+        postcode,
         city,
         street,
         houseNumber,
@@ -140,10 +140,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         taxNumber,
       } = body;
       const newCustomer = {
-        $id: lastId + 1,
+        id: lastId + 1,
         name,
         country,
-        postCode,
+        postcode,
         city,
         street,
         houseNumber,
@@ -162,18 +162,18 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function getCustomer(id: number) {
       if (!isLoggedIn()) return unauthorized();
-      const customer = customers.find(customer => customer.$id === id);
+      const customer = customers.find(customer => customer.id === id);
       return ok(customer);
     }
 
     function updateCustomer(id: number) {
       if (!isLoggedIn()) return unauthorized();
-      let customer = customers.find(customer => customer.$id === id);
+      let customer = customers.find(customer => customer.id === id);
       if (!customer) return error('Nem találni a megadott partnert.');
-      const {name, country, postCode, city, street, houseNumber, email, phoneNumber, taxNumber} = body;
+      const {name, country, postcode, city, street, houseNumber, email, phoneNumber, taxNumber} = body;
       const newData = {
-        $id: customer.$id,
-        name, country, postCode, city, street, houseNumber, email, phoneNumber, taxNumber,
+        id: customer.id,
+        name, country, postcode, city, street, houseNumber, email, phoneNumber, taxNumber,
       }
       customer = newData;
 
@@ -182,7 +182,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function deleteCustomer(id: number) {
       if (!isLoggedIn()) return unauthorized();
-      const index = customers.findIndex(customer => customer.$id === id);
+      const index = customers.findIndex(customer => customer.id === id);
       if (index === -1) return error('Nem találni a megadott partnert.');
       customers.splice(index, 1);
       return ok();
@@ -193,7 +193,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
       const lastId = vehicles.length ? vehicles[vehicles.length - 1].id : 0;
       const { customer, vin, licencePlate, mileage, carBrand, carMake, displacement, productionYear, fuelType } = body;
-      const owner = customers.find(customerOptions => customerOptions.$id === customer.$id);
+      const owner = customers.find(customerOptions => customerOptions.id === customer.id);
       if (!owner) return error('Nem találni a megadott partnert.');
       const newVehicle = {
         id: lastId + 1,
@@ -211,7 +211,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function getAllVehiclesByCustomer(id: number) {
       if (!isLoggedIn()) return unauthorized();
-      const vehiclesOfCustomer: Vehicle[] = vehicles.filter(vehicle => vehicle.customer.$id === id);
+      const vehiclesOfCustomer: Vehicle[] = vehicles.filter(vehicle => vehicle.customer.id === id);
       return ok (vehiclesOfCustomer);
     }
 
@@ -228,7 +228,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       const {customer, vin, licencePlate, mileage, carBrand, carMake, displacement, productionYear, fuelType } = body;
       const newData = {
         id: vehicle.id,
-        customer: customers.find(customerOptions => customerOptions.$id === customer.$id) || vehicle.customer,
+        customer: customers.find(customerOptions => customerOptions.id === customer.id) || vehicle.customer,
         vin, licencePlate, mileage, carBrand, carMake, displacement, productionYear, fuelType,
       };
       vehicle = newData;

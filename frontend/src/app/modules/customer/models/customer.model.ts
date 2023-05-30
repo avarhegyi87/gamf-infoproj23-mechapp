@@ -1,8 +1,8 @@
 export interface Customer {
-  $id: number;
+  id: number;
   name: string;
   country: string;
-  postCode: number;
+  postcode: number;
   city: string;
   street: string;
   houseNumber: string;

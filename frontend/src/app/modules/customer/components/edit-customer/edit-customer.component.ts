@@ -17,10 +17,10 @@ export class EditCustomerComponent implements OnInit {
   error = '';
   submitted = false;
   customerDetails: Customer = {
-    $id: 0,
+    id: 0,
     name: '',
     country: '',
-    postCode: 0,
+    postcode: 0,
     city: '',
     street: '',
     houseNumber: '',
@@ -54,7 +54,7 @@ export class EditCustomerComponent implements OnInit {
           Validators.maxLength(20),
         ]),
       ],
-      postCode: [
+      postcode: [
         '',
         Validators.compose([
           Validators.required,
@@ -132,12 +132,13 @@ export class EditCustomerComponent implements OnInit {
     this.submitted = true;
     if (this.editCustomerForm.invalid) return;
 
+    console.log(this.customerDetails);
     this.customerService
-      .updateCustomer(this.customerDetails.$id, this.customerDetails)
+      .updateCustomer(this.customerDetails.id, this.customerDetails)
       .subscribe({
         next: customer => {
           this.snackBar.open(
-            `${this.customerDetails.$id} - ${this.customerDetails.name} adatai sikeresen módosítva.`,
+            `${this.customerDetails.id} - ${this.customerDetails.name} adatai sikeresen módosítva.`,
             'OK',
             {
               duration: 3000,
@@ -158,7 +159,7 @@ export class EditCustomerComponent implements OnInit {
 
   openDeletionModal() {
     const dialogRef = this.dialog.open(DeletionModalComponent, {
-      data: { id: this.customerDetails.$id, name: this.customerDetails.name },
+      data: { id: this.customerDetails.id, name: this.customerDetails.name },
     });
 
     dialogRef.componentInstance.deleteClicked.subscribe((shouldDelete: boolean) => {
@@ -167,10 +168,10 @@ export class EditCustomerComponent implements OnInit {
   }
 
   onDelete() {
-    this.customerService.deleteCustomer(this.customerDetails.$id).subscribe({
+    this.customerService.deleteCustomer(this.customerDetails.id).subscribe({
       next: response => {
         this.snackBar.open(
-          `${this.customerDetails.$id} - ${this.customerDetails.name} sikeresen törölve.`, 'OK', {
+          `${this.customerDetails.id} - ${this.customerDetails.name} sikeresen törölve.`, 'OK', {
             duration: 3000, panelClass: ['mat-toolbar', 'mat-primary'],
           },
         );
