@@ -1,3 +1,4 @@
+import { Material } from 'src/app/modules/material/models/material.model';
 import { Customer } from 'src/app/modules/customer/models/customer.model';
 import { Role } from 'src/app/modules/users/models/role.model';
 import { Vehicle } from 'src/app/modules/vehicle/models/vehicle.model';
@@ -84,5 +85,44 @@ export const FAKE_VEHICLES: Vehicle[] = [
     displacement: 1600,
     productionYear: 2014,
     fuelType: 'benzin',
+  },
+];
+
+export const FAKE_MATERIALS: Material[] = [
+  {
+    id: '10000000',
+    description: 'Bosch féktárcsa',
+    currentStock: 12,
+    netPrice: 12000,
+  },
+  {
+    id: '10000001',
+    description: 'Denso gyújtógyertya',
+    currentStock: 20,
+    netPrice: 10000,
+  },
+  {
+    id: '10000003',
+    description: 'Mann-Filter olajszűrő',
+    currentStock: 4,
+    netPrice: 32000,
+  },
+  {
+    id: '10000004',
+    description: 'Liqui Moli Leichtlauf Super motorolaj',
+    currentStock: 15,
+    netPrice: 15000,
+  },
+  {
+    id: '60000000',
+    description: 'munkadíj',
+    currentStock: 9999,
+    netPrice: 15000,
+  },
+  {
+    id: '60000000',
+    description: 'munkadíj – sürgősségi',
+    currentStock: 9999,
+    netPrice: 25000,
   },
 ];

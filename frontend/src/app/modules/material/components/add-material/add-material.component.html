@@ -1,0 +1,49 @@
+<h1>Új termék/szolgáltatás felvétele</h1>
+<h3>Adja meg a termék/szolgáltatás adatait!</h3>
+<div class="form-container">
+  <form (ngSubmit)="onSubmit()" [formGroup]="addMaterialForm">
+    <div class="input-container">
+      <mat-form-field class="input-field">
+        <mat-label>Terméktípus</mat-label>
+        <mat-select formControlName="materialType">
+          <mat-option
+            *ngFor="let matTypeItem of materialTypes"
+            [value]="matTypeItem"
+          >
+            {{ materialTypeMapping[matTypeItem] }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="isInvalid('materialType')">
+          Válasszon egy terméktípust!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Leírás</mat-label>
+        <input matInput formControlName="description" />
+        <mat-error *ngIf="isInvalid('description')">
+          Adjon meg egy 6 és 50 karakter közötti leírást!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Nettó egységár</mat-label>
+        <input type="number" matInput formControlName="netPrice" />
+        <mat-error *ngIf="isInvalid('netPrice')">
+          Érvényes árat adjon meg!
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div class="button-container">
+      <button
+        mat-raised-button
+        color="primary"
+        [disabled]="addMaterialForm.invalid"
+        class="submit-button"
+      >
+        Mentés
+      </button>
+    </div>
+  </form>
+</div>

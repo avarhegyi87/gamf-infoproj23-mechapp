@@ -16,6 +16,13 @@ const routes: Routes = [
       
   },
   {
+    path: 'material',
+    loadChildren: () =>
+      import('./modules/material/material.module').then(
+        m => m.MaterialModule,
+      ),
+  },
+  {
     path: 'vehicle',
     loadChildren: () =>
       import('./modules/vehicle/vehicle.module').then(m => m.VehicleModule),
