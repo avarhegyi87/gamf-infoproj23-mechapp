@@ -3,6 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Vehicle } from '../../models/vehicle.model';
+import { VehicleApi } from '../../models/vehicleApi.model';
 import { User } from 'src/app/modules/users/models/user.model';
 import { BehaviorSubject, Observable, startWith, map } from 'rxjs';
 import { VehicleService } from '../../services/vehicle.service';
@@ -27,11 +28,11 @@ export class VehicleListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort = new MatSort();
   vehicles = new MatTableDataSource<Vehicle>([]);
+  vehicleApis: VehicleApi[] = [];
   currentUser: User | undefined;
   displayedColumns: Array<keyof Vehicle | string> = [];
   fuelTypeMapping = FuelTypeToLabelMapping;
   fuelTypes = Object.values(FuelTypeEnum);
-
   customers: Customer[] = [];
   filteredCustomers!: Observable<Customer[]>;
   selectedCustomer: Customer | undefined;
@@ -68,14 +69,20 @@ export class VehicleListComponent implements OnInit {
         return customerName ? this._filter(customerName as string) : this.customers.slice();
       }),
     );
-
+    const vehicleTmb: Vehicle [] = [];
     this.vehicleService.getAllVehicles().subscribe({
-      next: vehicles => {
+      next: vehicleApis => {
+        
+        for (const vehicle of vehicleApis) {
+          console.log(vehicle);
+          vehicleTmb.push(this.vehCust(vehicle));
+        }
+        
         this.vehicles.data = this.selectedCustomer
-          ? vehicles.filter(
+          ? vehicleTmb.filter(
             vehicle => vehicle.customer.id === this.selectedCustomer?.id,
           )
-          : vehicles;
+          : vehicleTmb;
         this.displayedColumns = Object.keys(this.vehicles.data[0]) as Array<
           keyof Vehicle | string
         >;
@@ -116,11 +123,54 @@ export class VehicleListComponent implements OnInit {
           duration: 5000,
           panelClass: ['mat-toolbar', 'mat-warn'],
         });
+        if (this.vehicleApis.length > 0){
+        }
       },
     });
+    
+    
   }
 
-  displayFn(customer: Customer): string {
+  vehCust(vehApi: VehicleApi): Vehicle{
+    const vehicle: Vehicle = {
+      id :  vehApi.id,
+      carBrand : vehApi.carBrand,
+      carMake : vehApi.carMake,
+      vin : vehApi.vin,
+      displacement : vehApi.displacement,
+      productionYear : vehApi.productionYear,
+      licencePlate : vehApi.licencePlate,
+      fuelType : vehApi.fuelType,
+      mileage : vehApi.mileage,
+      customer : this.customers[0]
+      };
+    return vehicle;
+  }
+
+
+  filterVehicles(): Vehicle[] {
+    const vehicles: Vehicle [] = [];
+    for(const element of this.vehicleApis){
+      const vehicleItem = {
+      id :  element.id,
+      carBrand : element.carBrand,
+      carMake : element.carMake,
+      vin : element.vin,
+      displacement : element.displacement,
+      productionYear : element.productionYear,
+      licencePlate : element.licencePlate,
+      fuelType : element.fuelType,
+      mileage : element.mileage,
+      customer : this.customers[0]
+      };
+    vehicles.push(vehicleItem);
+    }
+
+    return vehicles;
+  }
+
+    displayFn(customer: Customer): string {
+
     return customer && customer.name ? customer.name : '';
   }
 

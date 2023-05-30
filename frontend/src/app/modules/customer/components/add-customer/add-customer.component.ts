@@ -32,7 +32,7 @@ export class AddCustomerComponent implements OnInit {
     private router: Router,
     private customerService: CustomerService,
     private snackBar: MatSnackBar,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.addCustomerForm = this.formBuilder.group({
@@ -122,7 +122,7 @@ export class AddCustomerComponent implements OnInit {
       this.addCustomerForm.get('phoneNumber')?.value;
     this._addCustomerRequest.taxNumber =
       this.addCustomerForm.get('taxNumber')?.value;
-      console.log(this.addCustomerForm);
+    console.log(this.addCustomerForm);
     this.customerService.addCustomer(this._addCustomerRequest).subscribe({
       next: customer => {
         console.log(customer);

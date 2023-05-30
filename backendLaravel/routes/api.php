@@ -46,8 +46,8 @@ Route::delete('/stock/{stock}', [StockController::class, 'delete'])->name('delet
 Route::get('/vehicle/get/{vehicle}', [VehicleController::class, 'get'])->name('get');
 Route::get('/vehicle/getAll', [VehicleController::class, 'getAll'])->name('getAll');
 Route::post('/vehicle/create', [VehicleController::class, 'create'])->name('create');
-Route::post('/vehicle/{vehicle}', [VehicleController::class, 'update'])->name('update');
-Route::delete('/vehicle/{vehicle}', [VehicleController::class, 'delete'])->name('delete');
+Route::post('/vehicle/put/{vehicle}', [VehicleController::class, 'update'])->name('update');
+Route::delete('/vehicle/delete/{vehicle}', [VehicleController::class, 'delete'])->name('delete');
 
 //Quotation routes
 Route::get('/quotation/get/{quotation}', [QuotationController::class, 'get'])->name('get');

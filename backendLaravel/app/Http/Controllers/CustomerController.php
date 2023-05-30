@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
@@ -14,12 +15,12 @@ class CustomerController extends Controller
      */
     public function create(Request $request)
     {
-         /*if ( Auth::id() != 2 && Auth::user()->role != 3 && && Auth::user()->role != 4) {
+        /*if ( Auth::id() != 2 && Auth::user()->role != 3 && && Auth::user()->role != 4) {
             return abort(403);
         }*/
 
         // validate form data
-        $formFields = $request->validate([
+        $validator =  Validator::make($request->all(), [
             'name' => ['required', 'min:3', 'max:40'],
             'country' => ['required', 'min:3', 'max:16'],
             'city' => ['required'],
@@ -31,9 +32,16 @@ class CustomerController extends Controller
             'taxNumber' => ['required', 'size:11'],
         ]);
 
-        Customer::create($formFields);
-
-        return response()->json("Succesfully created");
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validator->errors()
+            ], 401);
+        } else {
+            Customer::create($request->all());
+            return response()->json('Successfully added');
+        }
     }
 
     /**
@@ -44,8 +52,8 @@ class CustomerController extends Controller
         /*if ( Auth::id() != 2 && Auth::user()->role != 3) {
             return abort(403);
         }*/
-        
-        $formFields = $request->validate([
+
+        $validator =  Validator::make($request->all(), [
             'name' => ['required', 'min:3', 'max:40'],
             'country' => ['required', 'min:3', 'max:16'],
             'city' => ['required'],
@@ -57,9 +65,16 @@ class CustomerController extends Controller
             'taxNumber' => ['required', 'size:11'],
         ]);
 
-        $customer->update($formFields);
-
-        return response()->json('Successfully updated');
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validator->errors()
+            ], 401);
+        } else {
+            $customer->update($request->all());
+            return response()->json('Successfully added');
+        }
     }
 
     /**

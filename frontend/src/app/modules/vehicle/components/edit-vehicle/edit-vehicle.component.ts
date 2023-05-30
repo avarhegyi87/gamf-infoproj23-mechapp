@@ -4,6 +4,7 @@ import { Observable, map, startWith } from 'rxjs';
 import { Customer } from 'src/app/modules/customer/models/customer.model';
 import { FuelTypeToLabelMapping, FuelTypeEnum } from '../../models/fuel-types';
 import { Vehicle } from '../../models/vehicle.model';
+import { VehicleApi } from '../../models/vehicleApi.model';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,6 +20,8 @@ import { CustomerService } from 'src/app/modules/customer/services/customer.serv
 export class EditVehicleComponent implements OnInit {
   editVehicleForm!: FormGroup;
   customers: Customer[] = [];
+  vehicleApi!: VehicleApi;
+  vehicle!: Vehicle;
   filteredCustomers!: Observable<Customer[]>;
   customerControl = new FormControl<string | Customer>('');
 
@@ -115,11 +118,27 @@ export class EditVehicleComponent implements OnInit {
     this.activeRoute.paramMap.subscribe({
       next: params => {
         const id = params.get('id');
-
         if (id) {
           this.vehicleService.getVehicle(parseInt(id)).subscribe({
-            next: response => {
-              this.vehicleDetails = response;
+            next: vehicleApi => {
+              console.log(vehicleApi);
+              for(const element of this.customers){
+                if(element.id == vehicleApi.customerId){
+                  this.vehicle = {
+                    id: vehicleApi.id,
+                    carBrand: vehicleApi.carBrand,
+                    carMake: vehicleApi.carMake,
+                    vin: vehicleApi.vin,
+                    displacement: vehicleApi.displacement,
+                    productionYear: vehicleApi.productionYear,
+                    licencePlate: vehicleApi.licencePlate,
+                    fuelType: vehicleApi.fuelType,
+                    mileage: vehicleApi.mileage,
+                    customer: element
+                  }
+                }
+              }
+              this.vehicleDetails = this.vehicle;
             },
           });
         }
@@ -177,8 +196,20 @@ export class EditVehicleComponent implements OnInit {
     this.submitted = true;
     if (this.editVehicleForm.invalid) return;
 
+    this.vehicleApi = {
+      id: this.vehicleDetails.id,
+      carBrand: this.vehicleDetails.carBrand,
+      carMake: this.vehicleDetails.carMake,
+      vin: this.vehicleDetails.vin,
+      displacement: this.vehicleDetails.displacement,
+      productionYear: this.vehicleDetails.productionYear,
+      licencePlate: this.vehicleDetails.licencePlate,
+      fuelType: this.vehicleDetails.fuelType,
+      mileage: this.vehicleDetails.mileage,
+      customerId: this.vehicleDetails.customer.id,
+    };
     this.vehicleService
-      .updateVehicle(this.vehicleDetails.id, this.vehicleDetails)
+      .updateVehicle(this.vehicleDetails.id, this.vehicleApi)
       .subscribe({
         next: vehicle => {
           this.snackBar.open(

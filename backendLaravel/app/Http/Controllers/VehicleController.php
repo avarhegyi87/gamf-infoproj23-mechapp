@@ -5,20 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class VehicleController extends Controller
 {
-     /**
+    /**
      * Store a newly created resource in storage.
      */
     public function create(Request $request)
     {
+
         /*if ( Auth::id() != 2 && Auth::user()->role != 3) {
             return abort(403);
         }*/
         // validate form data
-        $formFields = $request->validate([
-            'vin' => ['required', 'size: 12'],
+        $validator =  Validator::make($request->all(), [
+            'vin' => ['required', 'size: 17'],
             'licencePlate' => ['required', 'min:6', 'max:7'],
             'customerId' => ['required'],
             'productionYear' => ['required'],
@@ -29,9 +31,16 @@ class VehicleController extends Controller
             'fuelType' => ['required'],
         ]);
 
-        Vehicle::create($formFields);
-
-        return response()->json('Successfully added');
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validator->errors()
+            ], 401);
+        } else {
+            Vehicle::create($request->all());
+            return response()->json('Successfully added');
+        }
     }
 
     /**
@@ -42,8 +51,8 @@ class VehicleController extends Controller
         /*if ( Auth::id() != 2 && Auth::user()->role != 3 &&  Auth::user()->role != 4) {
             return abort(403);
         }*/
-        $formFields = $request->validate([
-            'vin' => ['required', 'size: 12'],
+        $validator =  Validator::make($request->all(), [
+            'vin' => ['required', 'size: 17'],
             'licencePlate' => ['required', 'min:6', 'max:7'],
             'customerId' => ['required'],
             'productionYear' => ['required'],
@@ -54,10 +63,16 @@ class VehicleController extends Controller
             'fuelType' => ['required'],
         ]);
 
-
-        $vehicle->update($formFields);
-
-        return response()->json('Successfully updated');
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validator->errors()
+            ], 401);
+        } else {
+            $vehicle->update($request->all());
+            return response()->json('Successfully added');
+        }
     }
 
     /**
@@ -66,7 +81,7 @@ class VehicleController extends Controller
     public function delete(string $id)
     {
         $stock = Vehicle::findOrFail($id);
-         /*if ( Auth::id() != 2 && Auth::user()->role != 3) {
+        /*if ( Auth::id() != 2 && Auth::user()->role != 3) {
             return abort(403);
         }*/
         $stock->delete();

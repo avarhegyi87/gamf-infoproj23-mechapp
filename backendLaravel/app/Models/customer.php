@@ -9,8 +9,8 @@ class customer extends Model
 {
     use HasFactory;
     protected $fillable = [
-         'name', 'country', 'city', 'postcode', 'street', 'houseNumber','email' , 'phoneNumber', 'taxNumber'
-        ];
+        'name', 'country', 'city', 'postcode', 'street', 'houseNumber', 'email', 'phoneNumber', 'taxNumber'
+    ];
 
     public function quotation()
     {
