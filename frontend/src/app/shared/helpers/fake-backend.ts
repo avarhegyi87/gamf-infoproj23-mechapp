@@ -8,7 +8,7 @@ import {
   throwError,
 } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { FAKE_USERS, FAKE_CUSTOMERS, FAKE_VEHICLES } from "./data/fake-data";
+import { FAKE_USERS, FAKE_CUSTOMERS, FAKE_VEHICLES, FAKE_MATERIALS } from "./data/fake-data";
 import {
   HTTP_INTERCEPTORS,
   HttpEvent,
@@ -19,10 +19,12 @@ import {
 } from '@angular/common/http';
 import { Customer } from 'src/app/modules/customer/models/customer.model';
 import { Vehicle } from 'src/app/modules/vehicle/models/vehicle.model';
+import { Material } from 'src/app/modules/material/models/material.model';
 
 const users = FAKE_USERS;
 const customers: Customer[] = FAKE_CUSTOMERS;
 const vehicles: Vehicle[] = FAKE_VEHICLES;
+const materials: Material[] = FAKE_MATERIALS;
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -69,6 +71,15 @@ export class FakeBackendInterceptor implements HttpInterceptor {
           return updateVehicle(parsedID);
         case url.includes('/vehicle/delete') && method === 'DELETE':
           return deleteVehicle(parsedID);
+
+        case url.endsWith('/stock/create') && method === 'POST':
+          return addMaterial();
+        case url.endsWith('stock/getall') && method === 'GET':
+          return getAllMaterials();
+        case url.includes('/stock/get') && method === 'GET':
+          return getMaterial(url.split('?').slice(-1)[0]);
+        case url.includes('/stock/put') && method === 'PUT':
+          return updateMaterial(url.split('?').slice(-1)[0]);
 
         default:
           return next.handle(request);
@@ -219,7 +230,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         id: vehicle.id,
         customer: customers.find(customerOptions => customerOptions.$id === customer.$id) || vehicle.customer,
         vin, licencePlate, mileage, carBrand, carMake, displacement, productionYear, fuelType,
-      }
+      };
       vehicle = newData;
 
       return ok();
@@ -232,6 +243,39 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       vehicles.splice(index, 1);
       return ok();
     }
+
+    function addMaterial() {
+      if (!isLoggedIn()) return unauthorized();
+
+      const { id, description, currentStock, netPrice } = body;
+      const newMaterial = { id, description, currentStock, netPrice };
+      materials.push(newMaterial);
+      return ok(newMaterial);
+    }
+    
+    function getAllMaterials() {
+      if (!isLoggedIn) return unauthorized();
+      return ok(materials);
+    }
+    
+    function getMaterial(id: string) {
+      if (!isLoggedIn) return unauthorized();
+      const material = materials.find(material => material.id === id);
+      return ok(material);
+    }
+    
+    function updateMaterial(id: string) {
+      if (!isLoggedIn) return unauthorized();
+      let material = materials.find(material => material.id === id);
+      if (!material) return error('Nem találni a megadott alkatrészt.');
+      const { description, currentStock, netPrice } = body;
+      const newMaterial = {
+        id: material.id,
+        description, currentStock, netPrice,
+      };
+      material = newMaterial;
+      return ok();
+    }    
   }
 }
 
