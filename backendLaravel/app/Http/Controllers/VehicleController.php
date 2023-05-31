@@ -71,7 +71,7 @@ class VehicleController extends Controller
             ], 401);
         } else {
             $vehicle->update($request->all());
-            return response()->json('Successfully added');
+            return response()->json('Successfully modified');
         }
     }
 
