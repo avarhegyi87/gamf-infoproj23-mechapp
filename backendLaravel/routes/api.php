@@ -7,6 +7,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\WorksheetController;
+use App\Http\Controllers\StockController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,8 +40,8 @@ Route::delete('/customer/delete/{customer}', [CustomerController::class, 'delete
 Route::get('/stock/get/{stock}', [StockController::class, 'get'])->name('get');
 Route::get('/stock/getAll', [StockController::class, 'getAll'])->name('getAll');
 Route::post('/stock/create', [StockController::class, 'create'])->name('create');
-Route::post('/stock/{stock}', [StockController::class, 'update'])->name('update');
-Route::delete('/stock/{stock}', [StockController::class, 'delete'])->name('delete');
+Route::post('/stock/put/{stock}', [StockController::class, 'update'])->name('update');
+Route::delete('/stock/delete/{stock}', [StockController::class, 'delete'])->name('delete');
 
 //Vehicle routes
 Route::get('/vehicle/get/{vehicle}', [VehicleController::class, 'get'])->name('get');

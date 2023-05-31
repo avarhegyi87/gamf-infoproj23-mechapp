@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class StockController extends Controller
 {
@@ -16,17 +17,23 @@ class StockController extends Controller
             return abort(403);
         }*/
         // validate form data
-        $formFields = $request->validate([
-            'materialNumber' => ['required', 'min:6', 'max:18'],
+        $validator =  Validator::make($request->all(), [
+            'materialNumber' => ['required', 'size:8'],
             'description' => ['required', 'min:6', 'max:50'],
             'currentStock' => ['required'],
             'netPrice' => ['required'],
-            'grossPrice' => ['required'],
         ]);
 
-        Stock::create($formFields);
-
-        return response()->json('Successfully added');
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validator->errors()
+            ], 401);
+        } else {
+            Stock::create($request->all());
+            return response()->json('Successfully added');
+        }
     }
 
     /**
@@ -37,18 +44,23 @@ class StockController extends Controller
         /*if ( Auth::id() != 2 && Auth::user()->role != 3 &&  Auth::user()->role != 4) {
             return abort(403);
         }*/
-        $formFields = $request->validate([
-            'materialNumber' => ['required', 'min:6', 'max:18'],
+        $validator =  Validator::make($request->all(), [
+            'materialNumber' => ['required', 'size:8'],
             'description' => ['required', 'min:6', 'max:50'],
             'currentStock' => ['required'],
             'netPrice' => ['required'],
-            'grossPrice' => ['required'],
         ]);
 
-
-        $stock->update($formFields);
-
-        return response()->json('Successfully updated');
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'validation error',
+                'errors' => $validator->errors()
+            ], 401);
+        } else {
+            $stock->update($request->all());
+            return response()->json('Successfully added');
+        }
     }
 
     /**
