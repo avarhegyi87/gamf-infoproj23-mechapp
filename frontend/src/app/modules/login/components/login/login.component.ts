@@ -72,9 +72,17 @@ export class LoginComponent implements OnInit {
       .login(this._credentials.username, this._credentials.password)
       .pipe(first())
       .subscribe({
-        next: () => {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-          this.router.navigate([returnUrl]);
+        next: user => {
+          console.log(user);
+          if(user==undefined){
+            //this.loginFormGroup.invalid = true;
+            return;
+          }
+          else{
+            const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+            this.router.navigate([returnUrl]);
+          }
+          
         },
         error: error => {
           this.error = error;

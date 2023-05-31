@@ -5,6 +5,7 @@ use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
@@ -39,11 +40,12 @@ class StockController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Stock $stock)
+    public function update(Request $request, String $materialNumber)
     {
         /*if ( Auth::id() != 2 && Auth::user()->role != 3 &&  Auth::user()->role != 4) {
             return abort(403);
         }*/
+        $req = $request->only(['materialNumber', 'description','currentStock','netPrice']);
         $validator =  Validator::make($request->all(), [
             'materialNumber' => ['required', 'size:8'],
             'description' => ['required', 'min:6', 'max:50'],
@@ -58,8 +60,13 @@ class StockController extends Controller
                 'errors' => $validator->errors()
             ], 401);
         } else {
-            $stock->update($request->all());
-            return response()->json('Successfully added');
+
+            DB::table('stocks')
+        ->where('materialNumber', $materialNumber)  // find your user by their email
+        ->limit(1)  // optional - to ensure only one record is updated.
+        ->update($req);
+
+            return response()->json('Successfully modified');
         }
     }
 
@@ -68,20 +75,23 @@ class StockController extends Controller
      */
     public function delete(string $id)
     {
-        $stock = Stock::findOrFail($id);
+        
          /*if ( Auth::id() != 2 && Auth::user()->role != 3) {
             return abort(403);
         }*/
-        $stock->delete();
+        DB::table('stocks')->where('materialNumber', $id)->delete();
 
         return response()->json('Successfully deleted');
     }
 
-    public function get(Stock $stock)
+    public function get(String $matNum)
     {
         /*if ( Auth::id() != 2 && Auth::user()->role != 3 &&  Auth::user()->role != 4) {
             return abort(403);
         }*/
+
+        $stock = DB::table('stocks')->where('materialNumber', $matNum)->first();
+
         return response()->json($stock);
     }
 

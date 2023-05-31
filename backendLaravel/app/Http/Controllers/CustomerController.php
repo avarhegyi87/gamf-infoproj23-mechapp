@@ -73,7 +73,7 @@ class CustomerController extends Controller
             ], 401);
         } else {
             $customer->update($request->all());
-            return response()->json('Successfully added');
+            return response()->json('Successfully modified');
         }
     }
 
