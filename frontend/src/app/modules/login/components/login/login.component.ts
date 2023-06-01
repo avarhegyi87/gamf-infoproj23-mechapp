@@ -75,7 +75,10 @@ export class LoginComponent implements OnInit {
         next: user => {
           console.log(user);
           if(user==undefined){
-            //this.loginFormGroup.invalid = true;
+            this.loginFormGroup.controls['username'].setValue("");
+            this.loginFormGroup.controls['password'].setValue("");
+            this.loginFormGroup.controls['username'].setErrors({incorrect: true});
+            this.loginFormGroup.controls['password'].setErrors({incorrect: true});
             return;
           }
           else{
