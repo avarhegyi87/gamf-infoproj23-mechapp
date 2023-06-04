@@ -134,7 +134,9 @@ export class AddCustomerComponent implements OnInit {
             panelClass: ['mat-toolbar', 'mat-primary'],
           },
         );
-        this.router.navigate(['customer/list']);
+        (async () => {
+          await this.router.navigate(['customer/list']);
+        })();
       },
       error: error => {
         this.error = error;

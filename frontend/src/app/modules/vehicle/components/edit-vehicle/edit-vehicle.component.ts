@@ -134,7 +134,7 @@ export class EditVehicleComponent implements OnInit {
                     licencePlate: vehicleApi.licencePlate,
                     fuelType: vehicleApi.fuelType,
                     mileage: vehicleApi.mileage,
-                    customer: element
+                    customer: element,
                   }
                 }
               }
@@ -155,7 +155,7 @@ export class EditVehicleComponent implements OnInit {
   }
 
   displayFn(customer: Customer): string {
-    return customer && customer.name ? customer.name : '';
+    return customer?.name ? customer.name : '';
   }
 
   private _filter(searchTerm: string): Customer[] {
@@ -220,7 +220,9 @@ export class EditVehicleComponent implements OnInit {
               panelClass: ['mat-toolbar', 'mat-primary'],
             },
           );
-          this.router.navigate(['vehicle/list']);
+          (async () => {
+            await this.router.navigate(['vehicle/list']);
+          })();
         },
         error: error => {
           this.error = error;
@@ -250,7 +252,9 @@ export class EditVehicleComponent implements OnInit {
             duration: 3000, panelClass: ['mat-toolbar', 'mat-primary'],
           },
         );
-        this.router.navigate(['vehicle/list']);
+        (async () => {
+          await this.router.navigate(['vehicle/list']);
+        })();
       },
       error: error => {
         this.error = error;

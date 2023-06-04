@@ -11,11 +11,11 @@ import { QuotationListComponent } from './components/quotation-list/quotation-li
   declarations: [
     AddQuotationComponent,
     EditQuotationComponent,
-    QuotationListComponent
+    QuotationListComponent,
   ],
   imports: [
     CommonModule,
-    QuotationRoutingModule
-  ]
+    QuotationRoutingModule,
+  ],
 })
 export class QuotationModule { }

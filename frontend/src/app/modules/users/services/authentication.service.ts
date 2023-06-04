@@ -33,18 +33,21 @@ export class AuthenticationService {
       })
       .pipe(
         map(user => {
-          if(user['code'] == 401){
-            console.log("Nem jó!");
-            this.router.navigate(['/login']);
+          if (user['code'] == 401) {
+            console.log('Nem jó!');
+            (async () => {
+              await this.router.navigate(['/login']);
+            })();
+          } else {
+            localStorage.setItem('currentUser', JSON.stringify(user));
+            this.currentUserSubject.next(user);
+            console.log(user);
+            (async () => {
+              await this.router.navigate(['']);
+            })();
+            window.location.reload();
+            return user;
           }
-          else{
-          localStorage.setItem('currentUser', JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          console.log(user);
-          this.router.navigate(['']);
-          window.location.reload();
-          return user;
-        }
         }),
       );
   }

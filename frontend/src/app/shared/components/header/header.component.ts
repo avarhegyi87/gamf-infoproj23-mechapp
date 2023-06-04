@@ -27,11 +27,10 @@ export class HeaderComponent implements OnInit {
     this.authService
       .getCurrentUser
       .subscribe(user => (this.currentUser = user));
-      console.log(this.currentUser);
     this.userRole = this.currentUser ? this.currentUser.role : Role.Guest;
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { /* TODO document why this method 'ngOnInit' is empty */ }
 
   public get accessLevels(): typeof Role {
     return Role;
@@ -48,6 +47,8 @@ export class HeaderComponent implements OnInit {
   onLogout() {
     this.authService.logout();
     this.userRole = Role.Guest;
-    this.router.navigate(['/login']);
+    (async () => {
+      await this.router.navigate(['/login']);
+    })();
   }
 }
