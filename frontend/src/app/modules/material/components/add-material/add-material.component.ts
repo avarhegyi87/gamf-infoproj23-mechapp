@@ -127,7 +127,9 @@ export class AddMaterialComponent implements OnInit {
           'OK',
           { duration: 3000, panelClass: ['mat-toolbar', 'mat-primary'] },
         );
-        this.router.navigate(['material/list']);
+        (async () => {
+          await this.router.navigate(['material/list']);
+        })();
       },
       error: err => {
         this.error = err;

@@ -37,17 +37,17 @@ export class AddVehicleComponent implements OnInit {
     });
 
     this._addVehicleRequest = {
-    id: 0,
-    vin: '',
-    licencePlate: '',
-    customerId: 0,
-    productionYear: 0,
-    mileage: 0,
-    carBrand: '',
-    carMake: '',
-    displacement: 0,
-    fuelType: '',
-  };
+      id: 0,
+      vin: '',
+      licencePlate: '',
+      customerId: 0,
+      productionYear: 0,
+      mileage: 0,
+      carBrand: '',
+      carMake: '',
+      displacement: 0,
+      fuelType: '',
+    };
   }
 
   ngOnInit(): void {
@@ -119,7 +119,7 @@ export class AddVehicleComponent implements OnInit {
   }
 
   displayFn(customer: Customer): string {
-    return customer && customer.name ? customer.name : '';
+    return customer?.name ? customer.name : '';
   }
 
   private _filter(searchTerm: string): Customer[] {
@@ -169,7 +169,7 @@ export class AddVehicleComponent implements OnInit {
     this._addVehicleRequest.fuelType =
       this.addVehicleForm.get('fuelType')?.value;
       
-      console.log(this._addVehicleRequest);
+    console.log(this._addVehicleRequest);
 
     this.vehicleService.addVehicle(this._addVehicleRequest).subscribe({
       next: vehicle => {
@@ -181,7 +181,9 @@ export class AddVehicleComponent implements OnInit {
             panelClass: ['mat-toolbar', 'mat-primary'],
           },
         );
-        this.router.navigate(['vehicle/list']);
+        (async () => {
+          await this.router.navigate(['vehicle/list']);
+        })();
       },
       error: error => {
         this.error = error;

@@ -28,8 +28,11 @@ export class LoginComponent implements OnInit {
     private authService: AuthenticationService,
   ) {
     authService.getCurrentUser.subscribe(x => (this.currentUser = x));
-    if (this.currentUser && this.currentUser.$id)
-      this.router.navigate(['/']);
+    if (this.currentUser?.$id) {
+      (async () => {
+        await this.router.navigate(['/']);
+      })();
+    }
   }
 
   ngOnInit(): void {
@@ -56,7 +59,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  onKeyDown(event: { keyCode: number; }) {
+  onKeyDown(event: { keyCode: number }) {
     if (event.keyCode === 13) this.onSubmit();
   }
 
@@ -74,18 +77,22 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: user => {
           console.log(user);
-          if(user==undefined){
-            this.loginFormGroup.controls['username'].setValue("");
-            this.loginFormGroup.controls['password'].setValue("");
-            this.loginFormGroup.controls['username'].setErrors({incorrect: true});
-            this.loginFormGroup.controls['password'].setErrors({incorrect: true});
-            return;
+          if (user == undefined) {
+            this.loginFormGroup.controls['username'].setValue('');
+            this.loginFormGroup.controls['password'].setValue('');
+            this.loginFormGroup.controls['username'].setErrors({
+              incorrect: true,
+            });
+            this.loginFormGroup.controls['password'].setErrors({
+              incorrect: true,
+            });
+          } else {
+            const returnUrl =
+              this.route.snapshot.queryParams['returnUrl'] || '/';
+            (async () => {
+              await this.router.navigate([returnUrl]);
+            })();
           }
-          else{
-            const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-            this.router.navigate([returnUrl]);
-          }
-          
         },
         error: error => {
           this.error = error;
@@ -96,6 +103,8 @@ export class LoginComponent implements OnInit {
 
   onLogout() {
     this.authService.logout();
-    this.router.navigate(['/login']);
+    (async () => {
+      await this.router.navigate(['/login']);
+    })();
   }
 }

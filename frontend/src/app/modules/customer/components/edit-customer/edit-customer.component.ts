@@ -145,7 +145,9 @@ export class EditCustomerComponent implements OnInit {
               panelClass: ['mat-toolbar', 'mat-primary'],
             },
           );
-          this.router.navigate(['customer/list']);
+          (async () => {
+            await this.router.navigate(['customer/list']);
+          })();
         },
         error: error => {
           this.error = error;
@@ -175,7 +177,9 @@ export class EditCustomerComponent implements OnInit {
             duration: 3000, panelClass: ['mat-toolbar', 'mat-primary'],
           },
         );
-        this.router.navigate(['customer/list']);
+        (async () => {
+          await this.router.navigate(['customer/list']);
+        })();
       },
       error: error => {
         this.error = error;

@@ -16,7 +16,6 @@ import { FuelTypeToLabelMapping, FuelTypeEnum } from '../../models/fuel-types';
 import { FormControl } from '@angular/forms';
 import { Customer } from 'src/app/modules/customer/models/customer.model';
 import { CustomerService } from 'src/app/modules/customer/services/customer.service';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 
 @Component({
@@ -30,7 +29,7 @@ export class VehicleListComponent implements OnInit {
   vehicles = new MatTableDataSource<Vehicle>([]);
   vehicleApis: VehicleApi[] = [];
   currentUser: User | undefined;
-  displayedColumns: Array<keyof Vehicle | string> = [];
+  displayedColumns: Array<string> = [];
   fuelTypeMapping = FuelTypeToLabelMapping;
   fuelTypes = Object.values(FuelTypeEnum);
   customers: Customer[] = [];
@@ -58,35 +57,40 @@ export class VehicleListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.breakpointObserver.observe([Breakpoints.HandsetPortrait, Breakpoints.HandsetLandscape, Breakpoints.Medium]).subscribe(result => {
-      this.isMobile = result.matches;
-    })
+    this.breakpointObserver
+      .observe([
+        Breakpoints.HandsetPortrait,
+        Breakpoints.HandsetLandscape,
+        Breakpoints.Medium,
+      ])
+      .subscribe(result => {
+        this.isMobile = result.matches;
+      });
 
     this.filteredCustomers = this.customerControl.valueChanges.pipe(
       startWith(''),
       map(value => {
         const customerName = typeof value === 'string' ? value : value?.name;
-        return customerName ? this._filter(customerName as string) : this.customers.slice();
+        return customerName
+          ? this._filter(customerName as string)
+          : this.customers.slice();
       }),
     );
-    const vehicleTmb: Vehicle [] = [];
+    const vehicleTmb: Vehicle[] = [];
     this.vehicleService.getAllVehicles().subscribe({
       next: vehicleApis => {
-        
         for (const vehicle of vehicleApis) {
           console.log(vehicle);
           vehicleTmb.push(this.vehCust(vehicle));
         }
-        
+
         this.vehicles.data = this.selectedCustomer
           ? vehicleTmb.filter(
             vehicle => vehicle.customer.id === this.selectedCustomer?.id,
           )
           : vehicleTmb;
-        this.displayedColumns = Object.keys(this.vehicles.data[0]) as Array<
-          keyof Vehicle | string
-        >;
-        if (this.currentUser && this.currentUser.role >= Role.Manager)
+        this.displayedColumns = Object.keys(this.vehicles.data[0]);
+        if (this.currentUser && this.currentUser?.role >= Role.Manager)
           this.displayedColumns.push('edit');
         this.vehiclesLoaded$.next(true);
 
@@ -123,60 +127,57 @@ export class VehicleListComponent implements OnInit {
           duration: 5000,
           panelClass: ['mat-toolbar', 'mat-warn'],
         });
-        if (this.vehicleApis.length > 0){
-        }
+        if (this.vehicleApis.length > 0) { /* empty */ }
       },
     });
-    
-    
   }
 
-  vehCust(vehApi: VehicleApi): Vehicle{
+  vehCust(vehApi: VehicleApi): Vehicle {
     const vehicle: Vehicle = {
-      id :  vehApi.id,
-      carBrand : vehApi.carBrand,
-      carMake : vehApi.carMake,
-      vin : vehApi.vin,
-      displacement : vehApi.displacement,
-      productionYear : vehApi.productionYear,
-      licencePlate : vehApi.licencePlate,
-      fuelType : vehApi.fuelType,
-      mileage : vehApi.mileage,
-      customer : this.customers[0]
-      };
+      id: vehApi.id,
+      carBrand: vehApi.carBrand,
+      carMake: vehApi.carMake,
+      vin: vehApi.vin,
+      displacement: vehApi.displacement,
+      productionYear: vehApi.productionYear,
+      licencePlate: vehApi.licencePlate,
+      fuelType: vehApi.fuelType,
+      mileage: vehApi.mileage,
+      customer: this.customers[0],
+    };
     return vehicle;
   }
 
-
   filterVehicles(): Vehicle[] {
-    const vehicles: Vehicle [] = [];
-    for(const element of this.vehicleApis){
+    const vehicles: Vehicle[] = [];
+    for (const element of this.vehicleApis) {
       const vehicleItem = {
-      id :  element.id,
-      carBrand : element.carBrand,
-      carMake : element.carMake,
-      vin : element.vin,
-      displacement : element.displacement,
-      productionYear : element.productionYear,
-      licencePlate : element.licencePlate,
-      fuelType : element.fuelType,
-      mileage : element.mileage,
-      customer : this.customers[0]
+        id: element.id,
+        carBrand: element.carBrand,
+        carMake: element.carMake,
+        vin: element.vin,
+        displacement: element.displacement,
+        productionYear: element.productionYear,
+        licencePlate: element.licencePlate,
+        fuelType: element.fuelType,
+        mileage: element.mileage,
+        customer: this.customers[0],
       };
-    vehicles.push(vehicleItem);
+      vehicles.push(vehicleItem);
     }
 
     return vehicles;
   }
 
-    displayFn(customer: Customer): string {
-
-    return customer && customer.name ? customer.name : '';
+  displayFn(customer: Customer): string {
+    return customer?.name ? customer.name : '';
   }
 
   private _filter(searchTerm: string): Customer[] {
     const filterValue = searchTerm.toLowerCase();
-    return this.customers.filter(option => option.name.toLowerCase().includes(filterValue));
+    return this.customers.filter(option =>
+      option.name.toLowerCase().includes(filterValue),
+    );
   }
 
   onCustomerOptionSelected(customer: Customer | null) {
@@ -193,13 +194,13 @@ export class VehicleListComponent implements OnInit {
     return FuelTypeToLabelMapping[key];
   }
 
-  announceSortChange(sortState: Sort) {
+  async announceSortChange(sortState: Sort) {
     if (sortState.direction) {
       sortState.direction === 'asc'
-        ? this._liveAnnouncer.announce('Növekvő sorrendbe rendezve')
-        : this._liveAnnouncer.announce('Csökkenő sorrendbe rendezve');
+        ? await this._liveAnnouncer.announce('Növekvő sorrendbe rendezve')
+        : await this._liveAnnouncer.announce('Csökkenő sorrendbe rendezve');
     } else {
-      this._liveAnnouncer.announce('Sorbarendezés törölve');
+      await this._liveAnnouncer.announce('Sorbarendezés törölve');
     }
   }
 

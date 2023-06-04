@@ -19,7 +19,11 @@
     "**/.angular",
     "**/dist",
     "**/node_modules",
-    "**/coverage"
+    "**/coverage",
+    "**/.nyc_output",
+    "*.html",
+    "*.scss",
+    "*.ico"
   ],
   "rules": {
     "arrow-body-style": "off",
