@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('stocks', function (Blueprint $table) {
             $table->id('materialNumber');
-            $table->string('description');
-            $table->integer('currentStock');
-            $table->float('netPrice');
+            $table->string('description')->nullable();
+            $table->integer('currentStock')->nullable();
+            $table->float('netPrice')->nullable();
             $table->timestamps();
         });
     }
