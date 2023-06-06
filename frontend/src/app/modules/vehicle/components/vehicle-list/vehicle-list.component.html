@@ -24,7 +24,6 @@
 
   <table mat-table [dataSource]="vehicles" matSort (matSortChange)="announceSortChange($event)"
     class="mat-elevation-z8 vehicle-table">
-    <caption>Járműlista</caption>
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="ID szerint">Jármű ID</th>
       <td mat-cell *matCellDef="let element">{{ element.id }}</td>

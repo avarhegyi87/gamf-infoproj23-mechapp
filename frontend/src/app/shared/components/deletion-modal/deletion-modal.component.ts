@@ -24,7 +24,6 @@ export class DeletionModalComponent {
 
   onDelete(): void {
     this.deleteClicked.emit(true);
-    console.log('deleteClicked event emitted:', this.deleteClicked);
     this.dialogRef.close();
   }
 }

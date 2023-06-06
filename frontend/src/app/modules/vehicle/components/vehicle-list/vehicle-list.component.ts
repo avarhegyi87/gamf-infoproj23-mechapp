@@ -79,10 +79,9 @@ export class VehicleListComponent implements OnInit {
     const vehicleTmb: Vehicle[] = [];
     this.vehicleService.getAllVehicles().subscribe({
       next: vehicleApis => {
-        for (const vehicle of vehicleApis) {
-          console.log(vehicle);
+        for (const vehicle of vehicleApis)
           vehicleTmb.push(this.vehCust(vehicle));
-        }
+
 
         this.vehicles.data = this.selectedCustomer
           ? vehicleTmb.filter(

@@ -76,7 +76,6 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: user => {
-          console.log(user);
           if (user == undefined) {
             this.loginFormGroup.controls['username'].setValue('');
             this.loginFormGroup.controls['password'].setValue('');

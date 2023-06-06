@@ -23,7 +23,7 @@ export class AddVehicleComponent implements OnInit {
   error = '';
   submitted = false;
   private _addVehicleRequest: any;
-  
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -168,8 +168,6 @@ export class AddVehicleComponent implements OnInit {
       this.addVehicleForm.get('displacement')?.value;
     this._addVehicleRequest.fuelType =
       this.addVehicleForm.get('fuelType')?.value;
-      
-    console.log(this._addVehicleRequest);
 
     this.vehicleService.addVehicle(this._addVehicleRequest).subscribe({
       next: vehicle => {

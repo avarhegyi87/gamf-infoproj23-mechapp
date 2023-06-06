@@ -132,7 +132,6 @@ export class EditCustomerComponent implements OnInit {
     this.submitted = true;
     if (this.editCustomerForm.invalid) return;
 
-    console.log(this.customerDetails);
     this.customerService
       .updateCustomer(this.customerDetails.id, this.customerDetails)
       .subscribe({
