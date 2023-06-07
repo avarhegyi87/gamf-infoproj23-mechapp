@@ -25,7 +25,8 @@ const routes: Routes = [
   {
     path: 'vehicle',
     loadChildren: () =>
-      import('./modules/vehicle/vehicle.module').then(m => m.VehicleModule),
+      import('./modules/vehicle/vehicle.module').then(
+        m => m.VehicleModule),
   },
   { path: '**', redirectTo: '' },
 ];
