@@ -110,7 +110,7 @@ export class AddCustomerComponent implements OnInit {
     if (this.addCustomerForm.invalid) return;
 
     this._addCustomerRequest.name = this.addCustomerForm.get('name')?.value;
-    this._addCustomerRequest.country = this.addCustomerForm.get('name')?.value;
+    this._addCustomerRequest.country = this.addCustomerForm.get('country')?.value;
     this._addCustomerRequest.postcode =
       this.addCustomerForm.get('postcode')?.value;
     this._addCustomerRequest.city = this.addCustomerForm.get('city')?.value;
@@ -122,10 +122,8 @@ export class AddCustomerComponent implements OnInit {
       this.addCustomerForm.get('phoneNumber')?.value;
     this._addCustomerRequest.taxNumber =
       this.addCustomerForm.get('taxNumber')?.value;
-    console.log(this.addCustomerForm);
     this.customerService.addCustomer(this._addCustomerRequest).subscribe({
       next: customer => {
-        console.log(customer);
         this.snackBar.open(
           `Partner sikeresen hozzáadva; azonosítója: ${customer.id}`,
           'OK',

@@ -121,7 +121,6 @@ export class EditVehicleComponent implements OnInit {
         if (id) {
           this.vehicleService.getVehicle(parseInt(id)).subscribe({
             next: vehicleApi => {
-              console.log(vehicleApi);
               for(const element of this.customers){
                 if(element.id == vehicleApi.customerId){
                   this.vehicle = {

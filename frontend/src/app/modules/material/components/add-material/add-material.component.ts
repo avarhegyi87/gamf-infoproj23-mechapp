@@ -120,6 +120,7 @@ export class AddMaterialComponent implements OnInit {
     this._addMaterialRequest.currentStock =
       this.addMaterialForm.get('currentStock')?.value;
 
+    console.log('material request:', this._addMaterialRequest);
     this.materialService.addMaterial(this._addMaterialRequest).subscribe({
       next: material => {
         this.snackBar.open(

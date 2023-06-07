@@ -1,1 +1,9 @@
-<p>material-list works!</p>
+<h1>Termékek / Szolgáltatások listája</h1>
+<ng-container *ngIf="materialsLoaded$ | async; else noDataTemplate">
+
+</ng-container>
+<ng-template #noDataTemplate>
+
+</ng-template>
+
+

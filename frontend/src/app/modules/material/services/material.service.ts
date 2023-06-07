@@ -11,11 +11,11 @@ export class MaterialService {
   url: string;
 
   constructor(private http: HttpClient) {
-    this.url = this.baseApiUrl + this.entityName;
+    this.url = `${this.baseApiUrl}/${this.entityName}`;
   }
 
   getAllMaterials(): Observable<Material[]> {
-    return this.http.get<Material[]>(`${this.url}/getall`);
+    return this.http.get<Material[]>(`${this.url}/getAll`);
   }
 
   getMaterial(id: string): Observable<Material> {
