@@ -18,8 +18,16 @@ export class MaterialService {
     return this.http.get<Material[]>(`${this.url}/getAll`);
   }
 
+  getLastMaterial(): Observable<Material> {
+    return this.http.get<Material>(`${this.url}/getLastMaterial`);
+  }
+
+  getLastService(): Observable<Material> {
+    return this.http.get<Material>(`${this.url}/getLastService`);
+  }
+
   getMaterial(id: string): Observable<Material> {
-    return this.http.get<Material>(`${this.url}/get?${id}`);
+    return this.http.get<Material>(`${this.url}/get/${id}`);
   }
 
   addMaterial(addMaterialRequest: Material): Observable<Material> {
@@ -27,10 +35,10 @@ export class MaterialService {
   }
 
   updateMaterial(id: string, updateMaterialRequest: Material): Observable<Material> {
-    return this.http.put<Material>(`${this.url}/put?${id}`, updateMaterialRequest);
+    return this.http.put<Material>(`${this.url}/put/${id}`, updateMaterialRequest);
   }
 
   deleteMaterial(id: string): Observable<Material> {
-    return this.http.delete<Material>(`${this.url}/delete?${id}`);
+    return this.http.delete<Material>(`${this.url}/delete/${id}`);
   }
 }

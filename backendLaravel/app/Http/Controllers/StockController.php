@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Stock;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -45,7 +46,11 @@ class StockController extends Controller
         /*if ( Auth::id() != 2 && Auth::user()->role != 3 &&  Auth::user()->role != 4) {
             return abort(403);
         }*/
+<<<<<<< Updated upstream
         $req = $request->only(['materialNumber', 'description','currentStock','netPrice']);
+=======
+        $req = $request->only(['id', 'description', 'currentStock', 'netPrice']);
+>>>>>>> Stashed changes
         $validator =  Validator::make($request->all(), [
             'materialNumber' => ['required', 'size:8'],
             'description' => ['nullable', 'min:6', 'max:50'],
@@ -62,9 +67,15 @@ class StockController extends Controller
         } else {
 
             DB::table('stocks')
+<<<<<<< Updated upstream
         ->where('materialNumber', $materialNumber)  // find your user by their email
         ->limit(1)  // optional - to ensure only one record is updated.
         ->update($req);
+=======
+                ->where('id', $id)  // find your user by their email
+                ->limit(1)  // optional - to ensure only one record is updated.
+                ->update($req);
+>>>>>>> Stashed changes
 
             return response()->json('Successfully modified');
         }
@@ -75,8 +86,8 @@ class StockController extends Controller
      */
     public function delete(string $id)
     {
-        
-         /*if ( Auth::id() != 2 && Auth::user()->role != 3) {
+
+        /*if ( Auth::id() != 2 && Auth::user()->role != 3) {
             return abort(403);
         }*/
         DB::table('stocks')->where('materialNumber', $id)->delete();
@@ -101,5 +112,41 @@ class StockController extends Controller
             return abort(403);
         }*/
         return response()->json(Stock::get());
+    }
+    public function getLastMaterial()
+    {
+        /*if ( Auth::id() != 2 && Auth::user()->role != 3 &&  Auth::user()->role != 4) {
+            return abort(403);
+        }*/
+        $mats = Stock::get()->sortBy('id');
+        $last = 0;
+        if (!empty($mats)) {
+            foreach ($mats as $mat) {
+                if ($mat->id < 60000000 && $mat->id > $last) { {
+                        $last = $mat->id;
+                    }
+                }
+            }
+        }
+        $stock = DB::table('stocks')->where('id', $last)->first();
+        return response()->json($stock);
+    }
+    public function getLastService()
+    {
+        /*if ( Auth::id() != 2 && Auth::user()->role != 3 &&  Auth::user()->role != 4) {
+            return abort(403);
+        }*/
+        $servs = Stock::get()->sortBy('id');
+        $last = 0;
+        if (!empty($servs)) {
+            foreach ($servs as $serv) {
+                if ($serv->id >= 60000000 && $serv->id > $last) { {
+                        $last = $serv->id;
+                    }
+                }
+            }
+        }
+        $stock = DB::table('stocks')->where('id', $last)->first();
+        return response()->json($stock);
     }
 }

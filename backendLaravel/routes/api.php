@@ -43,6 +43,8 @@ Route::get('/stock/getAll', [StockController::class, 'getAll'])->name('getAll');
 Route::post('/stock/create', [StockController::class, 'create'])->name('create');
 Route::post('/stock/put/{stock}', [StockController::class, 'update'])->name('update');
 Route::delete('/stock/delete/{stock}', [StockController::class, 'delete'])->name('delete');
+Route::get('/stock/getLastService', [StockController::class, 'getLastService'])->name('getLastService');
+Route::get('/stock/getLastMaterial', [StockController::class, 'getLastMaterial'])->name('getLastMaterial');
 
 //Vehicle routes
 Route::get('/vehicle/get/{vehicle}', [VehicleController::class, 'get'])->name('get');

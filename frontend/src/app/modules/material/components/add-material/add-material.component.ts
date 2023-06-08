@@ -17,11 +17,14 @@ import { Observable, map } from 'rxjs';
 })
 export class AddMaterialComponent implements OnInit {
   addMaterialForm!: FormGroup;
+  private lastMat!: any;
+  private lastServ!: any;
   error = '';
   submitted = false;
 
   materialTypes = Object.values(MaterialTypeEnum);
   materialTypeMapping = MaterialTypeToLabelMapping;
+
 
   private _addMaterialRequest: Material = {
     id: '',
@@ -61,6 +64,8 @@ export class AddMaterialComponent implements OnInit {
         ]),
       ],
     });
+    this.materialService.getLastMaterial().subscribe(item => {this.lastMat = item.id;});
+    this.materialService.getLastService().subscribe(item => {this.lastServ = item.id;});
   }
 
   get f() {
@@ -73,36 +78,25 @@ export class AddMaterialComponent implements OnInit {
     );
   }
 
-  generateMaterialNumber(value: MaterialTypeEnum): string {
-    const allMat: Observable<Material[]> =
-      this.materialService.getAllMaterials();
-    let filterValue = '';
+   generateMaterialNumber(value: MaterialTypeEnum): string {
     let minValue = 0;
     switch (value) {
       case MaterialTypeEnum.material:
-        filterValue = '1';
-        minValue = 10000000;
+        minValue = this.lastMat;
+        if (this.lastMat === 0) {
+          minValue = 10000000;
+        }
         break;
       case MaterialTypeEnum.service:
-        filterValue = '6';
-        minValue = 60000000;
+        minValue = this.lastServ;
+        if (this.lastServ === 0) {
+          minValue = 60000000;
+        }
         break;
       default:
         return '';
     }
-    const filteredMaterials = allMat.pipe(
-      map(matArray =>
-        matArray.filter(mat => mat.id.startsWith(filterValue)),
-      ),
-    );
-    let maxValue = minValue;
-    filteredMaterials.subscribe(filteredMats => {
-      const max = Math.max(
-        minValue,
-        ...filteredMats.map(mat => Number(mat.id)),
-      );
-      maxValue = isNaN(max) ? minValue : max + 1;
-    });
+    let maxValue = minValue+1;
     return maxValue.toString();
   }
 
@@ -120,6 +114,10 @@ export class AddMaterialComponent implements OnInit {
     this._addMaterialRequest.currentStock =
       this.addMaterialForm.get('currentStock')?.value;
 
+      setTimeout(() => {
+      
+      
+      
     console.log('material request:', this._addMaterialRequest);
     this.materialService.addMaterial(this._addMaterialRequest).subscribe({
       next: material => {
@@ -140,5 +138,6 @@ export class AddMaterialComponent implements OnInit {
         });
       },
     });
+  }, 2);
   }
 }
