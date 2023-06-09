@@ -31,7 +31,7 @@ class StockController extends Controller
                 'status' => false,
                 'message' => 'validation error',
                 'errors' => $validator->errors()
-            ], 401);
+            ], 400);
         } else {
             Stock::create($request->all());
             return response()->json('Successfully added');
@@ -60,7 +60,7 @@ class StockController extends Controller
                 'status' => false,
                 'message' => 'validation error',
                 'errors' => $validator->errors()
-            ], 401);
+            ], 400);
         } else {
 
             DB::table('stocks')
