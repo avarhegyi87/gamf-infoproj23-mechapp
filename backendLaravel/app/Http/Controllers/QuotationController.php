@@ -26,8 +26,7 @@ class QuotationController extends Controller
                 $formFields = $request->validate([
                     'vehicleId' => ['required'],
                     'customerId' => ['required'],
-                    'jobList' => ['nullable'],
-                    'partList' => ['nullable'],
+                    'materialList' => ['nullable'],
                     'description' => ['nullable', 'max:255'],
                     'finalizeDate' => ['nullable']
                 ]);
@@ -67,8 +66,7 @@ class QuotationController extends Controller
                 $formFields = $request->validate([
                     'vehicleId' => ['required'],
                     'customerId' => ['required'],
-                    'jobList' => ['nullable'],
-                    'partList' => ['nullable'],
+                    'materialList' => ['nullable'],
                     'description' => ['nullable', 'max:255'],
                     'finalizeDate' => ['nullable']
                 ]);

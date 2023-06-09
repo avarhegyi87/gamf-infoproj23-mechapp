@@ -27,6 +27,11 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/vehicle/vehicle.module').then(m => m.VehicleModule),
   },
+  {
+    path: 'quotation',
+    loadChildren: () =>
+      import('./modules/quotation/quotation.module').then(m => m.QuotationModule),
+  },
   { path: '**', redirectTo: '' },
 ];
 
