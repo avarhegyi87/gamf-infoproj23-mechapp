@@ -41,16 +41,13 @@ class StockController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, String $materialNumber)
+    public function update(Request $request, String $id)
     {
         /*if ( Auth::id() != 2 && Auth::user()->role != 3 &&  Auth::user()->role != 4) {
             return abort(403);
         }*/
-<<<<<<< Updated upstream
-        $req = $request->only(['materialNumber', 'description','currentStock','netPrice']);
-=======
         $req = $request->only(['id', 'description', 'currentStock', 'netPrice']);
->>>>>>> Stashed changes
+
         $validator =  Validator::make($request->all(), [
             'materialNumber' => ['required', 'size:8'],
             'description' => ['nullable', 'min:6', 'max:50'],
@@ -67,16 +64,9 @@ class StockController extends Controller
         } else {
 
             DB::table('stocks')
-<<<<<<< Updated upstream
-        ->where('materialNumber', $materialNumber)  // find your user by their email
-        ->limit(1)  // optional - to ensure only one record is updated.
-        ->update($req);
-=======
                 ->where('id', $id)  // find your user by their email
                 ->limit(1)  // optional - to ensure only one record is updated.
                 ->update($req);
->>>>>>> Stashed changes
-
             return response()->json('Successfully modified');
         }
     }

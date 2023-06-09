@@ -38,7 +38,7 @@ export class AddMaterialComponent implements OnInit {
     private router: Router,
     private materialService: MaterialService,
     private snackBar: MatSnackBar,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.addMaterialForm = this.formBuilder.group({
@@ -64,8 +64,10 @@ export class AddMaterialComponent implements OnInit {
         ]),
       ],
     });
-    this.materialService.getLastMaterial().subscribe(item => {this.lastMat = item.id;});
-    this.materialService.getLastService().subscribe(item => {this.lastServ = item.id;});
+    this.materialService.getLastMaterial().subscribe(item => {
+       this.lastMat = item.id; });
+    this.materialService.getLastService().subscribe(item => {
+       this.lastServ = item.id; });
   }
 
   get f() {
@@ -78,25 +80,21 @@ export class AddMaterialComponent implements OnInit {
     );
   }
 
-   generateMaterialNumber(value: MaterialTypeEnum): string {
+  generateMaterialNumber(value: MaterialTypeEnum): string {
     let minValue = 0;
     switch (value) {
       case MaterialTypeEnum.material:
         minValue = this.lastMat;
-        if (this.lastMat === 0) {
-          minValue = 10000000;
-        }
+        if (this.lastMat === 0) minValue = 10000000;
         break;
       case MaterialTypeEnum.service:
         minValue = this.lastServ;
-        if (this.lastServ === 0) {
-          minValue = 60000000;
-        }
+        if (this.lastServ === 0) minValue = 60000000;
         break;
       default:
         return '';
     }
-    let maxValue = minValue+1;
+    let maxValue = minValue + 1;
     return maxValue.toString();
   }
 
@@ -105,8 +103,7 @@ export class AddMaterialComponent implements OnInit {
     if (this.addMaterialForm.invalid) return;
 
     this._addMaterialRequest.id = this.generateMaterialNumber(
-      this.addMaterialForm.get('materialType')?.value,
-    );
+      this.addMaterialForm.get('materialType')?.value,);
     this._addMaterialRequest.description =
       this.addMaterialForm.get('description')?.value;
     this._addMaterialRequest.netPrice =
@@ -114,10 +111,6 @@ export class AddMaterialComponent implements OnInit {
     this._addMaterialRequest.currentStock =
       this.addMaterialForm.get('currentStock')?.value;
 
-      setTimeout(() => {
-      
-      
-      
     console.log('material request:', this._addMaterialRequest);
     this.materialService.addMaterial(this._addMaterialRequest).subscribe({
       next: material => {
@@ -138,6 +131,5 @@ export class AddMaterialComponent implements OnInit {
         });
       },
     });
-  }, 2);
   }
 }
