@@ -85,11 +85,11 @@ export class AddMaterialComponent implements OnInit {
     switch (value) {
       case MaterialTypeEnum.material:
         minValue = this.lastMat;
-        if (this.lastMat === 0) minValue = 10000000;
+        if (this.lastMat == null) minValue = 10000000;
         break;
       case MaterialTypeEnum.service:
         minValue = this.lastServ;
-        if (this.lastServ === 0) minValue = 60000000;
+        if (this.lastServ == null) minValue = 60000000;
         break;
       default:
         return '';
