@@ -20,7 +20,7 @@ class StockController extends Controller
         }*/
         // validate form data
         $validator =  Validator::make($request->all(), [
-            'materialNumber' => ['required', 'size:8'],
+            'id' => ['required', 'size:8'],
             'description' => ['nullable', 'min:6', 'max:50'],
             'currentStock' => ['nullable'],
             'netPrice' => ['nullable'],
@@ -49,7 +49,7 @@ class StockController extends Controller
         $req = $request->only(['id', 'description', 'currentStock', 'netPrice']);
 
         $validator =  Validator::make($request->all(), [
-            'materialNumber' => ['required', 'size:8'],
+            'id' => ['required', 'size:8'],
             'description' => ['nullable', 'min:6', 'max:50'],
             'currentStock' => ['nullable'],
             'netPrice' => ['nullable'],
