@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('vehicleId')->constrained('vehicles', 'id')->onUpdate('cascade');
             $table->foreignId('customerId')->constrained('customers', 'id')->onUpdate('cascade');
-            $table->string('jobList');
-            $table->string('partList');
+            $table->string('materialList');
             $table->string('description');
             $table->timestamp('finalizeDate')->nullable();
             $table->timestamps();

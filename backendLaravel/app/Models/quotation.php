@@ -9,7 +9,7 @@ class quotation extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'vehicleId', 'customerId', 'jobList', 'partList', 'description', 'createDate', 'finalizeDate'
+        'vehicleId', 'customerId', 'materialList', 'description', 'createDate', 'finalizeDate'
        ];
 
     public function vehicle()

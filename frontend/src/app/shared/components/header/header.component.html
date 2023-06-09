@@ -24,7 +24,10 @@
       <button mat-menu-item routerLink="/quotation/view" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Ajánlat megtekintése
       </button>
-      <button mat-menu-item routerLink="/quotation/create" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
+      <button mat-menu-item routerLink="/quotation/list" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
+        Ajánlatok listázása
+      </button>
+      <button mat-menu-item routerLink="/quotation/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Ajánlat készítése
       </button>
       <button mat-menu-item routerLink="/quotation/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
