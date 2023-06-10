@@ -2,8 +2,12 @@ import { Component, OnInit } from '@angular/core';
 
 import { Customer } from 'src/app/modules/customer/models/customer.model';
 import { Vehicle } from 'src/app/modules/vehicle/models/vehicle.model';
-import { VehicleApi } from 'src/app/modules/vehicle/models/vehicleApi.model';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, map, startWith } from 'rxjs';
@@ -20,15 +24,14 @@ export class AddQuotationComponent implements OnInit {
   customers: Customer[] = [];
   filteredCustomers!: Observable<Customer[]>;
   customerControl = new FormControl<string | Customer>('');
-  vehicles: VehicleApi[] = [];
-  filteredVehicles!: Observable<VehicleApi[]>;
-  VehicleControl = new FormControl<string | VehicleApi>('');
-  serviceList: String [] = [];
+  vehicles: Vehicle[] = [];
+  filteredVehicles!: Observable<Vehicle[]>;
+  VehicleControl = new FormControl<string | Vehicle>('');
+  serviceList: String[] = [];
   materialList: String[] = [];
   error = '';
   submitted = false;
   private _addQuotationRequest: any;
-
 
   constructor(
     private formBuilder: FormBuilder,
@@ -54,18 +57,13 @@ export class AddQuotationComponent implements OnInit {
       description: '',
       finalizeDate: new Date(),
     };
-   
   }
 
-
   ngOnInit(): void {
-
-    this.addQuotationForm = this.formBuilder.group({
-      
-    });
+    this.addQuotationForm = this.formBuilder.group({});
   }
 
   onSubmit() {
-
+    /**TODO: onSubmit for AddQuotation */
   }
 }

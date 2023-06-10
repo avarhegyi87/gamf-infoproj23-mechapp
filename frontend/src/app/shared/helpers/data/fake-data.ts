@@ -52,7 +52,7 @@ export const FAKE_CUSTOMERS: Customer[] = [
 export const FAKE_VEHICLES: Vehicle[] = [
   {
     id: 1,
-    customer: FAKE_CUSTOMERS[1],
+    customerId: FAKE_CUSTOMERS[1].id,
     vin: '0123456789ABCDEFG',
     licencePlate: 'AABA123',
     mileage: 2000,
@@ -64,7 +64,7 @@ export const FAKE_VEHICLES: Vehicle[] = [
   },
   {
     id: 2,
-    customer: FAKE_CUSTOMERS[1],
+    customerId: FAKE_CUSTOMERS[1].id,
     vin: '2244668800ABCDEFG',
     licencePlate: 'AAAA005',
     mileage: 15000,
@@ -76,7 +76,7 @@ export const FAKE_VEHICLES: Vehicle[] = [
   },
   {
     id: 3,
-    customer: FAKE_CUSTOMERS[0],
+    customerId: FAKE_CUSTOMERS[0].id,
     vin: 'A0B1C2D3E4F567890',
     licencePlate: 'MTM717',
     mileage: 185000,
@@ -90,37 +90,37 @@ export const FAKE_VEHICLES: Vehicle[] = [
 
 export const FAKE_MATERIALS: Material[] = [
   {
-    id: '10000000',
+    materialNumber: '10000000',
     description: 'Bosch féktárcsa',
     currentStock: 12,
     netPrice: 12000,
   },
   {
-    id: '10000001',
+    materialNumber: '10000001',
     description: 'Denso gyújtógyertya',
     currentStock: 20,
     netPrice: 10000,
   },
   {
-    id: '10000003',
+    materialNumber: '10000003',
     description: 'Mann-Filter olajszűrő',
     currentStock: 4,
     netPrice: 32000,
   },
   {
-    id: '10000004',
+    materialNumber: '10000004',
     description: 'Liqui Moli Leichtlauf Super motorolaj',
     currentStock: 15,
     netPrice: 15000,
   },
   {
-    id: '60000000',
+    materialNumber: '60000000',
     description: 'munkadíj',
     currentStock: 9999,
     netPrice: 15000,
   },
   {
-    id: '60000000',
+    materialNumber: '60000000',
     description: 'munkadíj – sürgősségi',
     currentStock: 9999,
     netPrice: 25000,

@@ -4,7 +4,7 @@ export interface Vehicle {
   id: number;
   vin: string;
   licencePlate: string;
-  customer: Customer;
+  customerId: Customer | number;
   productionYear: number;
   mileage: number;
   carBrand: string;
