@@ -181,6 +181,9 @@ export class EditVehicleComponent implements OnInit {
     this.submitted = true;
     if (this.editVehicleForm.invalid) return;
 
+    if (typeof this.vehicleDetails.customerId !== 'number')
+      this.vehicleDetails.customerId = this.vehicleDetails.customerId.id;
+
     this.vehicleService
       .updateVehicle(this.vehicleDetails.id, this.vehicleDetails)
       .subscribe({
