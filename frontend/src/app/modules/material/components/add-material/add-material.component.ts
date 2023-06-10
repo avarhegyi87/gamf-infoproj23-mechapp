@@ -8,7 +8,6 @@ import {
   MaterialTypeEnum,
   MaterialTypeToLabelMapping,
 } from '../../models/material-type.model';
-import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-add-material',
@@ -27,7 +26,7 @@ export class AddMaterialComponent implements OnInit {
 
 
   private _addMaterialRequest: Material = {
-    id: '',
+    materialNumber: '',
     description: '',
     currentStock: 0,
     netPrice: 0,
@@ -65,9 +64,11 @@ export class AddMaterialComponent implements OnInit {
       ],
     });
     this.materialService.getLastMaterial().subscribe(item => {
-       this.lastMat = item.id; });
+      this.lastMat = item.materialNumber;
+    });
     this.materialService.getLastService().subscribe(item => {
-       this.lastServ = item.id; });
+      this.lastServ = item.materialNumber;
+    });
   }
 
   get f() {
@@ -102,8 +103,8 @@ export class AddMaterialComponent implements OnInit {
     this.submitted = true;
     if (this.addMaterialForm.invalid) return;
 
-    this._addMaterialRequest.id = this.generateMaterialNumber(
-      this.addMaterialForm.get('materialType')?.value,);
+    this._addMaterialRequest.materialNumber = this.generateMaterialNumber(
+      this.addMaterialForm.get('materialType')?.value);
     this._addMaterialRequest.description =
       this.addMaterialForm.get('description')?.value;
     this._addMaterialRequest.netPrice =
