@@ -6,7 +6,7 @@ import { AddMaterialComponent } from './components/add-material/add-material.com
 import { EditMaterialComponent } from './components/edit-material/edit-material.component';
 import { MaterialListComponent } from './components/material-list/material-list.component';
 import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
@@ -29,6 +29,7 @@ import { MatSelectModule } from '@angular/material/select';
     CommonModule,
     RouterModule,
     MaterialRoutingModule,
+    FormsModule,
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
