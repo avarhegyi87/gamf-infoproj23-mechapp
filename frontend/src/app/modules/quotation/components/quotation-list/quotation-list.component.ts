@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class QuotationListComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    /**TODO: constructor for QuotationList */
+  }
 
   ngOnInit(): void {
+    /**TODO: ngOnInit for QuotationList */
   }
 
 }
