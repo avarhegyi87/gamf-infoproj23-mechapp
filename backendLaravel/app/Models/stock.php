@@ -9,6 +9,6 @@ class stock extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id', 'description', 'currentStock', 'netPrice'
+        'materialNumber', 'description', 'currentStock', 'netPrice'
        ];
 }
