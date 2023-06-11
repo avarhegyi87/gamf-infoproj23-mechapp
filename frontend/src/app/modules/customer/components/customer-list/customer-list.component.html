@@ -7,7 +7,7 @@
   </mat-form-field>
 
   <table mat-table [dataSource]="customers" matSort (matSortChange)="announceSortChange($event)"
-    class="mat-elevation-z8 customer-table">
+    class="mat-elevation-z8 list-table">
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="ID szerint"> Partner ID </th>
       <td mat-cell *matCellDef="let element"> {{ element.id }} </td>

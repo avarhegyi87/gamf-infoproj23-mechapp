@@ -4,7 +4,7 @@
   <form (ngSubmit)="onSubmit()" [formGroup]="addMaterialForm">
     <div class="input-container">
       <mat-form-field class="input-field">
-        <mat-label>Terméktípus</mat-label>
+        <mat-label>Típus</mat-label>
         <mat-select formControlName="materialType">
           <mat-option
             *ngFor="let matTypeItem of materialTypes"

@@ -1,5 +1,5 @@
 export interface Material {
-  id: string;
+  materialNumber: string;
   description: string;
   currentStock: number;
   netPrice: number;

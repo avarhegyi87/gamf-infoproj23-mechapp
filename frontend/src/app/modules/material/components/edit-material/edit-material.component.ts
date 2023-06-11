@@ -7,9 +7,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EditMaterialComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+    /**TODO: constructor for EditMaterial */
+  }
 
   ngOnInit(): void {
+    /**TODO: ngOnInit for EditMaterial */
   }
 
 }

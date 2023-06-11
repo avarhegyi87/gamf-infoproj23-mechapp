@@ -4,7 +4,6 @@ import { Observable, map, startWith } from 'rxjs';
 import { Customer } from 'src/app/modules/customer/models/customer.model';
 import { FuelTypeToLabelMapping, FuelTypeEnum } from '../../models/fuel-types';
 import { Vehicle } from '../../models/vehicle.model';
-import { VehicleApi } from '../../models/vehicleApi.model';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,8 +19,6 @@ import { CustomerService } from 'src/app/modules/customer/services/customer.serv
 export class EditVehicleComponent implements OnInit {
   editVehicleForm!: FormGroup;
   customers: Customer[] = [];
-  vehicleApi!: VehicleApi;
-  vehicle!: Vehicle;
   filteredCustomers!: Observable<Customer[]>;
   customerControl = new FormControl<string | Customer>('');
 
@@ -33,7 +30,7 @@ export class EditVehicleComponent implements OnInit {
     id: 0,
     vin: '',
     licencePlate: '',
-    customer: this.customers[0],
+    customerId: 0,
     productionYear: 0,
     mileage: 0,
     carBrand: '',
@@ -70,7 +67,7 @@ export class EditVehicleComponent implements OnInit {
           Validators.pattern(/^[0-9A-Z]{6,7}$/),
         ]),
       ],
-      customer: [null, this.vehicleDetails.customer && this.vehicleDetails.customer.id > 0],
+      customer: [null, this.vehicleDetails.customerId],
       productionYear: [
         '',
         Validators.compose([
@@ -120,24 +117,13 @@ export class EditVehicleComponent implements OnInit {
         const id = params.get('id');
         if (id) {
           this.vehicleService.getVehicle(parseInt(id)).subscribe({
-            next: vehicleApi => {
-              for(const element of this.customers){
-                if(element.id == vehicleApi.customerId){
-                  this.vehicle = {
-                    id: vehicleApi.id,
-                    carBrand: vehicleApi.carBrand,
-                    carMake: vehicleApi.carMake,
-                    vin: vehicleApi.vin,
-                    displacement: vehicleApi.displacement,
-                    productionYear: vehicleApi.productionYear,
-                    licencePlate: vehicleApi.licencePlate,
-                    fuelType: vehicleApi.fuelType,
-                    mileage: vehicleApi.mileage,
-                    customer: element,
-                  }
-                }
-              }
-              this.vehicleDetails = this.vehicle;
+            next: response => {
+              this.vehicleDetails = response;
+              this.customerService.getCustomer(response.customerId.toString()).subscribe({
+                next: customerResponse => {
+                  this.vehicleDetails.customerId = customerResponse;
+                },
+              });
             },
           });
         }
@@ -163,7 +149,7 @@ export class EditVehicleComponent implements OnInit {
   }
 
   onCustomerOptionSelected(customer: Customer) {
-    this.vehicleDetails.customer = customer;
+    this.vehicleDetails.customerId = customer;
   }
 
   onFuelOptionSelected(option: string) {
@@ -195,20 +181,11 @@ export class EditVehicleComponent implements OnInit {
     this.submitted = true;
     if (this.editVehicleForm.invalid) return;
 
-    this.vehicleApi = {
-      id: this.vehicleDetails.id,
-      carBrand: this.vehicleDetails.carBrand,
-      carMake: this.vehicleDetails.carMake,
-      vin: this.vehicleDetails.vin,
-      displacement: this.vehicleDetails.displacement,
-      productionYear: this.vehicleDetails.productionYear,
-      licencePlate: this.vehicleDetails.licencePlate,
-      fuelType: this.vehicleDetails.fuelType,
-      mileage: this.vehicleDetails.mileage,
-      customerId: this.vehicleDetails.customer.id,
-    };
+    if (typeof this.vehicleDetails.customerId !== 'number')
+      this.vehicleDetails.customerId = this.vehicleDetails.customerId.id;
+
     this.vehicleService
-      .updateVehicle(this.vehicleDetails.id, this.vehicleApi)
+      .updateVehicle(this.vehicleDetails.id, this.vehicleDetails)
       .subscribe({
         next: vehicle => {
           this.snackBar.open(

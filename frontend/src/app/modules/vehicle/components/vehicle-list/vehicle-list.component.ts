@@ -3,7 +3,6 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Vehicle } from '../../models/vehicle.model';
-import { VehicleApi } from '../../models/vehicleApi.model';
 import { User } from 'src/app/modules/users/models/user.model';
 import { BehaviorSubject, Observable, startWith, map } from 'rxjs';
 import { VehicleService } from '../../services/vehicle.service';
@@ -27,7 +26,6 @@ export class VehicleListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort: MatSort = new MatSort();
   vehicles = new MatTableDataSource<Vehicle>([]);
-  vehicleApis: VehicleApi[] = [];
   currentUser: User | undefined;
   displayedColumns: Array<string> = [];
   fuelTypeMapping = FuelTypeToLabelMapping;
@@ -76,19 +74,24 @@ export class VehicleListComponent implements OnInit {
           : this.customers.slice();
       }),
     );
-    const vehicleTmb: Vehicle[] = [];
     this.vehicleService.getAllVehicles().subscribe({
-      next: vehicleApis => {
-        for (const vehicle of vehicleApis)
-          vehicleTmb.push(this.vehCust(vehicle));
-
-
+      next: vehicles => {
         this.vehicles.data = this.selectedCustomer
-          ? vehicleTmb.filter(
-            vehicle => vehicle.customer.id === this.selectedCustomer?.id,
+          ? vehicles.filter(
+            vehicle => vehicle.customerId === this.selectedCustomer?.id,
           )
-          : vehicleTmb;
-        this.displayedColumns = Object.keys(this.vehicles.data[0]);
+          : vehicles;
+        this.vehicles.data.map(
+          item =>
+            (item.customerId =
+              this.customers.find(c => c.id === item.customerId) ||
+              item.customerId),
+        );
+
+        this.displayedColumns = Object.keys(this.vehicles.data[0]).filter(
+          column => !['created_at', 'updated_at'].includes(column),
+        );
+
         if (this.currentUser && this.currentUser?.role >= Role.Manager)
           this.displayedColumns.push('edit');
         this.vehiclesLoaded$.next(true);
@@ -100,8 +103,8 @@ export class VehicleListComponent implements OnInit {
           switch (property) {
             case 'id':
               return item.id;
-            case 'customer':
-              return item.customer.name;
+            case 'customerId':
+              return item.customerId.toString().toLowerCase();
             case 'vin':
             case 'licencePlate':
             case 'carBrand':
@@ -126,46 +129,8 @@ export class VehicleListComponent implements OnInit {
           duration: 5000,
           panelClass: ['mat-toolbar', 'mat-warn'],
         });
-        if (this.vehicleApis.length > 0) { /* empty */ }
       },
     });
-  }
-
-  vehCust(vehApi: VehicleApi): Vehicle {
-    const vehicle: Vehicle = {
-      id: vehApi.id,
-      carBrand: vehApi.carBrand,
-      carMake: vehApi.carMake,
-      vin: vehApi.vin,
-      displacement: vehApi.displacement,
-      productionYear: vehApi.productionYear,
-      licencePlate: vehApi.licencePlate,
-      fuelType: vehApi.fuelType,
-      mileage: vehApi.mileage,
-      customer: this.customers[0],
-    };
-    return vehicle;
-  }
-
-  filterVehicles(): Vehicle[] {
-    const vehicles: Vehicle[] = [];
-    for (const element of this.vehicleApis) {
-      const vehicleItem = {
-        id: element.id,
-        carBrand: element.carBrand,
-        carMake: element.carMake,
-        vin: element.vin,
-        displacement: element.displacement,
-        productionYear: element.productionYear,
-        licencePlate: element.licencePlate,
-        fuelType: element.fuelType,
-        mileage: element.mileage,
-        customer: this.customers[0],
-      };
-      vehicles.push(vehicleItem);
-    }
-
-    return vehicles;
   }
 
   displayFn(customer: Customer): string {

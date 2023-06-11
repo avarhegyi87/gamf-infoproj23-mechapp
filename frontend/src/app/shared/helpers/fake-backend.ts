@@ -197,7 +197,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       if (!owner) return error('Nem találni a megadott partnert.');
       const newVehicle = {
         id: lastId + 1,
-        customer: owner,
+        customerId: owner,
         vin, licencePlate, mileage, carBrand, carMake, displacement, productionYear, fuelType,
       };
       vehicles.push(newVehicle);
@@ -211,7 +211,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function getAllVehiclesByCustomer(id: number) {
       if (!isLoggedIn()) return unauthorized();
-      const vehiclesOfCustomer: Vehicle[] = vehicles.filter(vehicle => vehicle.customer.id === id);
+      const vehiclesOfCustomer: Vehicle[] = vehicles.filter(vehicle => vehicle.customerId === id);
       return ok (vehiclesOfCustomer);
     }
 
@@ -225,10 +225,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
       if (!isLoggedIn()) return unauthorized();
       let vehicle = vehicles.find(vehicle => vehicle.id === id);
       if (!vehicle) return error('Nem találni a megadott járművet.');
-      const {customer, vin, licencePlate, mileage, carBrand, carMake, displacement, productionYear, fuelType } = body;
+      const {customerId, vin, licencePlate, mileage, carBrand, carMake, displacement, productionYear, fuelType } = body;
       const newData = {
         id: vehicle.id,
-        customer: customers.find(customerOptions => customerOptions.id === customer.id) || vehicle.customer,
+        customerId: customers.find(customerOptions => customerOptions.id === customerId.id) || vehicle.customerId,
         vin, licencePlate, mileage, carBrand, carMake, displacement, productionYear, fuelType,
       };
       vehicle = newData;
@@ -247,35 +247,35 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     function addMaterial() {
       if (!isLoggedIn()) return unauthorized();
 
-      const { id, description, currentStock, netPrice } = body;
-      const newMaterial = { id, description, currentStock, netPrice };
+      const { materialNumber, description, currentStock, netPrice } = body;
+      const newMaterial = { materialNumber, description, currentStock, netPrice };
       materials.push(newMaterial);
       return ok(newMaterial);
     }
-    
+
     function getAllMaterials() {
       if (!isLoggedIn) return unauthorized();
       return ok(materials);
     }
-    
+
     function getMaterial(id: string) {
       if (!isLoggedIn) return unauthorized();
-      const material = materials.find(material => material.id === id);
+      const material = materials.find(material => material.materialNumber === id);
       return ok(material);
     }
-    
+
     function updateMaterial(id: string) {
       if (!isLoggedIn) return unauthorized();
-      let material = materials.find(material => material.id === id);
+      let material = materials.find(material => material.materialNumber === id);
       if (!material) return error('Nem találni a megadott alkatrészt.');
       const { description, currentStock, netPrice } = body;
       const newMaterial = {
-        id: material.id,
+        materialNumber: material.materialNumber,
         description, currentStock, netPrice,
       };
       material = newMaterial;
       return ok();
-    }    
+    }
   }
 }
 

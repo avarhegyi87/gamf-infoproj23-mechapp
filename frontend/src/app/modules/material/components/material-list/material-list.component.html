@@ -1,9 +1,72 @@
 <h1>Termékek / Szolgáltatások listája</h1>
 <ng-container *ngIf="materialsLoaded$ | async; else noDataTemplate">
+  <div class="filter-container">
+    <mat-form-field class="filter-input">
+      <mat-label>Keresés</mat-label>
+      <mat-icon matSuffix>filter_alt</mat-icon>
+      <input matInput (keyup)="applyFilter($any($event.target).value)">
+    </mat-form-field>
 
+    <mat-form-field class="filter-input">
+      <mat-label>Típus</mat-label>
+      <mat-select placeholder="Típusra szűrés" [(ngModel)]="selectedMatType" #select
+        (selectionChange)="onMaterialTypeOptionSelected($event.value)">
+        <mat-select-trigger>
+          {{ selectedMatType ?? 'Minden típus' }}
+          <button mat-button matPrefix mat-icon-button aria-label="Törlés" *ngIf="selectedMatType"
+            (click)="clearSelectedMaterialType()">
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-select-trigger>
+        <mat-option *ngFor="let matTypeItem of materialTypes" [value]="materialTypeMapping[matTypeItem]">
+          {{ materialTypeMapping[matTypeItem] }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <table mat-table #table [dataSource]="materials" matSort (matSortChange)="announceSortChange($event)"
+    class="mat-elevation-z8 material-table">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Termékszám szerint"> Cikkszám </th>
+      <td mat-cell *matCellDef="let element"> {{element.materialNumber}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="matType">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Típus szerint"> Típus </th>
+      <td mat-cell *matCellDef="let element"> {{materialTypeMapping[getMatType(element.materialNumber.toString())]}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="description">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Leírás szerint"> Leírás </th>
+      <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="currentStock">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Aktuális készlet szerint"> Aktuális
+        készlet </th>
+      <td mat-cell *matCellDef="let element"> {{element.currentStock}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="netPrice">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Nettó ár szerint"> Nettó ár </th>
+      <td mat-cell *matCellDef="let element"> {{element.netPrice}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef> Módosítás </th>
+      <td mat-cell class="edit-cell" *matCellDef="let element">
+        <a [routerLink]="'/material/edit/' + element.materialNumber">
+          <mat-icon color="accent">edit</mat-icon>
+        </a>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
 </ng-container>
 <ng-template #noDataTemplate>
-
+  <p>Töltés...</p>
 </ng-template>
-
-

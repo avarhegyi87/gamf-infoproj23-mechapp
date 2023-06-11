@@ -5,7 +5,7 @@
     <div class="input-container">
       <mat-form-field class="input-field double-width">
         <mat-label>Partner</mat-label>
-        <input matInput [formControl]="customerControl" [matAutocomplete]="auto" [(ngModel)]="vehicleDetails.customer">
+        <input matInput [formControl]="customerControl" [matAutocomplete]="auto" [(ngModel)]="vehicleDetails.customerId">
         <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn"
           (optionSelected)="onCustomerOptionSelected($event.option.value)">
           <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer">
