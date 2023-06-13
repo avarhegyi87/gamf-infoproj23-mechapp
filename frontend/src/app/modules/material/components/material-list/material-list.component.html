@@ -13,9 +13,9 @@
         (selectionChange)="onMaterialTypeOptionSelected($event.value)">
         <mat-select-trigger>
           {{ selectedMatType ?? 'Minden típus' }}
-          <button mat-button matPrefix mat-icon-button aria-label="Törlés" *ngIf="selectedMatType"
+          <button mat-button matPrefix mat-icon-button aria-label="Törlés" class="clear-button" *ngIf="selectedMatType"
             (click)="clearSelectedMaterialType()">
-            <mat-icon>close</mat-icon>
+            <mat-icon class="clear-icon">close</mat-icon>
           </button>
         </mat-select-trigger>
         <mat-option *ngFor="let matTypeItem of materialTypes" [value]="materialTypeMapping[matTypeItem]">

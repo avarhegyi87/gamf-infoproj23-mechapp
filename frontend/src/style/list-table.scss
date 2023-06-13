@@ -25,6 +25,13 @@
     &.double-width {
       flex: 1 1 60%;
     }
+
+    .clear-button {
+      position: absolute;
+      top: 50%;
+      right: 2rem;
+      transform: translateY(-65%);
+    }
   }
 
   @media only screen and (max-width: 768px) {
