@@ -16,8 +16,8 @@
       *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Munkalapok</button>
     <button mat-button [matMenuTriggerFor]="vehicleMenu"
       *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Gépjárművek</button>
-    <button mat-button [matMenuTriggerFor]="carPartsMenu"
-      *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Alkatrészek</button>
+    <button mat-button [matMenuTriggerFor]="materialsMenu"
+      *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Árucikkek, Szolgáltatások</button>
     <button mat-button [matMenuTriggerFor]="invoiceMenu" *ngIf="canSeeMenuItem(accessLevels.Manager)">Számlák</button>
 
     <mat-menu #quotationMenu="matMenu">
@@ -85,11 +85,11 @@
       </button>
     </mat-menu>
 
-    <mat-menu #carPartsMenu="matMenu">
+    <mat-menu #materialsMenu="matMenu">
       <button mat-menu-item routerLink="/material/list"
-        *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Alkatrészek</button>
+        *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Lista, szerkesztés</button>
       <button mat-menu-item routerLink="/material/add" *ngIf="canSeeMenuItem(accessLevels.Manager)">
-        Alkatrész hozzáadása
+        Új cikk hozzáadása
       </button>
     </mat-menu>
 
@@ -142,8 +142,8 @@
       <button mat-menu-item [matMenuTriggerFor]="vehicleMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Gépjárművek
       </button>
-      <button mat-menu-item [matMenuTriggerFor]="carPartsMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
-        Alkatrészek
+      <button mat-menu-item [matMenuTriggerFor]="materialsMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
+        Termékek
       </button>
       <button mat-menu-item [matMenuTriggerFor]="invoiceMenuMobile" *ngIf="canSeeMenuItem(accessLevels.Manager)">
         Számlák
@@ -211,11 +211,11 @@
         </button>
       </mat-menu>
 
-      <mat-menu #carPartsMenuMobile="matMenu">
+      <mat-menu #materialsMenuMobile="matMenu">
         <button mat-menu-item routerLink="/material/list"
-          *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Alkatrészek</button>
+          *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Lista, szerkesztés</button>
         <button mat-menu-item routerLink="/material/add" *ngIf="canSeeMenuItem(accessLevels.Manager)">
-          Alkatrész hozzáadása
+          Új cikk hozzáadása
         </button>
       </mat-menu>
 
