@@ -16,10 +16,10 @@ export function findMatTypeByLabel(label: string): MaterialTypeEnum | undefined 
   return undefined;
 }
 
-export function findMatTypeByNumber(matNum: string): MaterialTypeEnum | undefined {
+export function findMatTypeByNumber(matNum: string): MaterialTypeEnum {
   switch (true) {
-    case matNum.startsWith('1'): return MaterialTypeEnum.material;
-    case matNum.startsWith('6'): return MaterialTypeEnum.service;
-    default: return undefined;
+    case matNum.toString().startsWith('1'): return MaterialTypeEnum.material;
+    case matNum.toString().startsWith('6'): return MaterialTypeEnum.service;
+    default: return MaterialTypeEnum.material;
   }
 }
