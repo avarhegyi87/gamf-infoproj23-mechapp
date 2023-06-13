@@ -17,7 +17,7 @@
     <button mat-button [matMenuTriggerFor]="vehicleMenu"
       *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Gépjárművek</button>
     <button mat-button [matMenuTriggerFor]="materialsMenu"
-      *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Árucikkek, Szolgáltatások</button>
+      *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Termékek</button>
     <button mat-button [matMenuTriggerFor]="invoiceMenu" *ngIf="canSeeMenuItem(accessLevels.Manager)">Számlák</button>
 
     <mat-menu #quotationMenu="matMenu">
@@ -89,7 +89,7 @@
       <button mat-menu-item routerLink="/material/list"
         *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Lista, szerkesztés</button>
       <button mat-menu-item routerLink="/material/add" *ngIf="canSeeMenuItem(accessLevels.Manager)">
-        Új cikk hozzáadása
+        Új termék hozzáadása
       </button>
     </mat-menu>
 
@@ -215,7 +215,7 @@
         <button mat-menu-item routerLink="/material/list"
           *ngIf="canSeeMenuItem(accessLevels.Mechanic)">Lista, szerkesztés</button>
         <button mat-menu-item routerLink="/material/add" *ngIf="canSeeMenuItem(accessLevels.Manager)">
-          Új cikk hozzáadása
+          Új termék hozzáadása
         </button>
       </mat-menu>
 
