@@ -66,6 +66,8 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
+
+  <mat-paginator [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons aria-label="Select page"></mat-paginator>
 </ng-container>
 <ng-template #noDataTemplate>
   <p>Töltés...</p>
