@@ -18,6 +18,7 @@ class QuotationController extends Controller
         /*if ( Auth::id() != 2 && Auth::user()->role != 3 && && Auth::user()->role != 4) {
             return abort(403);
         }*/
+        $quotation = new Quotation();
         if (Customer::where('id', $request->customerId)->exists()) 
         {
             if (Vehicle::where('id', $request->vehicleId)->exists()) 
@@ -26,18 +27,19 @@ class QuotationController extends Controller
                 $formFields = $request->validate([
                     'vehicleId' => ['required'],
                     'customerId' => ['required'],
-                    'materialList' => ['nullable'],
                     'description' => ['nullable', 'max:255'],
-                    'finalizeDate' => ['nullable']
+                    'state' => ['required'],
+                    'finalizeDate' => ['nullable'],
+                    'createdBy' => ['required'],
+                    'updatedBy' => ['nullable'],
                 ]);
-        
                 Quotation::create($formFields);
         
                 return response()->json("Succesfully created");
             }
             else 
             {
-                return response()->json("Customer with given ID not exist!");
+                return response()->json("Vehicle with given ID not exist!");
             }
         }
         else 
@@ -66,11 +68,11 @@ class QuotationController extends Controller
                 $formFields = $request->validate([
                     'vehicleId' => ['required'],
                     'customerId' => ['required'],
-                    'materialList' => ['nullable'],
                     'description' => ['nullable', 'max:255'],
+                    'state' => ['required'],
                     'finalizeDate' => ['nullable']
                 ]);
-        
+                $quotation->updatedBy = Auth::user()->id;
                 $quotation->update($formFields);
 
                 return response()->json('Successfully updated');

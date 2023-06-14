@@ -9,7 +9,7 @@ class quotation extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'vehicleId', 'customerId', 'materialList', 'description', 'createDate', 'finalizeDate'
+        'vehicleId', 'customerId', 'createdBy', 'updatedBy', 'description', 'state', 'finalizeDate'
        ];
 
     public function vehicle()
@@ -20,9 +20,13 @@ class quotation extends Model
     {
        return $this->belongsTo(Customer::class, 'id');
     }
+    public function job()
+    {
+        return $this->hasMany(Job::class, 'id');
+    }
 
     public function worksheet()
     {
-        return $this->hasOne(Worksheet::class, 'quotationId', 'id',);
+        return $this->hasOne(Worksheet::class, 'quotationId', 'id');
     }
 }

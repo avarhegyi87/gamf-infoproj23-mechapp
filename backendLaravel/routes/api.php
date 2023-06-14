@@ -8,6 +8,7 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\QuotationController;
 use App\Http\Controllers\WorksheetController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\JobController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,6 +60,13 @@ Route::get('/quotation/getAll', [QuotationController::class, 'getAll'])->name('g
 Route::post('/quotation/create', [QuotationController::class, 'create'])->name('create');
 Route::post('/quotation/{quotation}', [QuotationController::class, 'update'])->name('update');
 Route::delete('/quotation/{quotation}', [QuotationController::class, 'delete'])->name('delete');
+
+//Job routes
+Route::get('/job/get/{job}', [JobController::class, 'get'])->name('get');
+Route::get('/job/getAll', [JobController::class, 'getAll'])->name('getAll');
+Route::post('/job/create', [JobController::class, 'create'])->name('create');
+Route::post('/job/{job}', [JobController::class, 'update'])->name('update');
+Route::delete('/job/{job}', [JobController::class, 'delete'])->name('delete');
 
 //Worksheet routes
 Route::get('/worksheet/get/{worksheet}', [WorksheetController::class, 'get'])->name('get');

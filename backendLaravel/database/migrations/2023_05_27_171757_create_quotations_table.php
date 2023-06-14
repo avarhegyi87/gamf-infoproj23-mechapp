@@ -15,8 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('vehicleId')->constrained('vehicles', 'id')->onUpdate('cascade');
             $table->foreignId('customerId')->constrained('customers', 'id')->onUpdate('cascade');
-            $table->string('materialList');
+            $table->foreignId('createdBy');
+            $table->foreignId('updatedBy')->nullable();
             $table->string('description');
+            $table->integer('state');
             $table->timestamp('finalizeDate')->nullable();
             $table->timestamps();
         });
