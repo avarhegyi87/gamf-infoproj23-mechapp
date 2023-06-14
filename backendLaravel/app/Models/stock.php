@@ -11,4 +11,9 @@ class stock extends Model
     protected $fillable = [
         'materialNumber', 'description', 'currentStock', 'netPrice'
        ];
+
+    public function job()
+    {
+        return $this->hasMany(Job::class, 'materialId', 'id');
+    }
 }
