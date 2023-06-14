@@ -64,9 +64,11 @@ Route::delete('/quotation/{quotation}', [QuotationController::class, 'delete'])-
 //Job routes
 Route::get('/job/get/{job}', [JobController::class, 'get'])->name('get');
 Route::get('/job/getAll', [JobController::class, 'getAll'])->name('getAll');
+Route::get('/job/getByQuotationId', [JobController::class, 'getByQuotationId'])->name('getByQuotationId');
 Route::post('/job/create', [JobController::class, 'create'])->name('create');
 Route::post('/job/{job}', [JobController::class, 'update'])->name('update');
 Route::delete('/job/{job}', [JobController::class, 'delete'])->name('delete');
+
 
 //Worksheet routes
 Route::get('/worksheet/get/{worksheet}', [WorksheetController::class, 'get'])->name('get');

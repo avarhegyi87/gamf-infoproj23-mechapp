@@ -64,6 +64,11 @@ class JobController extends Controller
         }
     }
 
+    public function getByQuotationId(Request $request){
+        $jobs = Job::where('quotationId', $request -> quotationId)->get();
+        return response()->json($jobs);
+    }
+
     public function getAll()
     {
         return response()->json(Job::get());
