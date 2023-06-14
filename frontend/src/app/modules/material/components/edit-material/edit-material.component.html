@@ -1,1 +1,47 @@
-<p>edit-material works!</p>
+<h1>Cikk adatainak módosítása</h1>
+<a mat-button routerLink="/material/list"><mat-icon>arrow_back</mat-icon> Vissza az árucikkek / szolgáltatások
+  listájához</a>
+
+<div class="form-container">
+  <form (ngSubmit)="onSubmit()" [formGroup]="editMaterialForm">
+    <div class="input-container">
+      <mat-form-field class="input-field">
+        <mat-label>Cikkszám</mat-label>
+        <input matInput formControlName="materialNumber" [(ngModel)]="materialDetails.materialNumber">
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Típus</mat-label>
+        <input matInput formControlName="materialType" [(ngModel)]="currentMaterialTypeLabel">
+        <mat-error *ngIf="isInvalid('materialType')"></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Leírás</mat-label>
+        <input matInput formControlName="description" [(ngModel)]="materialDetails.description">
+        <mat-error *ngIf="isInvalid('description')">
+          Adjon meg egy 6 és 50 karakter közötti terméknevet!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Aktuális készlet</mat-label>
+        <input matInput type="number" formControlName="currentStock" [(ngModel)]="materialDetails.currentStock">
+        <mat-error *ngIf="isInvalid('currentStock')"></mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="input-field">
+        <mat-label>Nettó ár</mat-label>
+        <input matInput type="number" formControlName="netPrice" [(ngModel)]="materialDetails.netPrice">
+        <mat-error *ngIf="isInvalid('netPrice')">
+          Érvényes árat adjon meg!
+        </mat-error>
+      </mat-form-field>
+
+      <div class="button-container">
+        <button mat-raised-button color="primary" [disabled]="editMaterialForm.invalid" type="submit"
+          class="submit-button">Mentés</button>
+      </div>
+    </div>
+  </form>
+</div>
