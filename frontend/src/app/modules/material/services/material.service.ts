@@ -35,7 +35,7 @@ export class MaterialService {
   }
 
   updateMaterial(id: string, updateMaterialRequest: Material): Observable<Material> {
-    return this.http.put<Material>(`${this.url}/put/${id}`, updateMaterialRequest);
+    return this.http.post<Material>(`${this.url}/put/${id}`, updateMaterialRequest);
   }
 
   deleteMaterial(id: string): Observable<Material> {
