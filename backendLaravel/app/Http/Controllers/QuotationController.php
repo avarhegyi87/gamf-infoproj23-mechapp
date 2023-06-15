@@ -112,6 +112,21 @@ class QuotationController extends Controller
         return response()->json($quotation);
     }
 
+    public function getByCustomerId(int $id){
+        $jobs = Quotation::where('customerId', $id)->get();
+        return response()->json($jobs);
+    }
+
+    public function getByVehicleId(int $id){
+        $jobs = Quotation::where('vehicleId', $id)->get();
+        return response()->json($jobs);
+    }
+
+    public function getByState(string $state){
+        $jobs = Quotation::where('state', $state)->get();
+        return response()->json($jobs);
+    }
+
     public function getAll()
     {
         /*if ( Auth::id() != 2 && Auth::user()->role != 3 && && Auth::user()->role != 4) {

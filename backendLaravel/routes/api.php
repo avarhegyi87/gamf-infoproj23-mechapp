@@ -55,6 +55,9 @@ Route::post('/vehicle/put/{vehicle}', [VehicleController::class, 'update'])->nam
 Route::delete('/vehicle/delete/{vehicle}', [VehicleController::class, 'delete'])->name('delete');
 
 //Quotation routes
+Route::get('/quotation/getByCustomerId/{id}', [QuotationController::class, 'getByCustomerId'])->name('getByCustomerId');
+Route::get('/quotation/getByVehicleId/{id}', [QuotationController::class, 'getByVehicleId'])->name('getByVehicleId');
+Route::get('/quotation/getByState/{state}', [QuotationController::class, 'getByState'])->name('getByState');
 Route::get('/quotation/get/{quotation}', [QuotationController::class, 'get'])->name('get');
 Route::get('/quotation/getAll', [QuotationController::class, 'getAll'])->name('getAll');
 Route::post('/quotation/create', [QuotationController::class, 'create'])->name('create');
