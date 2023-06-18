@@ -16,4 +16,9 @@ class worksheet extends Model
     {
        return $this->belongsTo(Quotation::class, 'id');
     }
+
+    public function job()
+    {
+        return $this->hasMany(Job::class, 'worksheetId', 'id');
+    }
 }

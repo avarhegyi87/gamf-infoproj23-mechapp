@@ -22,7 +22,7 @@ class quotation extends Model
     }
     public function job()
     {
-        return $this->hasMany(Job::class, 'id');
+        return $this->hasMany(Job::class, 'quotationId', 'id');
     }
 
     public function worksheet()
