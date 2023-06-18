@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 
 import { Customer } from 'src/app/modules/customer/models/customer.model';
 import { Vehicle } from 'src/app/modules/vehicle/models/vehicle.model';
+import { Job } from 'src/app/modules/job/models/job.model';
+import { Material } from 'src/app/modules/material/models/material.model';
 import {
   FormBuilder,
   FormControl,
@@ -13,6 +15,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable, map, startWith } from 'rxjs';
 import { CustomerService } from 'src/app/modules/customer/services/customer.service';
 import { VehicleService } from 'src/app/modules/vehicle/services/vehicle.service';
+import { JobService } from 'src/app/modules/job/services/job.service';
+import { MaterialService } from 'src/app/modules/material/services/material.service';
 
 @Component({
   selector: 'app-add-quotation',
@@ -22,6 +26,16 @@ import { VehicleService } from 'src/app/modules/vehicle/services/vehicle.service
 export class AddQuotationComponent implements OnInit {
   addQuotationForm!: FormGroup;
   customers: Customer[] = [];
+  jobs: Job[] = [];
+  parts: Material[] = [];
+  addedParts: Material[] = [];
+  partControl = new FormControl<string | Material>('');
+  filteredParts!: Observable<Material[]>;
+
+  jobTypes: Material[] = [];
+  addedJobTypes: Material[] = [];
+  jobTypesControl = new FormControl<string | Material>('');
+  filteredJobTypes!: Observable<Material[]>;
   filteredCustomers!: Observable<Customer[]>;
   customerControl = new FormControl<string | Customer>('');
   vehicles: Vehicle[] = [];
@@ -39,10 +53,20 @@ export class AddQuotationComponent implements OnInit {
     private router: Router,
     private vehicleService: VehicleService,
     private customerService: CustomerService,
+    private jobService: JobService,
+    private materialService: MaterialService,
     private snackBar: MatSnackBar,
   ) {
     this.customerService.getAllCustomers().subscribe(customers => {
       this.customers = customers;
+    });
+
+    this.materialService.getMaterials().subscribe(materials => {
+      this.parts = materials;
+    });
+
+    this.materialService.getWorks().subscribe(materials => {
+      this.jobTypes = materials;
     });
 
     this._addQuotationRequest = {
@@ -52,6 +76,8 @@ export class AddQuotationComponent implements OnInit {
       createdBy: null,
       updatedBy: null,
       description: null,
+      parts:null,
+      jobTypes: null,
       state: null,
       finalizeDate: null,
     };
@@ -74,6 +100,16 @@ export class AddQuotationComponent implements OnInit {
     return this.vehicles.filter(option => option.licencePlate.toLowerCase().includes(filterValue));
   }
 
+  private _filterPart(searchTerm: string): Material[] {
+    const filterValue = searchTerm.toLowerCase();
+    return this.parts.filter(option => option.description.toLowerCase().includes(filterValue));
+  }
+
+  private _filterJobTypes(searchTerm: string): Material[] {
+    const filterValue = searchTerm.toLowerCase();
+    return this.jobTypes.filter(option => option.description.toLowerCase().includes(filterValue));
+  }
+
   displayCust(customer: Customer): string {
     return customer?.name ? customer.name : '';
   }
@@ -92,6 +128,24 @@ export class AddQuotationComponent implements OnInit {
 
   onVehicleOptionSelected(vehicle: Vehicle) {
     this._addQuotationRequest.vehicleId = vehicle.id;
+  }
+
+  displayParts(part: Material): string {
+    return part.description ? part.description : '';
+  }
+
+  onPartOptionSelected(part: Material) {
+    this.addedParts.push(part);
+    console.log(this.addedParts);
+  }
+
+  displayJobTypes(part: Material): string {
+    return part.description ? part.description : '';
+  }
+
+  onJobTypesOptionSelected(mat: Material) {
+    this.addedJobTypes.push(mat);
+    console.log(this.addedJobTypes);
   }
 
   isInvalid(field: string): boolean {
@@ -116,10 +170,31 @@ export class AddQuotationComponent implements OnInit {
         return licencePlate ? this._filterVehicle(licencePlate as string) : this.vehicles.slice();
       }),
     );
+
+    this.filteredParts = this.partControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const description = typeof value === 'string' ? value : value?.description;
+        return description ? this._filterPart(description as string) : this.parts.slice();
+      }),
+    );
+
+    this.filteredJobTypes = this.jobTypesControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const description = typeof value === 'string' ? value : value?.description;
+        return description ? this._filterJobTypes(description as string) : this.jobTypes.slice();
+      }),
+    );
+
     this.addQuotationForm = this.formBuilder.group({
       customer: [null, this._addQuotationRequest.customerId && this._addQuotationRequest.customerId > 0],
 
       vehicle: [null, this._addQuotationRequest.vehicleId && this._addQuotationRequest.vehicleId > 0],
+
+      parts: [null, this._addQuotationRequest.parts && this._addQuotationRequest.parts > 0],
+
+      jobTypes: [null, this._addQuotationRequest.jobTypes && this._addQuotationRequest.jobTypes > 0],
 
       description: [
         '',

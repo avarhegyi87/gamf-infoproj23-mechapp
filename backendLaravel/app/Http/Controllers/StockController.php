@@ -121,6 +121,27 @@ class StockController extends Controller
         $stock = DB::table('stocks')->where('materialNumber', $last)->first();
         return response()->json($stock);
     }
+
+    public function getMaterials()
+    {
+        /*if ( Auth::id() != 2 && Auth::user()->role != 3 &&  Auth::user()->role != 4) {
+            return abort(403);
+        }*/
+        $mats = Stock::whereRaw('materialNumber < 60000000')->get();
+       
+        return response()->json($mats);
+    }
+
+    public function getWorks()
+    {
+        /*if ( Auth::id() != 2 && Auth::user()->role != 3 &&  Auth::user()->role != 4) {
+            return abort(403);
+        }*/
+        $works = Stock::whereRaw('materialNumber >= 60000000')->get();
+       
+        return response()->json($works);
+    }
+
     public function getLastService()
     {
         /*if ( Auth::id() != 2 && Auth::user()->role != 3 &&  Auth::user()->role != 4) {

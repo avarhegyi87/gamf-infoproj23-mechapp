@@ -18,6 +18,14 @@ export class MaterialService {
     return this.http.get<Material[]>(`${this.url}/getAll`);
   }
 
+  getMaterials(): Observable<Material[]> {
+    return this.http.get<Material[]>(`${this.url}/getMaterials`);
+  }
+
+  getWorks(): Observable<Material[]> {
+    return this.http.get<Material[]>(`${this.url}/getWorks`);
+  }
+
   getLastMaterial(): Observable<Material> {
     return this.http.get<Material>(`${this.url}/getLastMaterial`);
   }
