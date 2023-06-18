@@ -20,8 +20,8 @@ class VehicleController extends Controller
         }*/
         // validate form data
         $validator =  Validator::make($request->all(), [
-            'vin' => ['required', 'size: 17'],
-            'licencePlate' => ['required', 'min:6', 'max:7'],
+            'vin' => ['required'],
+            'licencePlate' => ['required'],
             'customerId' => ['required'],
             'productionYear' => ['required'],
             'mileage' => ['required'],
@@ -36,7 +36,7 @@ class VehicleController extends Controller
                 'status' => false,
                 'message' => 'validation error',
                 'errors' => $validator->errors()
-            ], 401);
+            ], 400);
         } else {
             Vehicle::create($request->all());
             return response()->json('Successfully added');
@@ -52,8 +52,8 @@ class VehicleController extends Controller
             return abort(403);
         }*/
         $validator =  Validator::make($request->all(), [
-            'vin' => ['required', 'size: 17'],
-            'licencePlate' => ['required', 'min:6', 'max:7'],
+            'vin' => ['required'],
+            'licencePlate' => ['required'],
             'customerId' => ['required'],
             'productionYear' => ['required'],
             'mileage' => ['required'],
@@ -68,7 +68,7 @@ class VehicleController extends Controller
                 'status' => false,
                 'message' => 'validation error',
                 'errors' => $validator->errors()
-            ], 401);
+            ], 400);
         } else {
             $vehicle->update($request->all());
             return response()->json('Successfully modified');

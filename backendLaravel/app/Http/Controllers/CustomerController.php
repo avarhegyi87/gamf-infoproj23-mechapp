@@ -21,15 +21,15 @@ class CustomerController extends Controller
 
         // validate form data
         $validator =  Validator::make($request->all(), [
-            'name' => ['required', 'min:3', 'max:40'],
-            'country' => ['required', 'min:3', 'max:16'],
+            'name' => ['required'],
+            'country' => ['required'],
             'city' => ['required'],
             'postcode' => ['required'],
-            'street' => ['required', 'min:3', 'max:25'],
-            'houseNumber' => ['required', 'min:1', 'max:5'],
+            'street' => ['required'],
+            'houseNumber' => ['required'],
             'email' => ['required', 'email'],
             'phoneNumber' => ['required'],
-            'taxNumber' => ['required', 'size:11'],
+            'taxNumber' => ['required'],
         ]);
 
         if ($validator->fails()) {
@@ -37,7 +37,7 @@ class CustomerController extends Controller
                 'status' => false,
                 'message' => 'validation error',
                 'errors' => $validator->errors()
-            ], 401);
+            ], 400);
         } else {
             Customer::create($request->all());
             return response()->json('Successfully added');
@@ -54,15 +54,15 @@ class CustomerController extends Controller
         }*/
 
         $validator =  Validator::make($request->all(), [
-            'name' => ['required', 'min:3', 'max:40'],
-            'country' => ['required', 'min:3', 'max:16'],
+            'name' => ['required'],
+            'country' => ['required'],
             'city' => ['required'],
             'postcode' => ['required'],
-            'street' => ['required', 'min:3', 'max:25'],
-            'houseNumber' => ['required', 'min:1', 'max:5'],
+            'street' => ['required'],
+            'houseNumber' => ['required'],
             'email' => ['required', 'email'],
             'phoneNumber' => ['required'],
-            'taxNumber' => ['required', 'size:11'],
+            'taxNumber' => ['required'],
         ]);
 
         if ($validator->fails()) {
@@ -70,7 +70,7 @@ class CustomerController extends Controller
                 'status' => false,
                 'message' => 'validation error',
                 'errors' => $validator->errors()
-            ], 401);
+            ], 400);
         } else {
             $customer->update($request->all());
             return response()->json('Successfully modified');
