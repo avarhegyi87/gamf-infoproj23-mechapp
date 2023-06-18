@@ -26,9 +26,10 @@ export class AddQuotationComponent implements OnInit {
   customerControl = new FormControl<string | Customer>('');
   vehicles: Vehicle[] = [];
   filteredVehicles!: Observable<Vehicle[]>;
-  VehicleControl = new FormControl<string | Vehicle>('');
+  vehicleControl = new FormControl<string | Vehicle>('');
   serviceList: String[] = [];
   materialList: String[] = [];
+  customerSelected: boolean = false;
   error = '';
   submitted = false;
   private _addQuotationRequest: any;
@@ -44,24 +45,91 @@ export class AddQuotationComponent implements OnInit {
       this.customers = customers;
     });
 
-    this.vehicleService.getAllVehicles().subscribe(vehicles => {
-      this.vehicles = vehicles;
-    });
-
     this._addQuotationRequest = {
-      id: 0,
-      customerId: 0,
-      vehicleId: 0,
-      createdBy: 0,
-      updatedBy: 0,
-      description: '',
-      state: 0,
-      finalizeDate: new Date(),
+      id: null,
+      customerId: null,
+      vehicleId: null,
+      createdBy: null,
+      updatedBy: null,
+      description: null,
+      state: null,
+      finalizeDate: null,
     };
+
+
+
+  }
+
+  get f() {
+    return this.addQuotationForm.controls;
+  }
+
+  private _filterCustomer(searchTerm: string): Customer[] {
+    const filterValue = searchTerm.toLowerCase();
+    return this.customers.filter(option => option.name.toLowerCase().includes(filterValue));
+  }
+
+  private _filterVehicle(searchTerm: string): Vehicle[] {
+    const filterValue = searchTerm.toLowerCase();
+    return this.vehicles.filter(option => option.licencePlate.toLowerCase().includes(filterValue));
+  }
+
+  displayCust(customer: Customer): string {
+    return customer?.name ? customer.name : '';
+  }
+
+  onCustomerOptionSelected(customer: Customer) {
+    this._addQuotationRequest.customerId = customer.id;
+    this.vehicleService.getVehiclesByCustomer(customer.id).subscribe(vehicles => {
+      this.vehicles = vehicles;
+      this.customerSelected = true;
+    });
+  }
+
+  displayVeh(vehicle: Vehicle): string {
+    return vehicle.licencePlate;
+  }
+
+  onVehicleOptionSelected(vehicle: Vehicle) {
+    this._addQuotationRequest.vehicleId = vehicle.id;
+  }
+
+  isInvalid(field: string): boolean {
+    return (
+      this.f[field].invalid && (this.f[field].touched || this.f[field].dirty)
+    );
   }
 
   ngOnInit(): void {
-    this.addQuotationForm = this.formBuilder.group({});
+    this.filteredCustomers = this.customerControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const customerName = typeof value === 'string' ? value : value?.name;
+        return customerName ? this._filterCustomer(customerName as string) : this.customers.slice();
+      }),
+    );
+
+    this.filteredVehicles = this.vehicleControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const licencePlate = typeof value === 'string' ? value : value?.licencePlate;
+        return licencePlate ? this._filterVehicle(licencePlate as string) : this.vehicles.slice();
+      }),
+    );
+    this.addQuotationForm = this.formBuilder.group({
+      customer: [null, this._addQuotationRequest.customerId && this._addQuotationRequest.customerId > 0],
+
+      vehicle: [null, this._addQuotationRequest.vehicleId && this._addQuotationRequest.vehicleId > 0],
+
+      description: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(255),
+        ]),
+      ],
+    });
   }
 
   onSubmit() {

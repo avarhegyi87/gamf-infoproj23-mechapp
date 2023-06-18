@@ -18,8 +18,8 @@ export class VehicleService {
     return this.http.get<Vehicle[]>(`${this.url}/getAll`);
   }
 
-  getVehiclesByCustomer(id: number): Observable<Vehicle[]> {
-    return this.http.get<Vehicle[]>(`'${this.url}/getallbycust?${id}`);
+  getVehiclesByCustomer(customerId: number): Observable<Vehicle[]> {
+    return this.http.get<Vehicle[]>(`${this.url}/getByCustomerId/${customerId}`);
   }
 
   getVehicle(id: number): Observable<Vehicle> {

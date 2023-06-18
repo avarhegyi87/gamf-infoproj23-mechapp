@@ -104,4 +104,10 @@ class VehicleController extends Controller
         }*/
         return response()->json(Vehicle::get());
     }
+
+    public function getByCustomerId(int $customerId)
+    {
+        $vehicles = Vehicle::where('customerId', $customerId)->get();
+        return response()->json($vehicles);
+    }
 }

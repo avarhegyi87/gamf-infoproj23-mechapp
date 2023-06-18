@@ -1,1 +1,52 @@
-<p>add-quotation works!</p>
+<h1>Új ajánlat felvétele</h1>
+<h3>Adja meg az ajánlat adatait!</h3>
+<div class="form-container">
+    <form (ngSubmit)="onSubmit()" [formGroup]="addQuotationForm">
+        <div class="input-container">
+            <mat-form-field class="input-field double-width"  [style.width.%]="100">
+            <mat-label>Partner</mat-label>
+            <input matInput [formControl]="customerControl" [matAutocomplete]="autoCust">
+            <mat-autocomplete #autoCust="matAutocomplete" [displayWith]="displayCust" (optionSelected)="onCustomerOptionSelected($event.option.value)">
+                <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer">
+                {{ customer.id }}: {{ customer.name }} ({{ customer.postcode }} {{ customer.city }})
+                </mat-option>
+            </mat-autocomplete>
+              <mat-error *ngIf="isInvalid('customer')">Válasszon egy ügyfelet!</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="input-container">
+            <mat-form-field class="input-field double-width"  [style.width.%]="100">
+            <mat-label>Jármű</mat-label>
+            <input matInput [formControl]="vehicleControl" [matAutocomplete]="autoVeh">
+            <mat-autocomplete #autoVeh="matAutocomplete" [displayWith]="displayVeh" (optionSelected)="onVehicleOptionSelected($event.option.value)">
+                <mat-option *ngFor="let vehicle of filteredVehicles | async" [value]="vehicle">
+                {{ vehicle.id }}: {{ vehicle.licencePlate }} ({{ vehicle.vin }})
+                </mat-option>
+            </mat-autocomplete>
+              <mat-error *ngIf="isInvalid('vehicle')">Válasszon egy járművet!</mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="input-container">
+            <mat-form-field class="input-field" [style.width.%]="100">
+            <mat-label>Hiba leírása</mat-label>
+            <textarea 
+            matInput 
+            formControlName="description" 
+            cdkTextareaAutosize
+            #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="10"></textarea>
+              <mat-error *ngIf="isInvalid('description')">
+                A megjegyzés legalább 10 és legfeljebb 255 karakter lehet!
+            </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div class="button-container">
+            <button mat-raised-button color="primary" [disabled]="addQuotationForm.invalid"
+            class="submit-button">Mentés</button>
+        </div>
+    </form>
+
+</div>

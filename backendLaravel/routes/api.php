@@ -49,6 +49,7 @@ Route::get('/stock/getLastMaterial', [StockController::class, 'getLastMaterial']
 
 //Vehicle routes
 Route::get('/vehicle/get/{vehicle}', [VehicleController::class, 'get'])->name('get');
+Route::get('/vehicle/getByCustomerId/{customerId}', [VehicleController::class, 'getByCustomerId'])->name('getByCustomerId');
 Route::get('/vehicle/getAll', [VehicleController::class, 'getAll'])->name('getAll');
 Route::post('/vehicle/create', [VehicleController::class, 'create'])->name('create');
 Route::post('/vehicle/put/{vehicle}', [VehicleController::class, 'update'])->name('update');
