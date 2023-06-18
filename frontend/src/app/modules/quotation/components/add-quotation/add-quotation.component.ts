@@ -50,11 +50,12 @@ export class AddQuotationComponent implements OnInit {
 
     this._addQuotationRequest = {
       id: 0,
-      customer: 0,
-      vehicle: 0,
-      serviceList: this.serviceList,
-      materialList: this.materialList,
+      customerId: 0,
+      vehicleId: 0,
+      createdBy: 0,
+      updatedBy: 0,
       description: '',
+      state: 0,
       finalizeDate: new Date(),
     };
   }
