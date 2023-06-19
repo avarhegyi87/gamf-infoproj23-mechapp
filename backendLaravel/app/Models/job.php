@@ -9,12 +9,17 @@ class Job extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'quotationId', 'materialId', 'unit'
+        'quotationId', 'worksheetId', 'materialId', 'unit'
        ];
 
     public function quotation()
     {
        return $this->belongsTo(Quotation::class, 'id');
+    }
+
+    public function worksheet()
+    {
+       return $this->belongsTo(Worksheet::class, 'id');
     }
 
     public function stock()

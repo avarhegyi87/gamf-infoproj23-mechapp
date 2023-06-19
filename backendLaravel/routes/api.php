@@ -58,11 +58,13 @@ Route::delete('/vehicle/delete/{vehicle}', [VehicleController::class, 'delete'])
 Route::get('/quotation/getByCustomerId/{id}', [QuotationController::class, 'getByCustomerId'])->name('getByCustomerId');
 Route::get('/quotation/getByVehicleId/{id}', [QuotationController::class, 'getByVehicleId'])->name('getByVehicleId');
 Route::get('/quotation/getByState/{state}', [QuotationController::class, 'getByState'])->name('getByState');
+Route::get('/quotation/getCreatedByVehicleId/{id}', [QuotationController::class, 'getCreatedByVehicleId'])->name('getCreatedByVehicleId');
+Route::get('/quotation/getActiveByVehicleId/{id}', [QuotationController::class, 'getCreatedByVehicleId'])->name('getCreatedByVehicleId');
+Route::get('/quotation/getInactiveByVehicleId/{id}', [QuotationController::class, 'getCreatedByVehicleId'])->name('getCreatedByVehicleId');
 Route::get('/quotation/get/{quotation}', [QuotationController::class, 'get'])->name('get');
 Route::get('/quotation/getAll', [QuotationController::class, 'getAll'])->name('getAll');
 Route::post('/quotation/create', [QuotationController::class, 'create'])->name('create');
 Route::post('/quotation/{quotation}', [QuotationController::class, 'update'])->name('update');
-Route::delete('/quotation/{quotation}', [QuotationController::class, 'delete'])->name('delete');
 
 //Job routes
 Route::get('/job/get/{job}', [JobController::class, 'get'])->name('get');

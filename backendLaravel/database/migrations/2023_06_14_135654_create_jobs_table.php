@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('jobs', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('quotationId')->constrained('quotations', 'id');
+            $table->foreignId('quotationId')->constrained('quotations', 'id')->nullable();
+            $table->foreignId('worksheetId')->constrained('worksheets', 'id')->nullable();
             $table->foreignId('materialId')->constrained('stocks', 'materialNumber');
             $table->integer('unit');
             $table->timestamps();

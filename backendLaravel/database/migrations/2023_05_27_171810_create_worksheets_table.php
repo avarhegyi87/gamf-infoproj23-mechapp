@@ -17,10 +17,10 @@ return new class extends Migration
             $table->timestamp('startDate');
             $table->timestamp('endDate')->nullable();
             $table->integer('garageId');
+            $table->foreignId('createdBy');
+            $table->foreignId('updatedBy')->nullable();
             $table->foreignId('quotationId')->constrained('quotations', 'id')->onUpdate('cascade');
             $table->string('comment');
-            $table->string('additionalWork');
-            $table->string('additionalParts');
             $table->boolean('invoiced');
             $table->timestamps();
         });

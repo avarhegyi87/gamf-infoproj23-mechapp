@@ -90,20 +90,6 @@ class QuotationController extends Controller
         
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function delete(string $id)
-    {
-        $quotation = Quotation::findOrFail($id);
-        /*if ( Auth::id() != 2 && Auth::user()->role != 3) {
-            return abort(403);
-        }*/
-        $quotation->delete();
-
-        return response()->json('Successfully deleted');
-    }
-
     public function get(Quotation $quotation)
     {
         /*if ( Auth::id() != 2 && Auth::user()->role != 3 && && Auth::user()->role != 4) {
@@ -121,6 +107,22 @@ class QuotationController extends Controller
         $jobs = Quotation::where('vehicleId', $id)->get();
         return response()->json($jobs);
     }
+
+    public function getCreatedByVehicleId(int $id){
+        $jobs = Quotation::where('vehicleId', $id)->where('state', 0)->get();
+        return response()->json($jobs);
+    }
+
+    public function getActiveByVehicleId(int $id){
+        $jobs = Quotation::where('vehicleId', $id)->where('state', 1)->get();
+        return response()->json($jobs);
+    }
+
+    public function getInactiveByVehicleId(int $id){
+        $jobs = Quotation::where('vehicleId', $id)->where('state', 2)->get();
+        return response()->json($jobs);
+    }
+
 
     public function getByState(string $state){
         $jobs = Quotation::where('state', $state)->get();
