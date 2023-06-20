@@ -61,13 +61,20 @@ export class AddQuotationComponent implements OnInit {
       this.customers = customers;
     });
 
-    this.materialService.getMaterials().subscribe(materials => {
-      this.parts = materials;
-    });
+  
 
-    this.materialService.getWorks().subscribe(materials => {
-      this.jobTypes = materials;
-    });
+  displayVeh(vehicle: Vehicle): string {
+    return vehicle.licencePlate;
+  }
+
+  onVehicleOptionSelected(vehicle: Vehicle) {
+    this._addQuotationRequest.vehicleId = vehicle.id;
+  }
+
+  isInvalid(field: string): boolean {
+    return (
+      this.f[field].invalid && (this.f[field].touched || this.f[field].dirty)
+    );
 
     this._addQuotationRequest = {
       id: null,

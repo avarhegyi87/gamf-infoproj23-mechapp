@@ -43,6 +43,7 @@
             </mat-form-field>
         </div>
 
+
         <div class="input-container">  
             <mat-form-field class="input-field" [style.width.%]="100">
                 <mat-label>Alkatrészek</mat-label>
@@ -69,7 +70,6 @@
               <mat-error *ngIf="isInvalid('jobTypes')">Válasszon egy elvégzendő munkát!</mat-error>
             </mat-form-field>
         </div>
-
         <div class="button-container">
             <button mat-raised-button color="primary" [disabled]="addQuotationForm.invalid"
             class="submit-button">Mentés</button>
