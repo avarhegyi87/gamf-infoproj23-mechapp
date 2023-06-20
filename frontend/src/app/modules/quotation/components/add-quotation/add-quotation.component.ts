@@ -81,9 +81,6 @@ export class AddQuotationComponent implements OnInit {
       state: null,
       finalizeDate: null,
     };
-
-
-
   }
 
   get f() {
