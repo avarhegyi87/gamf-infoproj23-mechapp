@@ -86,6 +86,7 @@ export class AddQuotationComponent implements OnInit {
     });
   }
 
+
   displayVeh(vehicle: Vehicle): string {
     return vehicle.licencePlate;
   }
