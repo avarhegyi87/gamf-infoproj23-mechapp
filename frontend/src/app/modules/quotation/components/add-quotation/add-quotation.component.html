@@ -43,6 +43,33 @@
             </mat-form-field>
         </div>
 
+
+        <div class="input-container">  
+            <mat-form-field class="input-field" [style.width.%]="100">
+                <mat-label>Alkatrészek</mat-label>
+                <input matInput [formControl]="partControl" [matAutocomplete]="autoPart">
+            <mat-autocomplete #autoPart="matAutocomplete" [displayWith]="displayParts" (optionSelected)="onPartOptionSelected($event.option.value)">
+                <mat-option *ngFor="let part of filteredParts | async" [value]="part">
+                {{ part.description }}: {{ part.materialNumber }}
+                </mat-option>
+            </mat-autocomplete>
+              <mat-error *ngIf="isInvalid('parts')">Válasszon egy alkatrészt!</mat-error>
+            </mat-form-field>
+        </div>
+
+
+        <div class="input-container">  
+            <mat-form-field class="input-field" [style.width.%]="100">
+                <mat-label>Elvégzendő munkafolyamatok</mat-label>
+                <input matInput [formControl]="jobTypesControl" [matAutocomplete]="autoJob">
+            <mat-autocomplete #autoJob="matAutocomplete" [displayWith]="displayJobTypes" (optionSelected)="onJobTypesOptionSelected($event.option.value)">
+                <mat-option *ngFor="let jobType of filteredJobTypes | async" [value]="jobType">
+                {{ jobType.description }}: {{ jobType.materialNumber }}
+                </mat-option>
+            </mat-autocomplete>
+              <mat-error *ngIf="isInvalid('jobTypes')">Válasszon egy elvégzendő munkát!</mat-error>
+            </mat-form-field>
+        </div>
         <div class="button-container">
             <button mat-raised-button color="primary" [disabled]="addQuotationForm.invalid"
             class="submit-button">Mentés</button>
