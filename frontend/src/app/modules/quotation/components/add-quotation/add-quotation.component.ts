@@ -43,7 +43,7 @@ export class AddQuotationComponent implements OnInit {
   vehicleControl = new FormControl<string | Vehicle>('');
   serviceList: String[] = [];
   materialList: String[] = [];
-  customerSelected: boolean = false;
+  customerSelected = false;
   error = '';
   submitted = false;
   private _addQuotationRequest: any;
@@ -60,8 +60,86 @@ export class AddQuotationComponent implements OnInit {
     this.customerService.getAllCustomers().subscribe(customers => {
       this.customers = customers;
     });
+  }
 
-  
+  ngOnInit(): void {
+    this.filteredCustomers = this.customerControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const customerName = typeof value === 'string' ? value : value?.name;
+        return customerName
+          ? this._filterCustomer(customerName as string)
+          : this.customers.slice();
+      }),
+    );
+
+    this.filteredVehicles = this.vehicleControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const licencePlate =
+          typeof value === 'string' ? value : value?.licencePlate;
+        return licencePlate
+          ? this._filterVehicle(licencePlate as string)
+          : this.vehicles.slice();
+      }),
+    );
+
+    this.filteredParts = this.partControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const description =
+          typeof value === 'string' ? value : value?.description;
+        return description
+          ? this._filterPart(description as string)
+          : this.parts.slice();
+      }),
+    );
+
+    this.filteredJobTypes = this.jobTypesControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const description =
+          typeof value === 'string' ? value : value?.description;
+        return description
+          ? this._filterJobTypes(description as string)
+          : this.jobTypes.slice();
+      }),
+    );
+
+    this.addQuotationForm = this.formBuilder.group({
+      customer: [
+        null,
+        this._addQuotationRequest.customerId &&
+          this._addQuotationRequest.customerId > 0,
+      ],
+
+      vehicle: [
+        null,
+        this._addQuotationRequest.vehicleId &&
+          this._addQuotationRequest.vehicleId > 0,
+      ],
+
+      parts: [
+        null,
+        this._addQuotationRequest.parts && this._addQuotationRequest.parts > 0,
+      ],
+
+      jobTypes: [
+        null,
+        this._addQuotationRequest.jobTypes &&
+          this._addQuotationRequest.jobTypes > 0,
+      ],
+
+      description: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(10),
+          Validators.maxLength(255),
+        ]),
+      ],
+    });
+  }
 
   displayVeh(vehicle: Vehicle): string {
     return vehicle.licencePlate;
@@ -83,7 +161,7 @@ export class AddQuotationComponent implements OnInit {
       createdBy: null,
       updatedBy: null,
       description: null,
-      parts:null,
+      parts: null,
       jobTypes: null,
       state: null,
       finalizeDate: null,
@@ -96,22 +174,30 @@ export class AddQuotationComponent implements OnInit {
 
   private _filterCustomer(searchTerm: string): Customer[] {
     const filterValue = searchTerm.toLowerCase();
-    return this.customers.filter(option => option.name.toLowerCase().includes(filterValue));
+    return this.customers.filter(option =>
+      option.name.toLowerCase().includes(filterValue),
+    );
   }
 
   private _filterVehicle(searchTerm: string): Vehicle[] {
     const filterValue = searchTerm.toLowerCase();
-    return this.vehicles.filter(option => option.licencePlate.toLowerCase().includes(filterValue));
+    return this.vehicles.filter(option =>
+      option.licencePlate.toLowerCase().includes(filterValue),
+    );
   }
 
   private _filterPart(searchTerm: string): Material[] {
     const filterValue = searchTerm.toLowerCase();
-    return this.parts.filter(option => option.description.toLowerCase().includes(filterValue));
+    return this.parts.filter(option =>
+      option.description.toLowerCase().includes(filterValue),
+    );
   }
 
   private _filterJobTypes(searchTerm: string): Material[] {
     const filterValue = searchTerm.toLowerCase();
-    return this.jobTypes.filter(option => option.description.toLowerCase().includes(filterValue));
+    return this.jobTypes.filter(option =>
+      option.description.toLowerCase().includes(filterValue),
+    );
   }
 
   displayCust(customer: Customer): string {
@@ -120,18 +206,12 @@ export class AddQuotationComponent implements OnInit {
 
   onCustomerOptionSelected(customer: Customer) {
     this._addQuotationRequest.customerId = customer.id;
-    this.vehicleService.getVehiclesByCustomer(customer.id).subscribe(vehicles => {
-      this.vehicles = vehicles;
-      this.customerSelected = true;
-    });
-  }
-
-  displayVeh(vehicle: Vehicle): string {
-    return vehicle.licencePlate;
-  }
-
-  onVehicleOptionSelected(vehicle: Vehicle) {
-    this._addQuotationRequest.vehicleId = vehicle.id;
+    this.vehicleService
+      .getVehiclesByCustomer(customer.id)
+      .subscribe(vehicles => {
+        this.vehicles = vehicles;
+        this.customerSelected = true;
+      });
   }
 
   displayParts(part: Material): string {
@@ -150,65 +230,6 @@ export class AddQuotationComponent implements OnInit {
   onJobTypesOptionSelected(mat: Material) {
     this.addedJobTypes.push(mat);
     console.log(this.addedJobTypes);
-  }
-
-  isInvalid(field: string): boolean {
-    return (
-      this.f[field].invalid && (this.f[field].touched || this.f[field].dirty)
-    );
-  }
-
-  ngOnInit(): void {
-    this.filteredCustomers = this.customerControl.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        const customerName = typeof value === 'string' ? value : value?.name;
-        return customerName ? this._filterCustomer(customerName as string) : this.customers.slice();
-      }),
-    );
-
-    this.filteredVehicles = this.vehicleControl.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        const licencePlate = typeof value === 'string' ? value : value?.licencePlate;
-        return licencePlate ? this._filterVehicle(licencePlate as string) : this.vehicles.slice();
-      }),
-    );
-
-    this.filteredParts = this.partControl.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        const description = typeof value === 'string' ? value : value?.description;
-        return description ? this._filterPart(description as string) : this.parts.slice();
-      }),
-    );
-
-    this.filteredJobTypes = this.jobTypesControl.valueChanges.pipe(
-      startWith(''),
-      map(value => {
-        const description = typeof value === 'string' ? value : value?.description;
-        return description ? this._filterJobTypes(description as string) : this.jobTypes.slice();
-      }),
-    );
-
-    this.addQuotationForm = this.formBuilder.group({
-      customer: [null, this._addQuotationRequest.customerId && this._addQuotationRequest.customerId > 0],
-
-      vehicle: [null, this._addQuotationRequest.vehicleId && this._addQuotationRequest.vehicleId > 0],
-
-      parts: [null, this._addQuotationRequest.parts && this._addQuotationRequest.parts > 0],
-
-      jobTypes: [null, this._addQuotationRequest.jobTypes && this._addQuotationRequest.jobTypes > 0],
-
-      description: [
-        '',
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(255),
-        ]),
-      ],
-    });
   }
 
   onSubmit() {

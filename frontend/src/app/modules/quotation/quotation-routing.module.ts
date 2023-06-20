@@ -7,7 +7,7 @@ const routes: Routes = [
   { path: '', component: QuotationListComponent },
   { path: 'list', component: QuotationListComponent },
   { path: 'add', component: AddQuotationComponent },
-  { path: 'edit/:id', component: QuotationListComponent },
+  { path: 'edit/:id', component: EditQuotationComponent },
 ];
 @NgModule({
   imports: [RouterModule.forChild(routes)],
