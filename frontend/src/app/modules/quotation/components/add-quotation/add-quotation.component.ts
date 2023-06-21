@@ -27,7 +27,7 @@ export class AddQuotationComponent implements OnInit {
   addQuotationForm!: FormGroup;
   customers: Customer[] = [];
   jobs: Job[] = [];
-  
+
   parts: Material[] = [];
   addedPart!: Material;
   partControl = new FormControl<string | Material>('');
@@ -43,7 +43,7 @@ export class AddQuotationComponent implements OnInit {
   vehicleControl = new FormControl<string | Vehicle>('');
   serviceList: String[] = [];
   materialList: String[] = [];
-  customerSelected: boolean = false;
+  customerSelected = false;
   error = '';
   submitted = false;
   private _addQuotationRequest: any;
@@ -85,72 +85,6 @@ export class AddQuotationComponent implements OnInit {
       state: null,
       finalizeDate: null,
     };
-  }
-
-  get f() {
-    return this.addQuotationForm.controls;
-  }
-
-  private _filterCustomer(searchTerm: string): Customer[] {
-    const filterValue = searchTerm.toLowerCase();
-    return this.customers.filter(option => option.name.toLowerCase().includes(filterValue));
-  }
-
-  private _filterVehicle(searchTerm: string): Vehicle[] {
-    const filterValue = searchTerm.toLowerCase();
-    return this.vehicles.filter(option => option.licencePlate.toLowerCase().includes(filterValue));
-  }
-
-  private _filterPart(searchTerm: string): Material[] {
-    const filterValue = searchTerm.toLowerCase();
-    return this.parts.filter(option => option.description.toLowerCase().includes(filterValue));
-  }
-
-  private _filterJobTypes(searchTerm: string): Material[] {
-    const filterValue = searchTerm.toLowerCase();
-    return this.jobTypes.filter(option => option.description.toLowerCase().includes(filterValue));
-  }
-
-  displayCust(customer: Customer): string {
-    return customer?.name ? customer.name : '';
-  }
-
-  onCustomerOptionSelected(customer: Customer) {
-    this._addQuotationRequest.customerId = customer.id;
-    this.vehicleService.getVehiclesByCustomer(customer.id).subscribe(vehicles => {
-      this.vehicles = vehicles;
-      this.customerSelected = true;
-    });
-  }
-
-  displayVeh(vehicle: Vehicle): string {
-    return vehicle.licencePlate;
-  }
-
-  onVehicleOptionSelected(vehicle: Vehicle) {
-    this._addQuotationRequest.vehicleId = vehicle.id;
-  }
-
-  displayParts(part: Material): string {
-    return part.description ? part.description : '';
-  }
-
-  onPartOptionSelected(part: Material) {
-    this.addedPart = part;
-  }
-
-  displayJobTypes(part: Material): string {
-    return part.description ? part.description : '';
-  }
-
-  onJobTypesOptionSelected(mat: Material) {
-    this.addedJobType = mat;
-  }
-
-  isInvalid(field: string): boolean {
-    return (
-      this.f[field].invalid && (this.f[field].touched || this.f[field].dirty)
-    );
   }
 
   ngOnInit(): void {
@@ -220,7 +154,72 @@ export class AddQuotationComponent implements OnInit {
         ]),
       ],
     });
+  }
 
+  get f() {
+    return this.addQuotationForm.controls;
+  }
+
+  private _filterCustomer(searchTerm: string): Customer[] {
+    const filterValue = searchTerm.toLowerCase();
+    return this.customers.filter(option => option.name.toLowerCase().includes(filterValue));
+  }
+
+  private _filterVehicle(searchTerm: string): Vehicle[] {
+    const filterValue = searchTerm.toLowerCase();
+    return this.vehicles.filter(option => option.licencePlate.toLowerCase().includes(filterValue));
+  }
+
+  private _filterPart(searchTerm: string): Material[] {
+    const filterValue = searchTerm.toLowerCase();
+    return this.parts.filter(option => option.description.toLowerCase().includes(filterValue));
+  }
+
+  private _filterJobTypes(searchTerm: string): Material[] {
+    const filterValue = searchTerm.toLowerCase();
+    return this.jobTypes.filter(option => option.description.toLowerCase().includes(filterValue));
+  }
+
+  displayCust(customer: Customer): string {
+    return customer?.name ? customer.name : '';
+  }
+
+  onCustomerOptionSelected(customer: Customer) {
+    this._addQuotationRequest.customerId = customer.id;
+    this.vehicleService.getVehiclesByCustomer(customer.id).subscribe(vehicles => {
+      this.vehicles = vehicles;
+      this.customerSelected = true;
+    });
+  }
+
+  displayVeh(vehicle: Vehicle): string {
+    return vehicle.licencePlate;
+  }
+
+  onVehicleOptionSelected(vehicle: Vehicle) {
+    this._addQuotationRequest.vehicleId = vehicle.id;
+  }
+
+  displayParts(part: Material): string {
+    return part.description ? part.description : '';
+  }
+
+  onPartOptionSelected(part: Material) {
+    this.addedPart = part;
+  }
+
+  displayJobTypes(part: Material): string {
+    return part.description ? part.description : '';
+  }
+
+  onJobTypesOptionSelected(mat: Material) {
+    this.addedJobType = mat;
+  }
+
+  isInvalid(field: string): boolean {
+    return (
+      this.f[field].invalid && (this.f[field].touched || this.f[field].dirty)
+    );
   }
 
   onSubmit() {
@@ -228,10 +227,10 @@ export class AddQuotationComponent implements OnInit {
   }
 
   addNewPart(){
-
-}
+    /**TODO: addNewPart for AddQuotation */
+  }
 
   addNewJob(){
-
+    /**TODO: addNewJob for AddQuotation */
   }
 }

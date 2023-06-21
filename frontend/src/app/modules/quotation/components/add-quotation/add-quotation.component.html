@@ -1,88 +1,108 @@
 <h1>Új ajánlat felvétele</h1>
-<h3>Adja meg az ajánlat adatait!</h3>
+<h3>Az ajánlat elkészítéséhez adja meg a szükséges adatokat!</h3>
+
 <div class="form-container">
   <form (ngSubmit)="onSubmit()" [formGroup]="addQuotationForm">
-    <div class="input-container">
-      <mat-form-field class="input-field double-width" [style.width.%]="100">
-        <mat-label>Partner</mat-label>
-        <input matInput [formControl]="customerControl" [matAutocomplete]="autoCust">
-        <mat-autocomplete #autoCust="matAutocomplete" [displayWith]="displayCust"
-          (optionSelected)="onCustomerOptionSelected($event.option.value)">
-          <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer">
-            {{ customer.id }}: {{ customer.name }} ({{ customer.postcode }} {{ customer.city }})
-          </mat-option>
-        </mat-autocomplete>
-        <mat-error *ngIf="isInvalid('customer')">Válasszon egy ügyfelet!</mat-error>
-      </mat-form-field>
-      <mat-form-field class="input-field double-width" [style.width.%]="100">
-        <mat-label>Jármű</mat-label>
-        <input matInput [formControl]="vehicleControl" [matAutocomplete]="autoVeh">
-        <mat-autocomplete #autoVeh="matAutocomplete" [displayWith]="displayVeh"
-          (optionSelected)="onVehicleOptionSelected($event.option.value)">
-          <mat-option *ngFor="let vehicle of filteredVehicles | async" [value]="vehicle">
-            {{ vehicle.id }}: {{ vehicle.licencePlate }} ({{ vehicle.vin }})
-          </mat-option>
-        </mat-autocomplete>
-        <mat-error *ngIf="isInvalid('vehicle')">Válasszon egy járművet!</mat-error>
-      </mat-form-field>
-      <mat-form-field class="input-field" [style.width.%]="100">
-        <mat-label>Hiba leírása</mat-label>
-        <textarea matInput formControlName="description" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
-          cdkAutosizeMinRows="1" cdkAutosizeMaxRows="10"></textarea>
-        <mat-error *ngIf="isInvalid('description')">
-          A megjegyzés legalább 10 és legfeljebb 255 karakter lehet!
-        </mat-error>
-      </mat-form-field>
+    <div class="form-container two-column-input-container">
+
+      <div class="input-container">
+
+        <mat-form-field class="input-field">
+          <mat-label>Partner</mat-label>
+          <input matInput [formControl]="customerControl" [matAutocomplete]="autoCust">
+          <mat-autocomplete #autoCust="matAutocomplete" [displayWith]="displayCust"
+            (optionSelected)="onCustomerOptionSelected($event.option.value)">
+            <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer">
+              {{ customer.id }}: {{ customer.name }} ({{ customer.postcode }} {{ customer.city }})
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="isInvalid('customer')">Válasszon egy ügyfelet!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="input-field">
+          <mat-label>Jármű</mat-label>
+          <input matInput [formControl]="vehicleControl" [matAutocomplete]="autoVeh">
+          <mat-autocomplete #autoVeh="matAutocomplete" [displayWith]="displayVeh"
+            (optionSelected)="onVehicleOptionSelected($event.option.value)">
+            <mat-option *ngFor="let vehicle of filteredVehicles | async" [value]="vehicle">
+              {{ vehicle.id }}: {{ vehicle.licencePlate }} ({{ vehicle.vin }})
+            </mat-option>
+          </mat-autocomplete>
+          <mat-error *ngIf="isInvalid('vehicle')">Válasszon egy járművet!</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="input-field">
+          <mat-label>Hiba leírása</mat-label>
+          <textarea matInput formControlName="description" cdkTextareaAutosize #autosize="cdkTextareaAutosize"
+            cdkAutosizeMinRows="3" cdkAutosizeMaxRows="10">
+          </textarea>
+          <mat-error *ngIf="isInvalid('description')">
+            A megjegyzés legalább 10 és legfeljebb 255 karakter lehet!
+          </mat-error>
+        </mat-form-field>
+
+      </div>
+
+      <div class="input-container">
+
+        <div class="sub-form">
+          <mat-form-field class="input-field">
+            <mat-label>Alkatrészek</mat-label>
+            <input matInput [formControl]="partControl" [matAutocomplete]="autoPart">
+            <mat-autocomplete #autoPart="matAutocomplete" [displayWith]="displayParts"
+              (optionSelected)="onPartOptionSelected($event.option.value)">
+              <mat-option *ngFor="let part of filteredParts | async" [value]="part">
+                {{ part.description }}: {{ part.materialNumber }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="isInvalid('parts')">Válasszon egy alkatrészt!</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="input-field narrow">
+            <mat-label>Mennyiség</mat-label>
+            <input matInput formControlName="partQuantity" type="number" [(ngModel)]="partQuantity">
+            <mat-error *ngIf="isInvalid('partQuantity')">
+              A mennyiség megadása szükséges.
+            </mat-error>
+          </mat-form-field>
+          <button mat-raised-button class="sub-form-button" (click)="addNewPart()">
+            <mat-icon>save</mat-icon>
+          </button>
+        </div>
+
+        <div class="sub-form">
+          <mat-form-field class="input-field">
+            <mat-label>Elvégzendő munkafolyamatok</mat-label>
+            <input matInput [formControl]="jobTypesControl" [matAutocomplete]="autoJob">
+            <mat-autocomplete #autoJob="matAutocomplete" [displayWith]="displayJobTypes"
+              (optionSelected)="onJobTypesOptionSelected($event.option.value)">
+              <mat-option *ngFor="let jobType of filteredJobTypes | async" [value]="jobType">
+                {{ jobType.description }}: {{ jobType.materialNumber }}
+              </mat-option>
+            </mat-autocomplete>
+            <mat-error *ngIf="isInvalid('jobTypes')">Válasszon egy elvégzendő munkát!</mat-error>
+          </mat-form-field>
+
+          <mat-form-field class="input-field narrow">
+            <mat-label>Mennyiség</mat-label>
+            <input matInput formControlName="jobQuantity" type="number" [(ngModel)]="jobQuantity">
+            <mat-error *ngIf="isInvalid('jobQuantity')">
+              A mennyiség megadása szükséges.
+            </mat-error>
+          </mat-form-field>
+          <button mat-raised-button class="sub-form-button" (click)="addNewJob()">
+            <mat-icon>save</mat-icon>
+          </button>
+
+        </div>
+      </div>
     </div>
 
-
-    <div class="input-container">
-      <mat-form-field class="input-field" [style.width.%]="100">
-        <mat-label>Alkatrészek</mat-label>
-        <input matInput [formControl]="partControl" [matAutocomplete]="autoPart">
-        <mat-autocomplete #autoPart="matAutocomplete" [displayWith]="displayParts"
-          (optionSelected)="onPartOptionSelected($event.option.value)">
-          <mat-option *ngFor="let part of filteredParts | async" [value]="part">
-            {{ part.description }}: {{ part.materialNumber }}
-          </mat-option>
-        </mat-autocomplete>
-        <mat-error *ngIf="isInvalid('parts')">Válasszon egy alkatrészt!</mat-error>
-      </mat-form-field>
-      <mat-form-field class="input-field" [style.width.%]="100">
-        <mat-label>Mennyiség</mat-label>
-        <input matInput formControlName="partQuantity" type="number" [(ngModel)]="partQuantity">
-        <mat-error *ngIf="isInvalid('partQuantity')">
-          A mennyiség megadása szükséges.
-        </mat-error>
-      </mat-form-field>
-      <button mat-raised-button (click)="addNewPart()" style="margin-top: 10px">Alkatrész hozzáadás</button>
-    </div>
-
-    <div class="input-container">
-      <mat-form-field class="input-field" [style.width.%]="100">
-        <mat-label>Elvégzendő munkafolyamatok</mat-label>
-        <input matInput [formControl]="jobTypesControl" [matAutocomplete]="autoJob">
-        <mat-autocomplete #autoJob="matAutocomplete" [displayWith]="displayJobTypes"
-          (optionSelected)="onJobTypesOptionSelected($event.option.value)">
-          <mat-option *ngFor="let jobType of filteredJobTypes | async" [value]="jobType">
-            {{ jobType.description }}: {{ jobType.materialNumber }}
-          </mat-option>
-        </mat-autocomplete>
-        <mat-error *ngIf="isInvalid('jobTypes')">Válasszon egy elvégzendő munkát!</mat-error>
-      </mat-form-field>
-      <mat-form-field class="input-field" [style.width.%]="100">
-        <mat-label>Mennyiség</mat-label>
-        <input matInput formControlName="jobQuantity" type="number" [(ngModel)]="jobQuantity">
-        <mat-error *ngIf="isInvalid('jobQuantity')">
-          A mennyiség megadása szükséges.
-        </mat-error>
-      </mat-form-field>
-      <button mat-raised-button (click)="addNewJob()" style="margin-top: 10px">Munkafolyamat hozzáadás</button>
-    </div>
     <div class="button-container">
-      <button mat-raised-button color="primary" [disabled]="addQuotationForm.invalid"
-        class="submit-button">Mentés</button>
+      <button mat-raised-button color="primary" [disabled]="addQuotationForm.invalid" class="submit-button">
+        Mentés
+      </button>
     </div>
-  </form>
 
+  </form>
 </div>

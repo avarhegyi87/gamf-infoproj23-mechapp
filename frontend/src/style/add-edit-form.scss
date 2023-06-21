@@ -1,4 +1,6 @@
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   text-align: center;
 }
 
@@ -8,6 +10,48 @@ h1, h2, h3 {
   max-width: 1000px;
   margin: auto;
   margin-top: 3rem;
+
+  &.two-column-input-container {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 10px;
+
+    .input-container{
+      width: 100%;
+
+      .input-field {
+        margin-bottom: 1rem;
+        padding-bottom: 2rem;
+        width: 100%;
+
+        @media (min-width: 768px) {
+          margin: 0 10px;
+          max-width: 300px;
+        }
+
+        @media (max-width: 767px) {
+          margin: auto;
+          max-width: 300px;
+        }
+
+        &.narrow {
+          max-width: 100px;
+        }
+      }
+
+      .sub-form {
+        display: flex;
+        width: 100%;
+
+        .sub-form-button {
+          justify-content: right;
+          padding: 10px 16px;
+          max-width: 64px;
+          max-height: 50px;
+        }
+      }
+    }
+  }
 
   .input-container {
     display: flex;
@@ -49,7 +93,8 @@ h1, h2, h3 {
       align-content: center;
     }
 
-    .submit-button, .cancel-button {
+    .submit-button,
+    .cancel-button {
       width: 100%;
       max-width: 300px;
 
