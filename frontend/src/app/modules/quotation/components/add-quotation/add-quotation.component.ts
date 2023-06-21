@@ -27,12 +27,13 @@ export class AddQuotationComponent implements OnInit {
   addQuotationForm!: FormGroup;
   customers: Customer[] = [];
   jobs: Job[] = [];
+  
   parts: Material[] = [];
-  addedParts: Material[] = [];
+  addedPart!: Material;
   partControl = new FormControl<string | Material>('');
   filteredParts!: Observable<Material[]>;
   jobTypes: Material[] = [];
-  addedJobTypes: Material[] = [];
+  addedJobType!: Material;
   jobTypesControl = new FormControl<string | Material>('');
   filteredJobTypes!: Observable<Material[]>;
   filteredCustomers!: Observable<Customer[]>;
@@ -46,6 +47,10 @@ export class AddQuotationComponent implements OnInit {
   error = '';
   submitted = false;
   private _addQuotationRequest: any;
+  jobQuantity!: number;
+  partQuantity!: number;
+  tableJobs: Job[] = [];
+  tableParts: Job[] = [];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -131,8 +136,7 @@ export class AddQuotationComponent implements OnInit {
   }
 
   onPartOptionSelected(part: Material) {
-    this.addedParts.push(part);
-    console.log(this.addedParts);
+    this.addedPart = part;
   }
 
   displayJobTypes(part: Material): string {
@@ -140,8 +144,7 @@ export class AddQuotationComponent implements OnInit {
   }
 
   onJobTypesOptionSelected(mat: Material) {
-    this.addedJobTypes.push(mat);
-    console.log(this.addedJobTypes);
+    this.addedJobType = mat;
   }
 
   isInvalid(field: string): boolean {
@@ -200,10 +203,35 @@ export class AddQuotationComponent implements OnInit {
           Validators.maxLength(255),
         ]),
       ],
+      partQuantity: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(0),
+          Validators.maxLength(100),
+        ]),
+      ],
+      jobQuantity: [
+        '',
+        Validators.compose([
+          Validators.required,
+          Validators.minLength(0),
+          Validators.maxLength(100),
+        ]),
+      ],
     });
+
   }
 
   onSubmit() {
     /**TODO: onSubmit for AddQuotation */
+  }
+
+  addNewPart(){
+
+}
+
+  addNewJob(){
+
   }
 }
