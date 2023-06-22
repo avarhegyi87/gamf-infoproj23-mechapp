@@ -68,7 +68,9 @@
           <button mat-raised-button class="sub-form-button" (click)="addNewPart()">
             <mat-icon>save</mat-icon>
           </button>
+         
         </div>
+        <app-dynamic-table [tableForm]="partsTableForm"></app-dynamic-table>
 
         <div class="sub-form">
           <mat-form-field class="input-field">
@@ -93,10 +95,12 @@
           <button mat-raised-button class="sub-form-button" (click)="addNewJob()">
             <mat-icon>save</mat-icon>
           </button>
-
+          
         </div>
+        <app-dynamic-table [tableForm]="jobsTableForm"></app-dynamic-table>
       </div>
     </div>
+
 
     <div class="button-container">
       <button mat-raised-button color="primary" [disabled]="addQuotationForm.invalid" class="submit-button">

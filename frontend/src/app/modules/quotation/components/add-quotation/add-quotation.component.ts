@@ -24,6 +24,11 @@ import { MaterialService } from 'src/app/modules/material/services/material.serv
   styleUrls: ['./add-quotation.component.scss'],
 })
 export class AddQuotationComponent implements OnInit {
+  partsTableForm!: FormGroup;
+  partsTableGroup!:FormGroup;
+  jobsTableForm!: FormGroup;
+  jobsTableGroup!:FormGroup;
+
   addQuotationForm!: FormGroup;
   customers: Customer[] = [];
   jobs: Job[] = [];
@@ -88,6 +93,27 @@ export class AddQuotationComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    this.partsTableForm = this.formBuilder.group({
+      tableGroup: this.formBuilder.group({
+      parentItem1: [''],
+      }),
+      tableArray: this.formBuilder.array([]) //Notice how we didn't put any controls in here?
+      });
+
+    this.partsTableGroup = this.partsTableForm.get('tableGroup') as FormGroup;
+
+
+    this.jobsTableForm = this.formBuilder.group({
+      tableGroup: this.formBuilder.group({
+      parentItem1: [''],
+      }),
+      tableArray: this.formBuilder.array([]) //Notice how we didn't put any controls in here?
+      });
+
+    this.jobsTableGroup = this.jobsTableForm.get('tableGroup') as FormGroup;
+
+
     this.filteredCustomers = this.customerControl.valueChanges.pipe(
       startWith(''),
       map(value => {
@@ -222,15 +248,33 @@ export class AddQuotationComponent implements OnInit {
     );
   }
 
+  public get partsTableArray(): any {
+    return this.partsTableForm.get('tableArray') as FormGroup;
+  }
+
+  public get jobsTableArray(): any {
+    return this.jobsTableForm.get('tableArray') as FormGroup;
+  }
+
   onSubmit() {
     /**TODO: onSubmit for AddQuotation */
   }
 
   addNewPart(){
-    /**TODO: addNewPart for AddQuotation */
+
+    this.partsTableArray.push(this.formBuilder.group({
+      materialNumber: this.addedPart.materialNumber, 
+      description: this.addedPart.description,
+      unit: this.partQuantity,}));
+      console.log(this.partsTableArray);
+      
   }
 
   addNewJob(){
-    /**TODO: addNewJob for AddQuotation */
+    this.jobsTableArray.push(this.formBuilder.group({
+      materialNumber: this.addedJobType.materialNumber, 
+      description: this.addedJobType.description,
+      unit: this.jobQuantity,}));
+      console.log(this.jobsTableArray);
   }
 }

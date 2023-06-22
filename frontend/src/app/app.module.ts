@@ -18,6 +18,7 @@ import { UserService } from './modules/users/services/user.service';
 import { ErrorInterceptor, FakeBackendInterceptor, JwtInterceptor, fakeBackendProvider } from './shared/helpers';
 import { JobComponent } from './modules/job/job.component';
 
+import { MatTableModule } from '@angular/material/table' ;
 @NgModule({
   declarations: [AppComponent, JobComponent],
   imports: [
@@ -30,6 +31,7 @@ import { JobComponent } from './modules/job/job.component';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    MatTableModule,
   ],
   providers: [
     UserService,

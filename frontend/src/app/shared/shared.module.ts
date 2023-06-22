@@ -13,6 +13,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatDialogModule } from "@angular/material/dialog";
+import { DynamicTableComponent } from './components/dynamic-table/dynamic-table.component';
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [HeaderComponent, DeletionModalComponent],
@@ -27,6 +29,7 @@ import { MatDialogModule } from "@angular/material/dialog";
     MatSidenavModule,
     MatTabsModule,
     MatDialogModule,
+    MatTableModule,
   ],
   exports: [HeaderComponent, DeletionModalComponent],
 })

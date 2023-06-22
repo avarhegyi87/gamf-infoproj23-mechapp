@@ -19,12 +19,14 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatAutocompleteModule } from "@angular/material/autocomplete";
+import { DynamicTableComponent } from 'src/app/shared/components/dynamic-table/dynamic-table.component';
 
 @NgModule({
   declarations: [
     AddQuotationComponent,
     EditQuotationComponent,
     QuotationListComponent,
+    DynamicTableComponent,
   ],
   imports: [
     CommonModule,
