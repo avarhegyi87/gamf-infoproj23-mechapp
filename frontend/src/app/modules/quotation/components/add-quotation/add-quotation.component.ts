@@ -96,20 +96,20 @@ export class AddQuotationComponent implements OnInit {
 
     this.partsTableForm = this.formBuilder.group({
       tableGroup: this.formBuilder.group({
-      parentItem1: [''],
+        parentItem1: [''],
       }),
-      tableArray: this.formBuilder.array([]) //Notice how we didn't put any controls in here?
-      });
+      tableArray: this.formBuilder.array([]), //Notice how we didn't put any controls in here?
+    });
 
     this.partsTableGroup = this.partsTableForm.get('tableGroup') as FormGroup;
 
 
     this.jobsTableForm = this.formBuilder.group({
       tableGroup: this.formBuilder.group({
-      parentItem1: [''],
+        parentItem1: [''],
       }),
-      tableArray: this.formBuilder.array([]) //Notice how we didn't put any controls in here?
-      });
+      tableArray: this.formBuilder.array([]), //Notice how we didn't put any controls in here?
+    });
 
     this.jobsTableGroup = this.jobsTableForm.get('tableGroup') as FormGroup;
 
@@ -263,18 +263,18 @@ export class AddQuotationComponent implements OnInit {
   addNewPart(){
 
     this.partsTableArray.push(this.formBuilder.group({
-      materialNumber: this.addedPart.materialNumber, 
+      materialNumber: this.addedPart.materialNumber,
       description: this.addedPart.description,
-      unit: this.partQuantity,}));
-      console.log(this.partsTableArray);
-      
+      unit: this.partQuantity}));
+    console.log(this.partsTableArray);
+
   }
 
   addNewJob(){
     this.jobsTableArray.push(this.formBuilder.group({
-      materialNumber: this.addedJobType.materialNumber, 
+      materialNumber: this.addedJobType.materialNumber,
       description: this.addedJobType.description,
-      unit: this.jobQuantity,}));
-      console.log(this.jobsTableArray);
+      unit: this.jobQuantity}));
+    console.log(this.jobsTableArray);
   }
 }
