@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { LoginModule } from '../modules/login/login.module';
 import { HeaderComponent } from './components/header/header.component';
@@ -13,7 +14,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatDialogModule } from "@angular/material/dialog";
-import { DynamicTableComponent } from './components/dynamic-table/dynamic-table.component';
 import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
@@ -22,6 +22,7 @@ import { MatTableModule } from '@angular/material/table';
     CommonModule,
     RouterModule,
     LoginModule,
+    FormsModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
