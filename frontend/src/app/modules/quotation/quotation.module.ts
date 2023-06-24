@@ -5,6 +5,7 @@ import { QuotationRoutingModule } from './quotation-routing.module';
 import { AddQuotationComponent } from './components/add-quotation/add-quotation.component';
 import { EditQuotationComponent } from './components/edit-quotation/edit-quotation.component';
 import { QuotationListComponent } from './components/quotation-list/quotation-list.component';
+import { DynamicTableComponent } from 'src/app/shared/components/dynamic-table/dynamic-table.component';
 
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -18,8 +19,9 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { MatAutocompleteModule } from "@angular/material/autocomplete";
-import { DynamicTableComponent } from 'src/app/shared/components/dynamic-table/dynamic-table.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -44,6 +46,8 @@ import { DynamicTableComponent } from 'src/app/shared/components/dynamic-table/d
     MatPaginatorModule,
     MatSortModule,
     MatAutocompleteModule,
+    MatCardModule,
+    MatDividerModule,
   ],
 })
-export class QuotationModule { }
+export class QuotationModule {}

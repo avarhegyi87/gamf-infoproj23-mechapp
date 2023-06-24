@@ -19,6 +19,7 @@ export class DeletionModalComponent {
   ) {}
 
   onCancel(): void {
+    this.deleteClicked.emit(false);
     this.dialogRef.close();
   }
 

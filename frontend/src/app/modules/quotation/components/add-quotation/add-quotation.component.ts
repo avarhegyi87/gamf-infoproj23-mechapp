@@ -17,6 +17,7 @@ import { CustomerService } from 'src/app/modules/customer/services/customer.serv
 import { VehicleService } from 'src/app/modules/vehicle/services/vehicle.service';
 import { JobService } from 'src/app/modules/job/services/job.service';
 import { MaterialService } from 'src/app/modules/material/services/material.service';
+import { QuotationJobList } from '../../models/quotation-job-list.model';
 
 @Component({
   selector: 'app-add-quotation',
@@ -25,9 +26,9 @@ import { MaterialService } from 'src/app/modules/material/services/material.serv
 })
 export class AddQuotationComponent implements OnInit {
   partsTableForm!: FormGroup;
-  partsTableGroup!:FormGroup;
+  partList: QuotationJobList[] = [];
   jobsTableForm!: FormGroup;
-  jobsTableGroup!:FormGroup;
+  jobList: QuotationJobList[] = [];
 
   addQuotationForm!: FormGroup;
   customers: Customer[] = [];
@@ -38,7 +39,7 @@ export class AddQuotationComponent implements OnInit {
   partControl = new FormControl<string | Material>('');
   filteredParts!: Observable<Material[]>;
   jobTypes: Material[] = [];
-  addedJobType!: Material;
+  addedJob!: Material;
   jobTypesControl = new FormControl<string | Material>('');
   filteredJobTypes!: Observable<Material[]>;
   filteredCustomers!: Observable<Customer[]>;
@@ -75,7 +76,7 @@ export class AddQuotationComponent implements OnInit {
     });
 
     this.materialService.getWorks().subscribe(works => {
-      this.jobTypes = works
+      this.jobTypes = works;
     });
 
     this._addQuotationRequest = {
@@ -85,7 +86,7 @@ export class AddQuotationComponent implements OnInit {
       createdBy: null,
       updatedBy: null,
       description: null,
-      parts:null,
+      parts: null,
       jobTypes: null,
       state: null,
       finalizeDate: null,
@@ -93,67 +94,82 @@ export class AddQuotationComponent implements OnInit {
   }
 
   ngOnInit(): void {
-
     this.partsTableForm = this.formBuilder.group({
-      tableGroup: this.formBuilder.group({
-        parentItem1: [''],
-      }),
-      tableArray: this.formBuilder.array([]), //Notice how we didn't put any controls in here?
+      part: [null, Validators.compose([Validators.required])],
+      partQuantity: ['', Validators.compose([Validators.required, Validators.min(1)])],
     });
-
-    this.partsTableGroup = this.partsTableForm.get('tableGroup') as FormGroup;
-
 
     this.jobsTableForm = this.formBuilder.group({
-      tableGroup: this.formBuilder.group({
-        parentItem1: [''],
-      }),
-      tableArray: this.formBuilder.array([]), //Notice how we didn't put any controls in here?
+      job: [null, Validators.compose([Validators.required])],
+      jobQuantity: ['', Validators.compose([Validators.required, Validators.min(1)])],
     });
-
-    this.jobsTableGroup = this.jobsTableForm.get('tableGroup') as FormGroup;
-
 
     this.filteredCustomers = this.customerControl.valueChanges.pipe(
       startWith(''),
       map(value => {
         const customerName = typeof value === 'string' ? value : value?.name;
-        return customerName ? this._filterCustomer(customerName as string) : this.customers.slice();
+        return customerName
+          ? this._filterCustomer(customerName as string)
+          : this.customers.slice();
       }),
     );
 
     this.filteredVehicles = this.vehicleControl.valueChanges.pipe(
       startWith(''),
       map(value => {
-        const licencePlate = typeof value === 'string' ? value : value?.licencePlate;
-        return licencePlate ? this._filterVehicle(licencePlate as string) : this.vehicles.slice();
+        const licencePlate =
+          typeof value === 'string' ? value : value?.licencePlate;
+        return licencePlate
+          ? this._filterVehicle(licencePlate as string)
+          : this.vehicles.slice();
       }),
     );
 
     this.filteredParts = this.partControl.valueChanges.pipe(
       startWith(''),
       map(value => {
-        const description = typeof value === 'string' ? value : value?.description;
-        return description ? this._filterPart(description as string) : this.parts.slice();
+        const description =
+          typeof value === 'string' ? value : value?.description;
+        return description
+          ? this._filterPart(description as string)
+          : this.parts.slice();
       }),
     );
 
     this.filteredJobTypes = this.jobTypesControl.valueChanges.pipe(
       startWith(''),
       map(value => {
-        const description = typeof value === 'string' ? value : value?.description;
-        return description ? this._filterJobTypes(description as string) : this.jobTypes.slice();
+        const description =
+          typeof value === 'string' ? value : value?.description;
+        return description
+          ? this._filterJobTypes(description as string)
+          : this.jobTypes.slice();
       }),
     );
 
     this.addQuotationForm = this.formBuilder.group({
-      customer: [null, this._addQuotationRequest.customerId && this._addQuotationRequest.customerId > 0],
+      customer: [
+        null,
+        this._addQuotationRequest.customerId &&
+          this._addQuotationRequest.customerId > 0,
+      ],
 
-      vehicle: [null, this._addQuotationRequest.vehicleId && this._addQuotationRequest.vehicleId > 0],
+      vehicle: [
+        null,
+        this._addQuotationRequest.vehicleId &&
+          this._addQuotationRequest.vehicleId > 0,
+      ],
 
-      parts: [null, this._addQuotationRequest.parts && this._addQuotationRequest.parts > 0],
+      parts: [
+        null,
+        this._addQuotationRequest.parts && this._addQuotationRequest.parts > 0,
+      ],
 
-      jobTypes: [null, this._addQuotationRequest.jobTypes && this._addQuotationRequest.jobTypes > 0],
+      jobTypes: [
+        null,
+        this._addQuotationRequest.jobTypes &&
+          this._addQuotationRequest.jobTypes > 0,
+      ],
 
       description: [
         '',
@@ -188,22 +204,30 @@ export class AddQuotationComponent implements OnInit {
 
   private _filterCustomer(searchTerm: string): Customer[] {
     const filterValue = searchTerm.toLowerCase();
-    return this.customers.filter(option => option.name.toLowerCase().includes(filterValue));
+    return this.customers.filter(option =>
+      option.name.toLowerCase().includes(filterValue),
+    );
   }
 
   private _filterVehicle(searchTerm: string): Vehicle[] {
     const filterValue = searchTerm.toLowerCase();
-    return this.vehicles.filter(option => option.licencePlate.toLowerCase().includes(filterValue));
+    return this.vehicles.filter(option =>
+      option.licencePlate.toLowerCase().includes(filterValue),
+    );
   }
 
   private _filterPart(searchTerm: string): Material[] {
     const filterValue = searchTerm.toLowerCase();
-    return this.parts.filter(option => option.description.toLowerCase().includes(filterValue));
+    return this.parts.filter(option =>
+      option.description.toLowerCase().includes(filterValue),
+    );
   }
 
   private _filterJobTypes(searchTerm: string): Material[] {
     const filterValue = searchTerm.toLowerCase();
-    return this.jobTypes.filter(option => option.description.toLowerCase().includes(filterValue));
+    return this.jobTypes.filter(option =>
+      option.description.toLowerCase().includes(filterValue),
+    );
   }
 
   displayCust(customer: Customer): string {
@@ -212,10 +236,12 @@ export class AddQuotationComponent implements OnInit {
 
   onCustomerOptionSelected(customer: Customer) {
     this._addQuotationRequest.customerId = customer.id;
-    this.vehicleService.getVehiclesByCustomer(customer.id).subscribe(vehicles => {
-      this.vehicles = vehicles;
-      this.customerSelected = true;
-    });
+    this.vehicleService
+      .getVehiclesByCustomer(customer.id)
+      .subscribe(vehicles => {
+        this.vehicles = vehicles;
+        this.customerSelected = true;
+      });
   }
 
   displayVeh(vehicle: Vehicle): string {
@@ -238,8 +264,8 @@ export class AddQuotationComponent implements OnInit {
     return part.description ? part.description : '';
   }
 
-  onJobTypesOptionSelected(mat: Material) {
-    this.addedJobType = mat;
+  onJobOptionSelected(mat: Material) {
+    this.addedJob = mat;
   }
 
   isInvalid(field: string): boolean {
@@ -260,21 +286,43 @@ export class AddQuotationComponent implements OnInit {
     /**TODO: onSubmit for AddQuotation */
   }
 
-  addNewPart(){
-
-    this.partsTableArray.push(this.formBuilder.group({
+  addNewPart() {
+    const newPart: QuotationJobList = {
       materialNumber: this.addedPart.materialNumber,
       description: this.addedPart.description,
-      unit: this.partQuantity}));
-    console.log(this.partsTableArray);
-
+      quantity: this.partsTableForm.get('partQuantity')?.value,
+      unitPrice: this.addedPart.netPrice,
+      subTotal: this.addedPart.netPrice * this.partsTableForm.get('partQuantity')?.value,
+    };
+    const existingPart: QuotationJobList | undefined = this.partList.find(
+      x => x.materialNumber === newPart.materialNumber,
+    );
+    if (existingPart) {
+      existingPart.quantity += newPart.quantity;
+      existingPart.subTotal = existingPart.unitPrice * existingPart.quantity;
+    } else {
+      this.partList.push(newPart);
+    }
+    this.partsTableForm.reset();
   }
 
-  addNewJob(){
-    this.jobsTableArray.push(this.formBuilder.group({
-      materialNumber: this.addedJobType.materialNumber,
-      description: this.addedJobType.description,
-      unit: this.jobQuantity}));
-    console.log(this.jobsTableArray);
+  addNewJob() {
+    const newJob: QuotationJobList = {
+      materialNumber: this.addedJob.materialNumber,
+      description: this.addedJob.description,
+      quantity: this.jobsTableForm.get('jobQuantity')?.value,
+      unitPrice: this.addedJob.netPrice,
+      subTotal: this.addedJob.netPrice * this.jobsTableForm.get('jobQuantity')?.value,
+    }
+    const existingJob: QuotationJobList | undefined = this.jobList.find(
+      x => x.materialNumber === newJob.materialNumber,
+    );
+    if (existingJob) {
+      existingJob.quantity += newJob.quantity;
+      existingJob.subTotal = existingJob.unitPrice * existingJob.quantity;
+    } else {
+      this.jobList.push(newJob);
+    }
+    this.jobsTableForm.reset();
   }
 }

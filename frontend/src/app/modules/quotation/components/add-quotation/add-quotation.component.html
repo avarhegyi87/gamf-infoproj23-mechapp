@@ -1,10 +1,10 @@
 <h1>Új ajánlat felvétele</h1>
 <h3>Az ajánlat elkészítéséhez adja meg a szükséges adatokat!</h3>
 
-<div class="form-container">
-  <form (ngSubmit)="onSubmit()" [formGroup]="addQuotationForm">
-    <div class="form-container two-column-input-container">
+<div class="form-container two-column-input-container">
 
+  <div>
+    <form (ngSubmit)="onSubmit()" [formGroup]="addQuotationForm">
       <div class="input-container">
 
         <mat-form-field class="input-field">
@@ -42,7 +42,16 @@
         </mat-form-field>
 
       </div>
+    </form>
 
+    <div>
+      <mat-card>Össz. nettó: 0 HUF</mat-card>
+      <mat-card>Össz. bruttó: 0 HUF</mat-card>
+    </div>
+  </div>
+
+  <div>
+    <form (ngSubmit)="addNewPart()" [formGroup]="partsTableForm">
       <div class="input-container">
 
         <div class="sub-form">
@@ -65,20 +74,30 @@
               A mennyiség megadása szükséges.
             </mat-error>
           </mat-form-field>
-          <button mat-raised-button class="sub-form-button" (click)="addNewPart()">
+
+          <button mat-raised-button class="sub-form-button">
             <mat-icon>save</mat-icon>
           </button>
         </div>
-        <div class="parts-table-container">
-          <app-dynamic-table [tableForm]="partsTableForm"></app-dynamic-table>
-        </div>
 
+        <div class="parts-table-container">
+          <app-dynamic-table [data]="partList"></app-dynamic-table>
+        </div>
+      </div>
+    </form>
+
+    <mat-divider>
+    </mat-divider>
+
+    <form (ngSubmit)="addNewJob()" [formGroup]="jobsTableForm">
+      <div class="input-container">
         <div class="sub-form">
+
           <mat-form-field class="input-field">
             <mat-label>Elvégzendő munkafolyamatok</mat-label>
             <input matInput [formControl]="jobTypesControl" [matAutocomplete]="autoJob">
             <mat-autocomplete #autoJob="matAutocomplete" [displayWith]="displayJobTypes"
-              (optionSelected)="onJobTypesOptionSelected($event.option.value)">
+              (optionSelected)="onJobOptionSelected($event.option.value)">
               <mat-option *ngFor="let jobType of filteredJobTypes | async" [value]="jobType">
                 {{ jobType.description }}: {{ jobType.materialNumber }}
               </mat-option>
@@ -93,23 +112,24 @@
               A mennyiség megadása szükséges.
             </mat-error>
           </mat-form-field>
-          <button mat-raised-button class="sub-form-button" (click)="addNewJob()">
+
+          <button mat-raised-button class="sub-form-button">
             <mat-icon>save</mat-icon>
           </button>
-
         </div>
+
         <div class="parts-table-container">
-          <app-dynamic-table [tableForm]="jobsTableForm"></app-dynamic-table>
+          <app-dynamic-table [data]="jobList"></app-dynamic-table>
         </div>
       </div>
-    </div>
 
 
-    <div class="button-container">
-      <button mat-raised-button color="primary" [disabled]="addQuotationForm.invalid" class="submit-button">
-        Mentés
-      </button>
-    </div>
+    </form>
+  </div>
 
-  </form>
+  <div class="button-container">
+    <button mat-raised-button color="primary" [disabled]="addQuotationForm.invalid" class="submit-button">
+      Mentés
+    </button>
+  </div>
 </div>

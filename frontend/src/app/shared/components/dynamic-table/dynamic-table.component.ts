@@ -1,52 +1,86 @@
+import { QuotationJobList } from './../../../modules/quotation/models/quotation-job-list.model';
 import {
   Component,
   Input,
   OnInit,
-  DoCheck,
   ViewChild,
-  SimpleChanges,
-  OnChanges,
+  ChangeDetectorRef,
+  AfterViewInit,
 } from '@angular/core';
-import {
-  AbstractControl,
-  FormArray,
-  FormBuilder,
-  FormGroup,
-} from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { DeletionModalComponent } from '../deletion-modal/deletion-modal.component';
+import { VAT_HUN } from '../../constants/constants';
 
 @Component({
   selector: 'app-dynamic-table',
   templateUrl: './dynamic-table.component.html',
   styleUrls: ['./dynamic-table.component.scss'],
 })
-export class DynamicTableComponent implements OnInit, OnChanges {
-  @Input() tableForm!: FormGroup;
+export class DynamicTableComponent implements AfterViewInit, OnInit {
+  dataSource!: MatTableDataSource<QuotationJobList>;
+  displayedColumns: string[] = ['materialNumber', 'description', 'quantity'];
   @ViewChild(MatTable) table!: MatTable<any>;
 
-  tableArray!: FormArray;
-  prevTableArray!: FormArray;
-  dataSource!: MatTableDataSource<AbstractControl>;
+  vat = VAT_HUN;
 
-  displayedColumns: string[] = ['materialNumber', 'description', 'unit'];
+  private _data: QuotationJobList[] = [];
+  public get data(): QuotationJobList[] {
+    return this._data;
+  }
+  @Input()
+  public set data(v: QuotationJobList[]) {
+    this._data = v;
+    this.updateTable();
+  }
 
-  constructor(private fb: FormBuilder) {}
+  public get totalNet(): number {
+    return this._data.reduce((sum, product) => sum + product.subTotal, 0);
+  }
+
+  constructor(
+    private cd: ChangeDetectorRef,
+    private dialog: MatDialog,
+  ) {}
 
   ngOnInit() {
-    this.tableArray = this.tableForm.get('tableArray') as FormArray;
+    this.dataSource = new MatTableDataSource(this.data);
+    this.cd.markForCheck();
+  }
 
-    this.dataSource = new MatTableDataSource(
-      (this.tableForm.get('tableArray') as FormArray).controls,
+  ngAfterViewInit(): void {
+    this.cd.detectChanges();
+  }
+
+  updateTable() {
+    this.dataSource.data = this._data;
+    this.table.renderRows();
+  }
+
+  async deleteItem(item: QuotationJobList) {
+    const index = this._data.findIndex(
+      x => x.materialNumber === item.materialNumber,
     );
+    if (index > -1) {
+      const origQuantity = this._data[index].quantity;
+      const shouldDelete = await this.openDeletionModal();
+      this._data[index].quantity = origQuantity;
+      if (shouldDelete) {
+        this._data.splice(index, 1);
+        this.updateTable();
+      }
+    }
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    this.tableArray = this.tableForm.get('tableArray') as FormArray;
-    this.table.renderRows();
-  }
+  openDeletionModal(): Promise<boolean> {
+    const dialogRef = this.dialog.open(DeletionModalComponent);
 
-  addNewRow() {
-    this.tableArray = this.tableForm.get('tableArray') as FormArray;
-    this.table.renderRows();
+    return new Promise<boolean>(resolve => {
+      dialogRef.componentInstance.deleteClicked.subscribe(
+        (shouldDelete: boolean) => {
+          resolve(shouldDelete);
+        },
+      );
+    });
   }
 }
