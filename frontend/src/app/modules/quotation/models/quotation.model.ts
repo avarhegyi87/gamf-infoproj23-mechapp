@@ -7,8 +7,8 @@ export interface Quotation {
     id: number;
     vehicleId: Vehicle | number;
     customerId: Customer | number;
-    CreatedBy: User | number;
-    UpdatedBy: User | number;
+    createdBy: User | number;
+    updatedBy: User | number;
     description: string;
     state: number;
     finalizeDate: Date;

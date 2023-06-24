@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { QuotationRoutingModule } from './quotation-routing.module';
 import { AddQuotationComponent } from './components/add-quotation/add-quotation.component';
-import { EditQuotationComponent } from './components/edit-quotation/edit-quotation.component';
+import { DetailsQuotationComponent } from './components/details-quotation/details-quotation.component';
 import { QuotationListComponent } from './components/quotation-list/quotation-list.component';
 import { DynamicTableComponent } from 'src/app/shared/components/dynamic-table/dynamic-table.component';
 
@@ -26,7 +26,7 @@ import { MatDividerModule } from '@angular/material/divider';
 @NgModule({
   declarations: [
     AddQuotationComponent,
-    EditQuotationComponent,
+    DetailsQuotationComponent,
     QuotationListComponent,
     DynamicTableComponent,
   ],

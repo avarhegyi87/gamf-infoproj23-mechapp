@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 
+
 @Component({
-  selector: 'app-edit-quotation',
-  templateUrl: './edit-quotation.component.html',
-  styleUrls: ['./edit-quotation.component.scss'],
+  selector: 'app-details-quotation',
+  templateUrl: './details-quotation.component.html',
+  styleUrls: ['./details-quotation.component.scss'],
 })
-export class EditQuotationComponent implements OnInit {
+export class DetailsQuotationComponent implements OnInit {
 
   constructor() {
     /**TODO: constructor for EditQuotation */
