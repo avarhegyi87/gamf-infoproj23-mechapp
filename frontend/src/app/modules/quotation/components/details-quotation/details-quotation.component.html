@@ -1,1 +1,54 @@
-<p>edit-quotation works!</p>
+
+<mat-card >
+    <mat-card-header>
+      <mat-card-title>Ügyféladatok</mat-card-title>
+    </mat-card-header>
+    <mat-card-subtitle>Név</mat-card-subtitle>
+    <mat-card-content>
+        <p> <strong>{{ customer.name }}</strong></p>
+        <mat-divider></mat-divider>
+    </mat-card-content>
+    <mat-card-subtitle>Elérhetőségek</mat-card-subtitle>
+    <mat-card-content>
+        <p>E-mail: <strong>{{ customer.email }}</strong></p>
+        <p>Telefonszám: <strong>{{ customer.phoneNumber }}</strong></p>
+        <mat-divider></mat-divider>
+    </mat-card-content>
+    <mat-card-subtitle>Cím</mat-card-subtitle>
+    <mat-card-content>
+        <p>Ország: <strong>{{ customer.country }}</strong></p>
+        <p>Irányítószám és település:<strong> {{ customer.postcode }} {{ customer.city }}</strong></p>
+        <p>Utca és és házszám: <strong> {{ customer.street }}, {{ customer.houseNumber }}</strong></p>
+        <mat-divider></mat-divider>
+    </mat-card-content>
+    <mat-card-subtitle>Adószám</mat-card-subtitle>
+    <mat-card-content>
+        <p><strong>{{ customer.taxNumber }}</strong></p>
+        <mat-divider></mat-divider>
+    </mat-card-content>
+  </mat-card>
+  <mat-card >
+    <mat-card-header>
+      <mat-card-title>Gépjárműadatok</mat-card-title>
+    </mat-card-header>
+    <mat-card-subtitle>Azonosítók</mat-card-subtitle>
+    <mat-card-content>
+        <p>Rendszám: <strong>{{ vehicle.licencePlate }}</strong></p>
+        <p>Alvázszám <strong>{{ vehicle.vin }}</strong></p>
+        <mat-divider></mat-divider>
+    </mat-card-content>
+    <mat-card-subtitle>Gyártási adatok</mat-card-subtitle>
+    <mat-card-content>
+        <p>Gyártási év: <strong>{{ vehicle.productionYear }}</strong></p>
+        <p>Gyártó: <strong>{{ vehicle.carBrand }}</strong></p>
+        <p>Modell: <strong>{{ vehicle.carMake }}</strong></p>
+        <mat-divider></mat-divider>
+    </mat-card-content>
+    <mat-card-subtitle>Műszaki adatok</mat-card-subtitle>
+    <mat-card-content>
+        <p>Futásteljesítmény: <strong>{{ vehicle.mileage }} km</strong></p>
+        <p>Lökettérfogat: <strong>{{ vehicle.displacement }} ccm</strong></p>
+        <p>Üzemanyagtípus: <strong>{{ vehicle.fuelType }}</strong></p>
+        <mat-divider></mat-divider>
+    </mat-card-content>
+  </mat-card>

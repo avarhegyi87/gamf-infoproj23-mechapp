@@ -52,8 +52,6 @@ export class QuotationListComponent implements OnInit {
     private quotationService: QuotationService,
     private vehicleService: VehicleService,
     private customerService: CustomerService,
-    private cdRef: ChangeDetectorRef,
-    private router: Router,
     private authService: AuthenticationService,
     private snackBar: MatSnackBar,
     private _liveAnnouncer: LiveAnnouncer,
