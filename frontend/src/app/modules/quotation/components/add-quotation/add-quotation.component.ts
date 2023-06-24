@@ -1,13 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 
 import { Customer } from 'src/app/modules/customer/models/customer.model';
 import { Vehicle } from 'src/app/modules/vehicle/models/vehicle.model';
 import { Job } from 'src/app/modules/job/models/job.model';
 import { Material } from 'src/app/modules/material/models/material.model';
 import {
+  AbstractControl,
   FormBuilder,
   FormControl,
   FormGroup,
+  ValidatorFn,
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -18,6 +20,11 @@ import { VehicleService } from 'src/app/modules/vehicle/services/vehicle.service
 import { JobService } from 'src/app/modules/job/services/job.service';
 import { MaterialService } from 'src/app/modules/material/services/material.service';
 import { QuotationJobList } from '../../models/quotation-job-list.model';
+import { DynamicTableComponent } from 'src/app/shared/components/dynamic-table/dynamic-table.component';
+import { VAT_HUN } from 'src/app/shared/constants/constants';
+import { AuthenticationService } from 'src/app/modules/users/services/authentication.service';
+import { User } from 'src/app/modules/users/models/user.model';
+import { QuotationService } from '../../services/quotation.service';
 
 @Component({
   selector: 'app-add-quotation',
@@ -25,48 +32,67 @@ import { QuotationJobList } from '../../models/quotation-job-list.model';
   styleUrls: ['./add-quotation.component.scss'],
 })
 export class AddQuotationComponent implements OnInit {
-  partsTableForm!: FormGroup;
-  partList: QuotationJobList[] = [];
-  jobsTableForm!: FormGroup;
-  jobList: QuotationJobList[] = [];
-
+  // Quotation request and main form, and the types of data stored in it
+  private _addQuotationRequest: any;
+  private _addJobRequest: any;
   addQuotationForm!: FormGroup;
   customers: Customer[] = [];
   jobs: Job[] = [];
 
+  // accessor for the dynamic tables storing the added materials and services
+  @ViewChildren(DynamicTableComponent)
+  dynamicTables!: QueryList<DynamicTableComponent>;
+  private _allProductsAndServices: QuotationJobList[] = [];
+
+  // Form for adding products, and data passed on to its dynamic table
+  partsTableForm!: FormGroup;
+  partList: QuotationJobList[] = [];
+  partQuantity!: number;
+
+  // Form for adding services, and data passed on to its dynamic table
+  servicesTableForm!: FormGroup;
+  serviceList: QuotationJobList[] = [];
+  jobQuantity!: number;
+
+  // properties for filtering Materials of type PRODUCT in the auto-complete field of partsTableForm
   parts: Material[] = [];
   addedPart!: Material;
   partControl = new FormControl<string | Material>('');
   filteredParts!: Observable<Material[]>;
-  jobTypes: Material[] = [];
-  addedJob!: Material;
-  jobTypesControl = new FormControl<string | Material>('');
-  filteredJobTypes!: Observable<Material[]>;
+
+  // properties for filtering Materials of type SERVICE in the auto-complete field of servicesTableForm
+  services: Material[] = [];
+  addedService!: Material;
+  serviceControl = new FormControl<string | Material>('');
+  filteredServices!: Observable<Material[]>;
+
+  // properties for filtering Customers in the auto-complete field of addQuotationForm
   filteredCustomers!: Observable<Customer[]>;
   customerControl = new FormControl<string | Customer>('');
+  customerSelected = false;
+
+  // properties for filtering Vehicles in the auto-complete field of addQuotationForm
   vehicles: Vehicle[] = [];
   filteredVehicles!: Observable<Vehicle[]>;
   vehicleControl = new FormControl<string | Vehicle>('');
-  serviceList: String[] = [];
-  materialList: String[] = [];
-  customerSelected = false;
+
+  // other properties
   error = '';
   submitted = false;
-  private _addQuotationRequest: any;
-  jobQuantity!: number;
-  partQuantity!: number;
-  tableJobs: Job[] = [];
-  tableParts: Job[] = [];
+  currentUser: User | undefined;
 
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
+    private authService: AuthenticationService,
     private vehicleService: VehicleService,
     private customerService: CustomerService,
     private jobService: JobService,
     private materialService: MaterialService,
+    private quotationService: QuotationService,
     private snackBar: MatSnackBar,
   ) {
+    authService.getCurrentUser.subscribe(user => (this.currentUser = user));
     this.customerService.getAllCustomers().subscribe(customers => {
       this.customers = customers;
     });
@@ -76,32 +102,69 @@ export class AddQuotationComponent implements OnInit {
     });
 
     this.materialService.getWorks().subscribe(works => {
-      this.jobTypes = works;
+      this.services = works;
     });
 
     this._addQuotationRequest = {
-      id: null,
-      customerId: null,
-      vehicleId: null,
-      createdBy: null,
-      updatedBy: null,
-      description: null,
-      parts: null,
-      jobTypes: null,
-      state: null,
-      finalizeDate: null,
+      id: 0,
+      vehicleId: 0,
+      customerId: 0,
+      createdBy: 0,
+      updatedBy: 0,
+      description: '',
+      //parts: null,
+      state: -1,
+      finalizeDate: undefined,
     };
+
+    this._addJobRequest = {
+      id: 0,
+      quotationId: 0,
+      materialId: '',
+      quantity: 0,
+    }
   }
 
   ngOnInit(): void {
+    this.addQuotationForm = this.formBuilder.group(
+      {
+        customer: [
+          null,
+          this._addQuotationRequest.customerId &&
+            this._addQuotationRequest.customerId > 0,
+        ],
+        vehicle: [
+          null,
+          this._addQuotationRequest.vehicleId &&
+            this._addQuotationRequest.vehicleId > 0,
+        ],
+        description: [
+          '',
+          Validators.compose([
+            Validators.required,
+            Validators.minLength(10),
+            Validators.maxLength(255),
+          ]),
+        ],
+        allProductsAndServices: [[]],
+      },
+      { validator: this.arrayNotEmptyValidator() },
+    );
+
     this.partsTableForm = this.formBuilder.group({
       part: [null, Validators.compose([Validators.required])],
-      partQuantity: ['', Validators.compose([Validators.required, Validators.min(1)])],
+      partQuantity: [
+        '',
+        Validators.compose([Validators.required, Validators.min(1)]),
+      ],
     });
 
-    this.jobsTableForm = this.formBuilder.group({
+    this.servicesTableForm = this.formBuilder.group({
       job: [null, Validators.compose([Validators.required])],
-      jobQuantity: ['', Validators.compose([Validators.required, Validators.min(1)])],
+      serviceQuantity: [
+        '',
+        Validators.compose([Validators.required, Validators.min(1)]),
+      ],
     });
 
     this.filteredCustomers = this.customerControl.valueChanges.pipe(
@@ -136,70 +199,69 @@ export class AddQuotationComponent implements OnInit {
       }),
     );
 
-    this.filteredJobTypes = this.jobTypesControl.valueChanges.pipe(
+    this.filteredServices = this.serviceControl.valueChanges.pipe(
       startWith(''),
       map(value => {
         const description =
           typeof value === 'string' ? value : value?.description;
         return description
           ? this._filterJobTypes(description as string)
-          : this.jobTypes.slice();
+          : this.services.slice();
       }),
     );
+  }
 
-    this.addQuotationForm = this.formBuilder.group({
-      customer: [
-        null,
-        this._addQuotationRequest.customerId &&
-          this._addQuotationRequest.customerId > 0,
-      ],
-
-      vehicle: [
-        null,
-        this._addQuotationRequest.vehicleId &&
-          this._addQuotationRequest.vehicleId > 0,
-      ],
-
-      parts: [
-        null,
-        this._addQuotationRequest.parts && this._addQuotationRequest.parts > 0,
-      ],
-
-      jobTypes: [
-        null,
-        this._addQuotationRequest.jobTypes &&
-          this._addQuotationRequest.jobTypes > 0,
-      ],
-
-      description: [
-        '',
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(10),
-          Validators.maxLength(255),
-        ]),
-      ],
-      partQuantity: [
-        '',
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(0),
-          Validators.maxLength(100),
-        ]),
-      ],
-      jobQuantity: [
-        '',
-        Validators.compose([
-          Validators.required,
-          Validators.minLength(0),
-          Validators.maxLength(100),
-        ]),
-      ],
-    });
+  validateForm() {
+    this.addQuotationForm.updateValueAndValidity();
   }
 
   get f() {
     return this.addQuotationForm.controls;
+  }
+
+  get allProductsAndServices(): QuotationJobList[] {
+    let data: QuotationJobList[] = [];
+    if (this.dynamicTables) {
+      this.dynamicTables.forEach((tbl: DynamicTableComponent) => {
+        data = [...tbl.data];
+      });
+    }
+    this._allProductsAndServices = data;
+    return this._allProductsAndServices;
+  }
+
+  isInvalid(field: string): boolean {
+    return (
+      this.f[field].invalid && (this.f[field].touched || this.f[field].dirty)
+    );
+  }
+
+  isInvalidPart(field: string): boolean {
+    return (
+      this.partsTableForm.controls[field].invalid &&
+      (this.partsTableForm.controls[field].touched ||
+        this.partsTableForm.controls[field].dirty)
+    );
+  }
+
+  isInvalidService(field: string): boolean {
+    return (
+      this.servicesTableForm.controls[field].invalid &&
+      (this.servicesTableForm.controls[field].touched ||
+        this.servicesTableForm.controls[field].dirty)
+    );
+  }
+
+  arrayNotEmptyValidator(): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: any } | null => {
+      if (
+        Array.isArray(this.allProductsAndServices) &&
+        this.allProductsAndServices.length === 0
+      )
+        return { arrayEmpty: true };
+
+      return null;
+    };
   }
 
   private _filterCustomer(searchTerm: string): Customer[] {
@@ -225,7 +287,7 @@ export class AddQuotationComponent implements OnInit {
 
   private _filterJobTypes(searchTerm: string): Material[] {
     const filterValue = searchTerm.toLowerCase();
-    return this.jobTypes.filter(option =>
+    return this.services.filter(option =>
       option.description.toLowerCase().includes(filterValue),
     );
   }
@@ -260,30 +322,34 @@ export class AddQuotationComponent implements OnInit {
     this.addedPart = part;
   }
 
-  displayJobTypes(part: Material): string {
+  displayServices(part: Material): string {
     return part.description ? part.description : '';
   }
 
   onJobOptionSelected(mat: Material) {
-    this.addedJob = mat;
+    this.addedService = mat;
   }
 
-  isInvalid(field: string): boolean {
-    return (
-      this.f[field].invalid && (this.f[field].touched || this.f[field].dirty)
-    );
+  getAllJobs() {
+    this.dynamicTables.forEach((tbl: DynamicTableComponent) => {
+      const data: QuotationJobList[] = tbl.data;
+    });
   }
 
-  public get partsTableArray(): any {
-    return this.partsTableForm.get('tableArray') as FormGroup;
+  totalNet(): number {
+    let sum = 0;
+    if (this.dynamicTables) {
+      this.dynamicTables.forEach((tbl: DynamicTableComponent) => {
+        const data: QuotationJobList[] = tbl.data;
+        sum += data.reduce((sum, item) => sum + item.subTotal, 0);
+      });
+    }
+    this.validateForm();
+    return sum;
   }
 
-  public get jobsTableArray(): any {
-    return this.jobsTableForm.get('tableArray') as FormGroup;
-  }
-
-  onSubmit() {
-    /**TODO: onSubmit for AddQuotation */
+  totalGross(): number {
+    return this.totalNet() * (1 + VAT_HUN);
   }
 
   addNewPart() {
@@ -292,7 +358,9 @@ export class AddQuotationComponent implements OnInit {
       description: this.addedPart.description,
       quantity: this.partsTableForm.get('partQuantity')?.value,
       unitPrice: this.addedPart.netPrice,
-      subTotal: this.addedPart.netPrice * this.partsTableForm.get('partQuantity')?.value,
+      subTotal:
+        this.addedPart.netPrice *
+        this.partsTableForm.get('partQuantity')?.value,
     };
     const existingPart: QuotationJobList | undefined = this.partList.find(
       x => x.materialNumber === newPart.materialNumber,
@@ -306,23 +374,73 @@ export class AddQuotationComponent implements OnInit {
     this.partsTableForm.reset();
   }
 
-  addNewJob() {
-    const newJob: QuotationJobList = {
-      materialNumber: this.addedJob.materialNumber,
-      description: this.addedJob.description,
-      quantity: this.jobsTableForm.get('jobQuantity')?.value,
-      unitPrice: this.addedJob.netPrice,
-      subTotal: this.addedJob.netPrice * this.jobsTableForm.get('jobQuantity')?.value,
-    }
-    const existingJob: QuotationJobList | undefined = this.jobList.find(
-      x => x.materialNumber === newJob.materialNumber,
+  addNewService() {
+    const newService: QuotationJobList = {
+      materialNumber: this.addedService.materialNumber,
+      description: this.addedService.description,
+      quantity: this.servicesTableForm.get('serviceQuantity')?.value,
+      unitPrice: this.addedService.netPrice,
+      subTotal:
+        this.addedService.netPrice *
+        this.servicesTableForm.get('serviceQuantity')?.value,
+    };
+    const existingService: QuotationJobList | undefined = this.serviceList.find(
+      x => x.materialNumber === newService.materialNumber,
     );
-    if (existingJob) {
-      existingJob.quantity += newJob.quantity;
-      existingJob.subTotal = existingJob.unitPrice * existingJob.quantity;
+    if (existingService) {
+      existingService.quantity += newService.quantity;
+      existingService.subTotal =
+        existingService.unitPrice * existingService.quantity;
     } else {
-      this.jobList.push(newJob);
+      this.serviceList.push(newService);
     }
-    this.jobsTableForm.reset();
+    this.servicesTableForm.reset();
+  }
+
+  onSubmit() {
+    this.submitted = true;
+    if (this.addQuotationForm.invalid) return;
+
+    this._addQuotationRequest.createdBy = this.currentUser?.$id;
+    this._addQuotationRequest.description = this.addQuotationForm.get('description')?.value;
+    this._addQuotationRequest.state = 0;
+
+    console.log('quot req:', this._addQuotationRequest);
+
+    this.quotationService.addQuotation(this._addQuotationRequest).subscribe({
+      next: quotation => {
+        this.snackBar.open(
+          `Ajánlat sikeresen hozzáadva, azonosítója: ${quotation.id}`,
+          'OK',
+          {
+            duration: 3000,
+            panelClass: ['mat-toolbar', 'mat-primary'],
+          },
+        );
+        this.allProductsAndServices.forEach((job: QuotationJobList) => {
+          this._addJobRequest.quotationId = quotation.id;
+          this._addJobRequest.materialId = job.materialNumber;
+          this._addJobRequest.quantity = job.quantity;
+          this.jobService.addJob(this._addJobRequest).subscribe({
+            next: j => {
+              /** */
+            },
+            error: e => {
+              this.snackBar.open(`${job.description}-t nem sikerült hozzáadni az ajánlathoz! Hiba: ${e}`, 'Bezár', {
+                duration: 7000,
+                panelClass: ['mat-toolbar', 'mat-warn'],
+              })
+            },
+          })
+        });
+      },
+      error: err => {
+        this.error = err;
+        this.snackBar.open(this.error, 'Bezár', {
+          duration: 5000,
+          panelClass: ['mat-toolbar', 'mat-warn'],
+        })
+      },
+    });
   }
 }

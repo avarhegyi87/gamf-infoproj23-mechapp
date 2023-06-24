@@ -8,6 +8,16 @@ mat-divider {
   margin-bottom: 2rem;
 }
 
+mat-card {
+  margin: 0 10px 0 0;
+  background-color: indianred;
+  color: white;
+}
+
+mat-card:not(:first-child) {
+  margin-top: 10px;
+}
+
 .form-container {
   display: flex;
   flex-wrap: wrap;
@@ -15,22 +25,25 @@ mat-divider {
   margin: auto;
   margin-top: 3rem;
 
+  &.no-margin {
+    margin-top: 0;
+  }
+
   &.two-column-input-container {
     display: grid;
     grid-template-columns: 2fr 3fr;
-    gap: 10px;
+    gap: 15px;
 
     .input-container{
       width: 100%;
 
       .input-field {
         margin-bottom: 1rem;
-        /* padding-bottom: 2rem; */
         width: 100%;
 
         @media (min-width: 768px) {
           margin: 0 10px;
-          max-width: 400px;
+          max-width: 450px;
         }
 
         @media (max-width: 767px) {
@@ -41,6 +54,14 @@ mat-divider {
         &.narrow {
           max-width: 200px;
         }
+      }
+
+      .input-field:first-child {
+        margin-left: 0;
+      }
+
+      .no-left-margin {
+        margin-left: 0;
       }
 
       .sub-form {

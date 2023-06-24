@@ -6,9 +6,11 @@ import {
   ViewChild,
   ChangeDetectorRef,
   AfterViewInit,
+  Output,
+  EventEmitter,
 } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { MatTable, MatTableDataSource } from '@angular/material/table';
+import { MatTable } from '@angular/material/table';
 import { DeletionModalComponent } from '../deletion-modal/deletion-modal.component';
 import { VAT_HUN } from '../../constants/constants';
 
@@ -18,7 +20,6 @@ import { VAT_HUN } from '../../constants/constants';
   styleUrls: ['./dynamic-table.component.scss'],
 })
 export class DynamicTableComponent implements AfterViewInit, OnInit {
-  dataSource!: MatTableDataSource<QuotationJobList>;
   displayedColumns: string[] = ['materialNumber', 'description', 'quantity'];
   @ViewChild(MatTable) table!: MatTable<any>;
 
@@ -44,7 +45,6 @@ export class DynamicTableComponent implements AfterViewInit, OnInit {
   ) {}
 
   ngOnInit() {
-    this.dataSource = new MatTableDataSource(this.data);
     this.cd.markForCheck();
   }
 
@@ -53,8 +53,7 @@ export class DynamicTableComponent implements AfterViewInit, OnInit {
   }
 
   updateTable() {
-    this.dataSource.data = this._data;
-    this.table.renderRows();
+    if (this._data.length) this.table.renderRows();
   }
 
   async deleteItem(item: QuotationJobList) {
