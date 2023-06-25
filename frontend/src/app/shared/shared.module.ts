@@ -11,13 +11,18 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
-import { MatSidenavModule } from "@angular/material/sidenav";
-import { MatTabsModule } from "@angular/material/tabs";
-import { MatDialogModule } from "@angular/material/dialog";
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
+import { DynamicTableComponent } from './components/dynamic-table/dynamic-table.component';
 
 @NgModule({
-  declarations: [HeaderComponent, DeletionModalComponent],
+  declarations: [
+    HeaderComponent,
+    DeletionModalComponent,
+    DynamicTableComponent,
+  ],
   imports: [
     CommonModule,
     RouterModule,
@@ -32,6 +37,6 @@ import { MatTableModule } from '@angular/material/table';
     MatDialogModule,
     MatTableModule,
   ],
-  exports: [HeaderComponent, DeletionModalComponent],
+  exports: [HeaderComponent, DeletionModalComponent, DynamicTableComponent],
 })
 export class SharedModule {}
