@@ -19,9 +19,9 @@ class WorksheetController extends Controller
             return abort(403);
         }*/
 
-        if (Quotation::where('id', $request->quotationId)->exists()) 
+        if (Quotation::where('id', $request->quotationId)->exists())
         {
-            if (User::where('id', $request->mechanicId)->exists()) 
+            if (User::where('id', $request->mechanicId)->exists())
             {
                 // validate form data
                 $formFields = $request->validate([
@@ -35,23 +35,23 @@ class WorksheetController extends Controller
                     'additionalParts' => ['nullable'],
                     'invoiced' => ['nullable'],
                 ]);
-        
-                Worksheet::create($formFields);
-        
-                return response()->json("Succesfully created");
+
+                $worksheet = Worksheet::create($formFields);
+
+                return response()->json($worksheet);
             }
-            else 
+            else
             {
                 return response()->json("Mechanic with given ID not exist!");
             }
         }
-        else 
+        else
         {
             return response()->json("Quotation with given ID not exist!");
         }
 
 
-        
+
     }
 
     /**
@@ -62,10 +62,10 @@ class WorksheetController extends Controller
         /*if ( Auth::id() != 2 && Auth::user()->role != 3) {
             return abort(403);
         }*/
-        
-        if (Quotation::where('id', $request->quotationId)->exists()) 
+
+        if (Quotation::where('id', $request->quotationId)->exists())
         {
-            if (User::where('id', $request->mechanicId)->exists()) 
+            if (User::where('id', $request->mechanicId)->exists())
             {
                 // validate form data
                 $formFields = $request->validate([
@@ -79,22 +79,22 @@ class WorksheetController extends Controller
                     'additionalParts' => ['nullable'],
                     'invoiced' => ['nullable'],
                 ]);
-        
+
                 $quotation->update($formFields);
-        
+
                 return response()->json("Succesfully created");
             }
-            else 
+            else
             {
                 return response()->json("Mechanic with given ID not exist!");
             }
         }
-        else 
+        else
         {
             return response()->json("Quotation with given ID not exist!");
         }
 
-        
+
     }
 
     /**

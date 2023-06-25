@@ -39,8 +39,8 @@ class CustomerController extends Controller
                 'errors' => $validator->errors()
             ], 400);
         } else {
-            Customer::create($request->all());
-            return response()->json('Successfully added');
+            $customer = Customer::create($request->all());
+            return response()->json($customer);
         }
     }
 

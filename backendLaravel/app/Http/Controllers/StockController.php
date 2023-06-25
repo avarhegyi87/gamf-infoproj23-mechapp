@@ -33,8 +33,8 @@ class StockController extends Controller
                 'errors' => $validator->errors()
             ], 400);
         } else {
-            Stock::create($request->all());
-            return response()->json('Successfully added');
+            $stock = Stock::create($request->all());
+            return response()->json($stock);
         }
     }
 
@@ -128,7 +128,7 @@ class StockController extends Controller
             return abort(403);
         }*/
         $mats = Stock::whereRaw('materialNumber < 60000000')->get();
-       
+
         return response()->json($mats);
     }
 
@@ -138,7 +138,7 @@ class StockController extends Controller
             return abort(403);
         }*/
         $works = Stock::whereRaw('materialNumber >= 60000000')->get();
-       
+
         return response()->json($works);
     }
 
