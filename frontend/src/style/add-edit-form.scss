@@ -10,8 +10,12 @@ mat-divider {
 
 mat-card {
   margin: 0 10px 0 0;
-  background-color: indianred;
-  color: white;
+  width: 100%;
+
+  &.highlight-card {
+    color: white;
+    background-color: indianred;
+  }
 }
 
 mat-card:not(:first-child) {

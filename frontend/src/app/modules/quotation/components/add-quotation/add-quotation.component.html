@@ -47,8 +47,8 @@
     <mat-divider></mat-divider>
 
     <div>
-      <mat-card>Össz. nettó: {{ totalNet() }} HUF</mat-card>
-      <mat-card>Össz. bruttó: {{ totalGross() }} HUF</mat-card>
+      <mat-card class="highlight-card">Össz. nettó: {{ totalNet() }} HUF</mat-card>
+      <mat-card class="highlight-card">Össz. bruttó: {{ totalGross() }} HUF</mat-card>
     </div>
   </div>
 
@@ -68,7 +68,7 @@
             <mat-autocomplete #autoPart="matAutocomplete" [displayWith]="displayParts"
               (optionSelected)="onPartOptionSelected($event.option.value)">
               <mat-option *ngFor="let part of filteredParts | async" [value]="part">
-                {{ part.description }}: {{ part.materialNumber }}
+                {{ part.materialNumber }}: {{ part.description }}
               </mat-option>
             </mat-autocomplete>
             <mat-error *ngIf="isInvalidPart('part')">Válasszon egy alkatrészt!</mat-error>
