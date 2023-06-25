@@ -52,3 +52,31 @@
         <mat-divider></mat-divider>
     </mat-card-content>
   </mat-card>
+  <mat-card>
+  <mat-card-header>
+    <mat-card-title>Ügyfél általi hibaleírás</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+      <p> <strong>{{ quotationDetails.description }}</strong></p>
+      <mat-divider></mat-divider>
+  </mat-card-content>
+</mat-card>
+<mat-card>
+    <mat-card-header>
+        <mat-card-title>Ajánlat státusza</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p> <strong>{{ getState(selectedState) }}</strong></p>
+        <mat-divider></mat-divider>
+    </mat-card-content>
+    <div class="pull-right" [hidden]="getState(selectedState) == 'Elfogadott' || getState(selectedState) == 'Elutasított'">
+        <button mat-raised-button color="primary" (click)="acceptState();" class="btn-w-md">
+        Elfogad
+        </button>
+    </div>
+    <div class="pull-right" [hidden]="getState(selectedState) == 'Elutasított'">
+        <button mat-raised-button color="primary" (click)="rejectState();" class="btn-w-md">
+        Elutasít
+        </button>
+    </div>
+</mat-card>

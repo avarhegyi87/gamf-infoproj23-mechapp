@@ -8,13 +8,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Role } from 'src/app/modules/users/models/role.model';
 import { FuelTypeToLabelMapping, FuelTypeEnum } from 'src/app/modules/vehicle/models/fuel-types';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { Customer } from 'src/app/modules/customer/models/customer.model';
 import { CustomerService } from 'src/app/modules/customer/services/customer.service';
 import { Quotation } from '../../models/quotation.model';
 import { QuotationService } from '../../services/quotation.service';
 import { QuotationStateEnum, QuotationStateToLabelMapping } from 'src/app/modules/quotation/models/states';
 import { Vehicle } from 'src/app/modules/vehicle/models/vehicle.model';
+import { JobService } from 'src/app/modules/job/services/job.service';
+import { Job } from 'src/app/modules/job/models/job.model';
+import { Material } from 'src/app/modules/material/models/material.model';
+import { MaterialService } from 'src/app/modules/material/services/material.service';
+import { QuotationJobList } from '../../models/quotation-job-list.model';
 
 @Component({
   selector: 'app-details-quotation',
@@ -23,10 +28,11 @@ import { Vehicle } from 'src/app/modules/vehicle/models/vehicle.model';
 })
 export class DetailsQuotationComponent implements OnInit {
 
-  currentUser: User | undefined;
+  currentUser!: User;
   displayedColumns: Array<string> = [];
   states = Object.values(QuotationStateEnum);
   statesMapping = QuotationStateToLabelMapping;
+  selectedState!: QuotationStateEnum;
 
   customers: Customer[] = [];
   customer!: Customer;
@@ -39,6 +45,15 @@ export class DetailsQuotationComponent implements OnInit {
   filteredVehicles!: Observable<Vehicle[]>;
   selectedVehicle: Vehicle | undefined;
   vehicleControl = new FormControl<string | Vehicle>('');
+
+  jobs: Job[] = [];
+  materials: Material[] = [];
+
+  tableJobList: QuotationJobList[] = [];
+
+
+  error = '';
+  
   quotationDetails: Quotation = {
     id: 0,
     vehicleId: 0,
@@ -49,18 +64,29 @@ export class DetailsQuotationComponent implements OnInit {
     state: 0,
   }
 
+  quotation: Quotation = {
+    id: 0,
+    vehicleId: 0,
+    customerId: 0,
+    createdBy: 0,
+    updatedBy: 0,
+    description: '0',
+    state: 0,
+  }
+  
+
   constructor(   
     private quotationService: QuotationService,
     private vehicleService: VehicleService,
     private customerService: CustomerService,
     private authService: AuthenticationService,
     private snackBar: MatSnackBar,
-    private formBuilder: FormBuilder,
     private activeRoute: ActivatedRoute,
     private router: Router,
     )
   {
     this.authService.getCurrentUser.subscribe(x => (this.currentUser = x));
+    console.log(this.currentUser);
     this.customerService.getAllCustomers().subscribe(customers => {
       this.customers = customers;
     });
@@ -90,6 +116,7 @@ export class DetailsQuotationComponent implements OnInit {
                   this.vehicle = vehicleResponse;
                 },
               });
+              this.selectedState = this.quotationDetails.state;
             },
           });
         }
@@ -97,6 +124,90 @@ export class DetailsQuotationComponent implements OnInit {
     });
   }
 
-
+  getState(id: number): string{
+    if(id == 0){
+      return this.statesMapping[0];
+    }
+    else if (id == 1) {
+      return this.statesMapping[1];
+    }
+    else if (id == 2) {
+          return this.statesMapping[2];
+    }
+    return "Hibás státusz."
+  }
   
+  acceptState() {
+    this.selectedState = 1;
+    this.quotation.id = this.quotationDetails.id;
+    this.quotation.customerId = this.customer.id;
+    this.quotation.vehicleId = this.vehicle.id;
+    this.quotation.description = this.quotationDetails.description;
+    this.quotation.state = this.selectedState;
+    this.quotation.createdBy = this.quotationDetails.createdBy;
+    //this.quotation.updatedBy = this.currentUser.id;
+    this.quotation.finalizeDate = new Date;
+    this.quotationService.updateQuotation(this.quotation.id, this.quotation).subscribe({
+      next: quotation => {
+        this.snackBar.open(
+          `${this.quotationDetails.id} - azonosítójú űrlap sikeresen módosítva.`,
+          'OK',
+          {
+            duration: 3000,
+            panelClass: ['mat-toolbar', 'mat-primary'],
+          },
+        );
+        (async () => {
+          await this.router.navigate(['quotation/list']);
+        })();
+      },
+      error: error => {
+        this.error = error;
+        this.snackBar.open(this.error, 'Bezár', {
+          duration: 5000,
+          panelClass: ['mat-toolbar', 'mat-warn'],
+        });
+      },
+    });
+
+    }
+
+  rejectState() {
+
+    this.selectedState = 2;
+    this.quotation.id = this.quotationDetails.id;
+    this.quotation.customerId = this.customer.id;
+    this.quotation.vehicleId = this.vehicle.id;
+    this.quotation.description = this.quotationDetails.description;
+    this.quotation.state = this.selectedState;
+    this.quotation.createdBy = this.quotationDetails.createdBy;
+    //this.quotation.updatedBy = this.currentUser.id;
+    console.log(this.quotation);
+    this.quotationService.updateQuotation(this.quotation.id, this.quotation).subscribe({
+      next: quotation => {
+        this.snackBar.open(
+          `${this.quotationDetails.id} - azonosítójú űrlap sikeresen módosítva.`,
+          'OK',
+          {
+            duration: 3000,
+            panelClass: ['mat-toolbar', 'mat-primary'],
+          },
+        );
+        (async () => {
+          await this.router.navigate(['quotation/list']);
+        })();
+      },
+      error: error => {
+        this.error = error;
+        this.snackBar.open(this.error, 'Bezár', {
+          duration: 5000,
+          panelClass: ['mat-toolbar', 'mat-warn'],
+        });
+      },
+    });
+
+  }
+
+
+
 }

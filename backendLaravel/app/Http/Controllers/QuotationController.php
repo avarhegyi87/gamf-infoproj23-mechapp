@@ -33,9 +33,9 @@ class QuotationController extends Controller
                     'createdBy' => ['required'],
                     'updatedBy' => ['nullable'],
                 ]);
-                Quotation::create($formFields);
+                $quotation = Quotation::create($formFields);
         
-                return response()->json("Succesfully created");
+                return response()->json($quotation);
             }
             else 
             {
