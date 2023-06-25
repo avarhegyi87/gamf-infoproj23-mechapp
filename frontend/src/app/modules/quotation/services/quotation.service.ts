@@ -19,7 +19,7 @@ export class QuotationService {
   }
 
   getByCustomerId(customerId: number): Observable<Quotation[]> {
-    return this.http.get<Quotation[]>(`'${this.url}/getByCustomerId/${customerId}`);
+    return this.http.get<Quotation[]>(`${this.url}/getByCustomerId/${customerId}`);
   }
 
   getByVehicleId(VehicleId: number): Observable<Quotation[]> {
