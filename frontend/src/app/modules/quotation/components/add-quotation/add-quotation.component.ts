@@ -121,7 +121,7 @@ export class AddQuotationComponent implements OnInit {
       id: 0,
       quotationId: 0,
       materialId: '',
-      quantity: 0,
+      unit: 0,
     }
   }
 
@@ -223,7 +223,7 @@ export class AddQuotationComponent implements OnInit {
     let data: QuotationJobList[] = [];
     if (this.dynamicTables) {
       this.dynamicTables.forEach((tbl: DynamicTableComponent) => {
-        data = [...tbl.data];
+        data = [...data, ...tbl.data];
       });
     }
     this._allProductsAndServices = data;
@@ -401,11 +401,9 @@ export class AddQuotationComponent implements OnInit {
     this.submitted = true;
     if (this.addQuotationForm.invalid) return;
 
-    this._addQuotationRequest.createdBy = this.currentUser?.$id;
+    this._addQuotationRequest.createdBy = this.currentUser?.id;
     this._addQuotationRequest.description = this.addQuotationForm.get('description')?.value;
     this._addQuotationRequest.state = 0;
-
-    console.log('quot req:', this._addQuotationRequest);
 
     this.quotationService.addQuotation(this._addQuotationRequest).subscribe({
       next: quotation => {
@@ -419,8 +417,9 @@ export class AddQuotationComponent implements OnInit {
         );
         this.allProductsAndServices.forEach((job: QuotationJobList) => {
           this._addJobRequest.quotationId = quotation.id;
+          this._addJobRequest.worksheetId = 0;
           this._addJobRequest.materialId = job.materialNumber;
-          this._addJobRequest.quantity = job.quantity;
+          this._addJobRequest.unit = job.quantity;
           this.jobService.addJob(this._addJobRequest).subscribe({
             next: j => {
               /** */
