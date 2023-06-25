@@ -133,8 +133,6 @@ export class DetailsQuotationComponent implements OnInit {
                 this.jobs = jobs;
                 this.materials.forEach(material => {
                   this.jobs.forEach(job => {
-                    console.log(job.materialId + "===" + material.materialNumber);
-                    console.log(job);
                     if (String(job.materialId) == material.materialNumber) {
                       const newService: QuotationJobList = {
                         materialNumber: material.materialNumber,
@@ -150,7 +148,6 @@ export class DetailsQuotationComponent implements OnInit {
                     }
                   });
                 });
-                console.log(jobs);
               });
 
 
@@ -165,12 +162,6 @@ export class DetailsQuotationComponent implements OnInit {
         }
       },
     });
-
-    console.log(this.materials);
-    console.log(this.jobs);
-
-
-    console.log(this.tableJobList);
   }
 
 
@@ -192,6 +183,8 @@ export class DetailsQuotationComponent implements OnInit {
 
   acceptState() {
     this.selectedState = 1;
+    var now = new Date;
+    var formatted = now.toISOString().split('T')[0] + " " +now.toISOString().split('T')[1].split('.')[0];
     this.quotation.id = this.quotationDetails.id;
     this.quotation.customerId = this.customer.id;
     this.quotation.vehicleId = this.vehicle.id;
@@ -199,7 +192,7 @@ export class DetailsQuotationComponent implements OnInit {
     this.quotation.state = this.selectedState;
     this.quotation.createdBy = this.quotationDetails.createdBy;
     this.quotation.updatedBy = this.currentUser.id;
-    this.quotation.finalizeDate = new Date;
+    this.quotation.finalizeDate = formatted;
     this.quotationService.updateQuotation(this.quotation.id, this.quotation).subscribe({
       next: quotation => {
         this.snackBar.open(
@@ -235,7 +228,6 @@ export class DetailsQuotationComponent implements OnInit {
     this.quotation.state = this.selectedState;
     this.quotation.createdBy = this.quotationDetails.createdBy;
     this.quotation.updatedBy = this.currentUser.id;
-    console.log(this.quotation);
     this.quotationService.updateQuotation(this.quotation.id, this.quotation).subscribe({
       next: quotation => {
         this.snackBar.open(

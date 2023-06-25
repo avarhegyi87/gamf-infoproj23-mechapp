@@ -10,5 +10,5 @@ export interface Quotation {
   updatedBy?: User | number;
   description: string;
   state: number;
-  finalizeDate?: Date;
+  finalizeDate?: string;
 }
