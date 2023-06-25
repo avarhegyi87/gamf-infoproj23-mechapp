@@ -31,23 +31,29 @@ class JobController extends Controller
                         ], 400);
                     } else {
                         $material = DB::table('stocks')->where('materialNumber', $request->materialId)->first();
-                        $currentStock = $material->currentStock;
-                        $newStock = $currentStock - $request->unit;
-                        if ($request->unit > $currentStock && $currentStock != 0) {
-                            return response()->json([
-                                'message' => 'Unit is greater than current stock',
-                            ], 400);
+                        if (Str::startsWith($material->materialNumber, '1')) {
+                            $currentStock = $material->currentStock;
+                            $newStock = $currentStock - $request->unit;
+                            if ($request->unit > $currentStock && $currentStock != 0) {
+                                return response()->json([
+                                    'message' => 'Quantity is greater than current stock',
+                                ], 400);
+                            }
+                            if ($currentStock < 1) {
+                                return response()->json([
+                                    'message' => 'Out of stock',
+                                ], 400);
+                            }
                         }
-                        if ($currentStock < 1) {
-                            return response()->json([
-                                'message' => 'Out of stock',
-                            ], 400);
+                        if ($request->has('worksheetId')) {
+                            $job = Job::create($request->all());
+                            if (Str::startsWith($material->materialNumber, '1')) {
+                                Stock::where('materialNumber', $request->materialId)->update(['currentStock' => $newStock]);
+                            }
+                        } else {
+                            $job = Job::create($request->except('worksheetId'));
                         }
-                        Job::create($request->all());
-                        if (Str::startsWith('This is my name', 'This')) {
-                            Stock::where('materialNumber', $request->materialId)->update(['currentStock' => $newStock]);
-                        }
-                        return response()->json('Successfully added');
+                        return response()->json($job);
                     }
                 } else {
                     return response()->json([
@@ -86,17 +92,19 @@ class JobController extends Controller
                         ], 400);
                     } else {
                         $material = DB::table('stocks')->where('materialNumber', $request->materialId)->first();
-                        $currentStock = $material->currentStock;
-                        $newStock = $currentStock - $request->unit;
-                        if ($request->unit > $currentStock && $currentStock != 0) {
-                            return response()->json([
-                                'message' => 'Unit is greater than current stock',
-                            ], 400);
-                        }
-                        if ($currentStock < 1) {
-                            return response()->json([
-                                'message' => 'Out of stock',
-                            ], 400);
+                        if (!Str::startsWith($material->materialNumber, '6')) {
+                            $currentStock = $material->currentStock;
+                            $newStock = $currentStock - $request->unit;
+                            if ($request->unit > $currentStock && $currentStock != 0) {
+                                return response()->json([
+                                    'message' => 'Unit is greater than current stock',
+                                ], 400);
+                            }
+                            if ($currentStock < 1) {
+                                return response()->json([
+                                    'message' => 'Out of stock',
+                                ], 400);
+                            }
                         }
                         if ($request->unit != $job->unit && Str::startsWith($request->materialId, '1')) {
                             if ($request->unit > $job->unit) {
