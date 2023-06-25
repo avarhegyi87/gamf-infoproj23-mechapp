@@ -144,12 +144,20 @@ export class AddWorksheetComponent implements OnInit {
     return this.materials.filter(m => m.description.toLowerCase().includes(searchTerm.toLowerCase()));
   }
 
-  get f() {
-    return this.addWorksheetForm.controls;
+  isInvalidWsField(field: string): boolean {
+    return (
+      this.addWorksheetForm.controls[field].invalid &&
+      (this.addWorksheetForm.controls[field].touched ||
+        this.addWorksheetForm.controls[field].dirty)
+    );
   }
 
-  isInvalid(field: string): boolean {
-    return (this.f[field].invalid && (this.f[field].touched || this.f[field].dirty));
+  isInvalidMatField(field: string): boolean {
+    return (
+      this.addMaterialForm.controls[field].invalid &&
+      (this.addMaterialForm.controls[field].touched ||
+        this.addMaterialForm.controls[field].dirty)
+    );
   }
 
   onCustomerOptionSelected(customer: Customer): void {
