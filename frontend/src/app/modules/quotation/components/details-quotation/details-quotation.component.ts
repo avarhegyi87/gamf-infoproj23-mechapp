@@ -20,6 +20,7 @@ import { Job } from 'src/app/modules/job/models/job.model';
 import { Material } from 'src/app/modules/material/models/material.model';
 import { MaterialService } from 'src/app/modules/material/services/material.service';
 import { QuotationJobList } from '../../models/quotation-job-list.model';
+import { VAT_HUN } from 'src/app/shared/constants/constants';
 
 @Component({
   selector: 'app-details-quotation',
@@ -48,9 +49,12 @@ export class DetailsQuotationComponent implements OnInit {
 
   jobs: Job[] = [];
   materials: Material[] = [];
+  totalNet = 0;
 
   tableJobList: QuotationJobList[] = [];
 
+  vat = VAT_HUN;
+  
 
   error = '';
   
@@ -74,25 +78,29 @@ export class DetailsQuotationComponent implements OnInit {
     state: 0,
   }
   
+  quotationsLoaded$ = new BehaviorSubject<boolean>(false);
 
   constructor(   
     private quotationService: QuotationService,
     private vehicleService: VehicleService,
     private customerService: CustomerService,
     private authService: AuthenticationService,
+    private jobService: JobService,
+    private materialService: MaterialService,
     private snackBar: MatSnackBar,
     private activeRoute: ActivatedRoute,
     private router: Router,
     )
   {
     this.authService.getCurrentUser.subscribe(x => (this.currentUser = x));
-    console.log(this.currentUser);
     this.customerService.getAllCustomers().subscribe(customers => {
       this.customers = customers;
     });
     this.vehicleService.getAllVehicles().subscribe(vehicles => {
       this.vehicles = vehicles;
-
+    });
+    this.materialService.getAllMaterials().subscribe(materials => {
+      this.materials = materials;
     });
   }
 
@@ -104,26 +112,83 @@ export class DetailsQuotationComponent implements OnInit {
           this.quotationService.getById(parseInt(id)).subscribe({
             next: response => {
               this.quotationDetails = response;
+
               this.customerService.getCustomer(response.customerId.toString()).subscribe({
                 next: customerResponse => {
                   this.quotationDetails.customerId = customerResponse;
                   this.customer = customerResponse;
                 },
               });
+
               this.vehicleService.getVehicle(Number(response.vehicleId)).subscribe({
                 next: vehicleResponse => {
                   this.quotationDetails.vehicleId = vehicleResponse;
                   this.vehicle = vehicleResponse;
+                  this.quotationsLoaded$.next(true);
                 },
               });
+
+              this.jobService.getByQuotationId(response.id).subscribe( jobs =>{
+                  this.jobs = jobs;
+                  this.materials.forEach(material => {
+                    this.jobs.forEach(job => {
+                      console.log(job.materialId + "===" + material.materialNumber);
+                      if(String(job.materialId) == material.materialNumber) {
+                        const newService: QuotationJobList = {
+                          materialNumber: material.materialNumber,
+                          description: material.description,
+                          quantity: job.quantity,
+                          unitPrice: material.netPrice,
+                          subTotal:
+                            material.netPrice *
+                            job.quantity,
+                        };
+                        this.totalNet = this.totalNet + newService.subTotal;
+                        this.tableJobList.push(newService);
+                      }
+                    });
+                  });
+                  console.log(jobs);
+              });
+              
+
               this.selectedState = this.quotationDetails.state;
             },
+            
           });
+          setTimeout(() => {
+            
+          }, 0);
+          
         }
       },
     });
+
+    console.log(this.materials);
+    console.log(this.jobs);
+    this.materials.forEach(material => {
+      this.jobs.forEach(job => {
+        console.log(job.materialId + "===" + material.materialNumber);
+        if(String(job.materialId) == material.materialNumber) {
+          const newService: QuotationJobList = {
+            materialNumber: material.materialNumber,
+            description: material.description,
+            quantity: job.quantity,
+            unitPrice: material.netPrice,
+            subTotal:
+              material.netPrice *
+              job.quantity,
+          };
+          this.totalNet = this.totalNet + newService.subTotal;
+          this.tableJobList.push(newService);
+        }
+      });
+    });
+
+    console.log(this.tableJobList);
   }
 
+  
   getState(id: number): string{
     if(id == 0){
       return this.statesMapping[0];
@@ -137,6 +202,9 @@ export class DetailsQuotationComponent implements OnInit {
     return "Hibás státusz."
   }
   
+
+  
+
   acceptState() {
     this.selectedState = 1;
     this.quotation.id = this.quotationDetails.id;
@@ -145,7 +213,7 @@ export class DetailsQuotationComponent implements OnInit {
     this.quotation.description = this.quotationDetails.description;
     this.quotation.state = this.selectedState;
     this.quotation.createdBy = this.quotationDetails.createdBy;
-    //this.quotation.updatedBy = this.currentUser.id;
+    this.quotation.updatedBy = this.currentUser.id;
     this.quotation.finalizeDate = new Date;
     this.quotationService.updateQuotation(this.quotation.id, this.quotation).subscribe({
       next: quotation => {
@@ -181,7 +249,7 @@ export class DetailsQuotationComponent implements OnInit {
     this.quotation.description = this.quotationDetails.description;
     this.quotation.state = this.selectedState;
     this.quotation.createdBy = this.quotationDetails.createdBy;
-    //this.quotation.updatedBy = this.currentUser.id;
+    this.quotation.updatedBy = this.currentUser.id;
     console.log(this.quotation);
     this.quotationService.updateQuotation(this.quotation.id, this.quotation).subscribe({
       next: quotation => {

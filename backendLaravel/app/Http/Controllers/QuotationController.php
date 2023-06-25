@@ -70,9 +70,9 @@ class QuotationController extends Controller
                     'customerId' => ['required'],
                     'description' => ['nullable', 'max:255'],
                     'state' => ['required'],
-                    'finalizeDate' => ['nullable']
+                    'finalizeDate' => ['nullable'],
+                    'updatedBy' => ['required'],
                 ]);
-                $quotation->updatedBy = Auth::user()->id;
                 $quotation->update($formFields);
 
                 return response()->json('Successfully updated');
