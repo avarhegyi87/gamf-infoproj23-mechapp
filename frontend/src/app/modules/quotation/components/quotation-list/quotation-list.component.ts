@@ -6,19 +6,24 @@ import { Vehicle } from 'src/app/modules/vehicle/models/vehicle.model';
 import { User } from 'src/app/modules/users/models/user.model';
 import { BehaviorSubject, Observable, startWith, map } from 'rxjs';
 import { VehicleService } from 'src/app/modules/vehicle/services/vehicle.service';
-import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/modules/users/services/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { Role } from 'src/app/modules/users/models/role.model';
-import { FuelTypeToLabelMapping, FuelTypeEnum } from 'src/app/modules/vehicle/models/fuel-types';
+import {
+  FuelTypeToLabelMapping,
+  FuelTypeEnum,
+} from 'src/app/modules/vehicle/models/fuel-types';
 import { FormControl } from '@angular/forms';
 import { Customer } from 'src/app/modules/customer/models/customer.model';
 import { CustomerService } from 'src/app/modules/customer/services/customer.service';
 import { Quotation } from '../../models/quotation.model';
 import { QuotationService } from '../../services/quotation.service';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { QuotationStateEnum, QuotationStateToLabelMapping } from 'src/app/modules/quotation/models/states';
+import {
+  QuotationStateEnum,
+  QuotationStateToLabelMapping,
+} from 'src/app/modules/quotation/models/states';
 
 @Component({
   selector: 'app-quotation-list',
@@ -95,16 +100,27 @@ export class QuotationListComponent implements OnInit {
           )
           : quotations;
         this.quotations.data.map(
-          item =>
-          (item.customerId =
-            this.customers.find(c => c.id === item.customerId) ||
-            item.customerId,
-            item.vehicleId = this.vehicles.find(v => v.id === item.vehicleId) ||
-            item.vehicleId),
+          item => (
+            (item.customerId =
+              this.customers.find(c => c.id === item.customerId) ||
+              item.customerId),
+            (item.vehicleId =
+              this.vehicles.find(v => v.id === item.vehicleId) ||
+              item.vehicleId)
+          ),
         );
 
         this.displayedColumns = Object.keys(this.quotations.data[0]).filter(
-          column => !['createdBy', 'updatedBy', 'description', 'finalizeDate', 'created_at', 'updated_at', ''].includes(column),
+          column =>
+            ![
+              'createdBy',
+              'updatedBy',
+              'description',
+              'finalizeDate',
+              'created_at',
+              'updated_at',
+              '',
+            ].includes(column),
         );
 
         if (this.currentUser && this.currentUser?.role >= Role.Manager)
@@ -141,23 +157,17 @@ export class QuotationListComponent implements OnInit {
         });
       },
     });
-
-
   }
 
   getState(id: number): string {
-    if (id == 0) {
+    if (id == 0)
       return this.statesMapping[0];
-    }
-    else if (id == 1) {
-
+    else if (id == 1)
       return this.statesMapping[1];
-    }
-    else if (id == 2) {
+    else if (id == 2)
       return this.statesMapping[2];
-    }
-    return "Hibás státusz."
 
+    return 'Hibás státusz.';
   }
 
   displayFn(customer: Customer): string {
@@ -199,5 +209,4 @@ export class QuotationListComponent implements OnInit {
     value = value.trim().toLowerCase();
     this.quotations.filter = value;
   }
-
 }

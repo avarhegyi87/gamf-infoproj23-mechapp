@@ -29,8 +29,7 @@
           </p>
           <p>
             Irányítószám és település:<strong>
-              {{ customer.postcode }} {{ customer.city }}</strong
-            >
+              {{ customer.postcode }} {{ customer.city }}</strong>
           </p>
           <p>
             Utca és és házszám:
@@ -109,9 +108,7 @@
               </tr>
             </thead>
             <tbody>
-              <ng-container
-                *ngIf="tableJobList.length > 0; else noDataTemplate"
-              >
+              <ng-container *ngIf="tableJobList.length > 0; else noDataTemplate">
                 <tr *ngFor="let item of tableJobList" class="dyntbl-row">
                   <td class="dyntbl-cell">{{ item.materialNumber }}</td>
                   <td class="dyntbl-cell">{{ item.description }}</td>
@@ -169,32 +166,16 @@
           </p>
           <mat-divider></mat-divider>
         </mat-card-content>
-        <div
-          class="pull-right"
-          [hidden]="
+        <div class="pull-right" [hidden]="
             getState(selectedState) == 'Elfogadott' ||
             getState(selectedState) == 'Elutasított'
-          "
-        >
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="acceptState()"
-            class="btn-w-md"
-          >
+          ">
+          <button mat-raised-button color="primary" (click)="acceptState()" class="btn-w-md">
             Elfogad
           </button>
         </div>
-        <div
-          class="pull-right"
-          [hidden]="getState(selectedState) == 'Elutasított'"
-        >
-          <button
-            mat-raised-button
-            color="primary"
-            (click)="rejectState()"
-            class="btn-w-md"
-          >
+        <div class="pull-right" [hidden]="getState(selectedState) == 'Elutasított'">
+          <button mat-raised-button color="primary" (click)="rejectState()" class="btn-w-md">
             Elutasít
           </button>
         </div>
