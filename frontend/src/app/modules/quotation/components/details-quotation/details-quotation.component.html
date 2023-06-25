@@ -1,72 +1,102 @@
 <ng-container *ngIf="quotationsLoaded$ | async; else templateLoading">
-<mat-card>
-    <mat-card-header>
-      <mat-card-title>Ügyféladatok</mat-card-title>
-    </mat-card-header>
-    <mat-card-subtitle>Név</mat-card-subtitle>
-    <mat-card-content>
-        <p> <strong>{{ customer.name }}</strong></p>
-        <mat-divider></mat-divider>
-    </mat-card-content>
-    <mat-card-subtitle>Elérhetőségek</mat-card-subtitle>
-    <mat-card-content>
-        <p>E-mail: <strong>{{ customer.email }}</strong></p>
-        <p>Telefonszám: <strong>{{ customer.phoneNumber }}</strong></p>
-        <mat-divider></mat-divider>
-    </mat-card-content>
-    <mat-card-subtitle>Cím</mat-card-subtitle>
-    <mat-card-content>
-        <p>Ország: <strong>{{ customer.country }}</strong></p>
-        <p>Irányítószám és település:<strong> {{ customer.postcode }} {{ customer.city }}</strong></p>
-        <p>Utca és és házszám: <strong> {{ customer.street }}, {{ customer.houseNumber }}</strong></p>
-        <mat-divider></mat-divider>
-    </mat-card-content>
-    <mat-card-subtitle>Adószám</mat-card-subtitle>
-    <mat-card-content>
-        <p><strong>{{ customer.taxNumber }}</strong></p>
-        <mat-divider></mat-divider>
-    </mat-card-content>
-  </mat-card>
-  <mat-card >
-    <mat-card-header>
-      <mat-card-title>Gépjárműadatok</mat-card-title>
-    </mat-card-header>
-    <mat-card-subtitle>Azonosítók</mat-card-subtitle>
-    <mat-card-content>
-        <p>Rendszám: <strong>{{ vehicle.licencePlate }}</strong></p>
-        <p>Alvázszám <strong>{{ vehicle.vin }}</strong></p>
-        <mat-divider></mat-divider>
-    </mat-card-content>
-    <mat-card-subtitle>Gyártási adatok</mat-card-subtitle>
-    <mat-card-content>
-        <p>Gyártási év: <strong>{{ vehicle.productionYear }}</strong></p>
-        <p>Gyártó: <strong>{{ vehicle.carBrand }}</strong></p>
-        <p>Modell: <strong>{{ vehicle.carMake }}</strong></p>
-        <mat-divider></mat-divider>
-    </mat-card-content>
-    <mat-card-subtitle>Műszaki adatok</mat-card-subtitle>
-    <mat-card-content>
-        <p>Futásteljesítmény: <strong>{{ vehicle.mileage }} km</strong></p>
-        <p>Lökettérfogat: <strong>{{ vehicle.displacement }} ccm</strong></p>
-        <p>Üzemanyagtípus: <strong>{{ vehicle.fuelType }}</strong></p>
-        <mat-divider></mat-divider>
-    </mat-card-content>
-  </mat-card>
-  <mat-card>
-  <mat-card-header>
-    <mat-card-title>Ügyfél általi hibaleírás</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-      <p> <strong>{{ quotationDetails.description }}</strong></p>
-      <mat-divider></mat-divider>
-  </mat-card-content>
-</mat-card>
-<mat-card>
-    <mat-card-header>
-        <mat-card-title>Ügyfél általi hibaleírás</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <table class="mat-elevation-z8 dyntbl">
+  <mat-grid-list cols="3" rowHeight="1:1">
+    <mat-grid-tile>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Ügyféladatok</mat-card-title>
+        </mat-card-header>
+        <mat-card-subtitle>Név</mat-card-subtitle>
+        <mat-card-content>
+          <p>
+            <strong>{{ customer.name }}</strong>
+          </p>
+          <mat-divider></mat-divider>
+        </mat-card-content>
+        <mat-card-subtitle>Elérhetőségek</mat-card-subtitle>
+        <mat-card-content>
+          <p>
+            E-mail: <strong>{{ customer.email }}</strong>
+          </p>
+          <p>
+            Telefonszám: <strong>{{ customer.phoneNumber }}</strong>
+          </p>
+          <mat-divider></mat-divider>
+        </mat-card-content>
+        <mat-card-subtitle>Cím</mat-card-subtitle>
+        <mat-card-content>
+          <p>
+            Ország: <strong>{{ customer.country }}</strong>
+          </p>
+          <p>
+            Irányítószám és település:<strong>
+              {{ customer.postcode }} {{ customer.city }}</strong
+            >
+          </p>
+          <p>
+            Utca és és házszám:
+            <strong> {{ customer.street }}, {{ customer.houseNumber }}</strong>
+          </p>
+          <mat-divider></mat-divider>
+        </mat-card-content>
+        <mat-card-subtitle>Adószám</mat-card-subtitle>
+        <mat-card-content>
+          <p>
+            <strong>{{ customer.taxNumber }}</strong>
+          </p>
+          <mat-divider></mat-divider>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Gépjárműadatok</mat-card-title>
+        </mat-card-header>
+        <mat-card-subtitle>Azonosítók</mat-card-subtitle>
+        <mat-card-content>
+          <p>
+            Rendszám: <strong>{{ vehicle.licencePlate }}</strong>
+          </p>
+          <p>
+            Alvázszám <strong>{{ vehicle.vin }}</strong>
+          </p>
+          <mat-divider></mat-divider>
+        </mat-card-content>
+        <mat-card-subtitle>Gyártási adatok</mat-card-subtitle>
+        <mat-card-content>
+          <p>
+            Gyártási év: <strong>{{ vehicle.productionYear }}</strong>
+          </p>
+          <p>
+            Gyártó: <strong>{{ vehicle.carBrand }}</strong>
+          </p>
+          <p>
+            Modell: <strong>{{ vehicle.carMake }}</strong>
+          </p>
+          <mat-divider></mat-divider>
+        </mat-card-content>
+        <mat-card-subtitle>Műszaki adatok</mat-card-subtitle>
+        <mat-card-content>
+          <p>
+            Futásteljesítmény: <strong>{{ vehicle.mileage }} km</strong>
+          </p>
+          <p>
+            Lökettérfogat: <strong>{{ vehicle.displacement }} ccm</strong>
+          </p>
+          <p>
+            Üzemanyagtípus: <strong>{{ vehicle.fuelType }}</strong>
+          </p>
+          <mat-divider></mat-divider>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Ügyfél általi hibaleírás</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <table class="mat-elevation-z8 dyntbl">
             <thead>
               <tr class="dyntbl-row">
                 <th class="dyntbl-cell hdr">Cikkszám</th>
@@ -79,7 +109,9 @@
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngIf="tableJobList.length > 0; else noDataTemplate">
+              <ng-container
+                *ngIf="tableJobList.length > 0; else noDataTemplate"
+              >
                 <tr *ngFor="let item of tableJobList" class="dyntbl-row">
                   <td class="dyntbl-cell">{{ item.materialNumber }}</td>
                   <td class="dyntbl-cell">{{ item.description }}</td>
@@ -89,7 +121,9 @@
                   <td class="dyntbl-cell">{{ item.subTotal * (1 + vat) }}</td>
                 </tr>
                 <tr class="dyntbl-row">
-                  <td colspan="4" class="dyntbl-cell subtotals">Össz. (ÁFA: {{ vat * 100 }}%):</td>
+                  <td colspan="4" class="dyntbl-cell subtotals">
+                    Össz. (ÁFA: {{ vat * 100 }}%):
+                  </td>
                   <td class="dyntbl-cell">{{ totalNet }}</td>
                   <td class="dyntbl-cell">{{ totalNet * (1 + vat) }}</td>
                   <td class="dyntbl-cell">HUF</td>
@@ -97,36 +131,77 @@
               </ng-container>
               <ng-template #noDataTemplate>
                 <tr class="dyntbl-row">
-                  <td colspan="7" class="dyntbl-cell warn-nodata"><i>Egy alkatrész/szolgáltatás sem került hozzáadásra!</i></td>
+                  <td colspan="7" class="dyntbl-cell warn-nodata">
+                    <i>Egy alkatrész/szolgáltatás sem került hozzáadásra!</i>
+                  </td>
                 </tr>
               </ng-template>
             </tbody>
           </table>
-          
-        <mat-divider></mat-divider>
-    </mat-card-content>
-</mat-card>
-<mat-card>
-    <mat-card-header>
-        <mat-card-title>Ajánlat státusza</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <p> <strong>{{ getState(selectedState) }}</strong></p>
-        <mat-divider></mat-divider>
-    </mat-card-content>
-    <div class="pull-right" [hidden]="getState(selectedState) == 'Elfogadott' || getState(selectedState) == 'Elutasított'">
-        <button mat-raised-button color="primary" (click)="acceptState();" class="btn-w-md">
-        Elfogad
-        </button>
-    </div>
-    <div class="pull-right" [hidden]="getState(selectedState) == 'Elutasított'">
-        <button mat-raised-button color="primary" (click)="rejectState();" class="btn-w-md">
-        Elutasít
-        </button>
-    </div>
-</mat-card>
+
+          <mat-divider></mat-divider>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+  <mat-grid-list cols="2" rowHeight="3:1">
+    <mat-grid-tile>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Ügyfél általi hibaleírás</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            <strong>{{ quotationDetails.description }}</strong>
+          </p>
+          <mat-divider></mat-divider>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Ajánlat státusza</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>
+            <strong>{{ getState(selectedState) }}</strong>
+          </p>
+          <mat-divider></mat-divider>
+        </mat-card-content>
+        <div
+          class="pull-right"
+          [hidden]="
+            getState(selectedState) == 'Elfogadott' ||
+            getState(selectedState) == 'Elutasított'
+          "
+        >
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="acceptState()"
+            class="btn-w-md"
+          >
+            Elfogad
+          </button>
+        </div>
+        <div
+          class="pull-right"
+          [hidden]="getState(selectedState) == 'Elutasított'"
+        >
+          <button
+            mat-raised-button
+            color="primary"
+            (click)="rejectState()"
+            class="btn-w-md"
+          >
+            Elutasít
+          </button>
+        </div>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
 </ng-container>
 <ng-template #templateLoading>
-    <p>Töltés...</p>
-  </ng-template>
-  
+  <p>Töltés...</p>
+</ng-template>

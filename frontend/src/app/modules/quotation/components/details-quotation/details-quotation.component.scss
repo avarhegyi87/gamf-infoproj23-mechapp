@@ -1,0 +1,41 @@
+mat-table {
+    width: 100%;
+  }
+  
+  mat-raised-button {
+    margin-top: 10px;
+  }
+  
+  .dyntbl {
+    margin: 0;
+    font-family: Roboto, "Helvetiva Neue", sans-serif;
+  
+    .dyntbl-row {
+      line-height: 35px;
+  
+      .dyntbl-cell {
+        font-size: 10px;
+        text-align: left;
+        vertical-align: middle;
+        padding-left: 24px;
+        font-weight: normal;
+        color: rgba(0, 0, 0, 0.7);
+  
+        &.warn-nodata {
+          color: rgba(219, 20, 60, 0.9);
+        }
+  
+        &.hdr {
+          font-weight: 400;
+          font-size: 12px;
+        }
+  
+        &.subtotals {
+          text-align: right;
+          font-weight: bold;
+          font-size: 12px;
+        }
+      }
+    }
+  }
+  

@@ -22,10 +22,12 @@ import { MaterialService } from 'src/app/modules/material/services/material.serv
 import { QuotationJobList } from '../../models/quotation-job-list.model';
 import { VAT_HUN } from 'src/app/shared/constants/constants';
 
+
 @Component({
   selector: 'app-details-quotation',
   templateUrl: './details-quotation.component.html',
   styleUrls: ['./details-quotation.component.scss'],
+
 })
 export class DetailsQuotationComponent implements OnInit {
 
@@ -54,10 +56,10 @@ export class DetailsQuotationComponent implements OnInit {
   tableJobList: QuotationJobList[] = [];
 
   vat = VAT_HUN;
-  
+
 
   error = '';
-  
+
   quotationDetails: Quotation = {
     id: 0,
     vehicleId: 0,
@@ -77,10 +79,10 @@ export class DetailsQuotationComponent implements OnInit {
     description: '0',
     state: 0,
   }
-  
+
   quotationsLoaded$ = new BehaviorSubject<boolean>(false);
 
-  constructor(   
+  constructor(
     private quotationService: QuotationService,
     private vehicleService: VehicleService,
     private customerService: CustomerService,
@@ -90,8 +92,7 @@ export class DetailsQuotationComponent implements OnInit {
     private snackBar: MatSnackBar,
     private activeRoute: ActivatedRoute,
     private router: Router,
-    )
-  {
+  ) {
     this.authService.getCurrentUser.subscribe(x => (this.currentUser = x));
     this.customerService.getAllCustomers().subscribe(customers => {
       this.customers = customers;
@@ -128,66 +129,66 @@ export class DetailsQuotationComponent implements OnInit {
                 },
               });
 
-              this.jobService.getByQuotationId(response.id).subscribe( jobs =>{
-                  this.jobs = jobs;
-                  this.materials.forEach(material => {
-                    this.jobs.forEach(job => {
-                      console.log(job.materialId + "===" + material.materialNumber);
-                      console.log(job);
-                      if(String(job.materialId) == material.materialNumber) {
-                        const newService: QuotationJobList = {
-                          materialNumber: material.materialNumber,
-                          description: material.description,
-                          quantity: job.quantity,
-                          unitPrice: material.netPrice,
-                          subTotal:
-                            material.netPrice *
-                            job.quantity,
-                        };
-                        this.totalNet = this.totalNet + newService.subTotal;
-                        this.tableJobList.push(newService);
-                      }
-                    });
+              this.jobService.getByQuotationId(response.id).subscribe(jobs => {
+                this.jobs = jobs;
+                this.materials.forEach(material => {
+                  this.jobs.forEach(job => {
+                    console.log(job.materialId + "===" + material.materialNumber);
+                    console.log(job);
+                    if (String(job.materialId) == material.materialNumber) {
+                      const newService: QuotationJobList = {
+                        materialNumber: material.materialNumber,
+                        description: material.description,
+                        quantity: job.unit,
+                        unitPrice: material.netPrice,
+                        subTotal:
+                          material.netPrice *
+                          job.unit,
+                      };
+                      this.totalNet = this.totalNet + newService.subTotal;
+                      this.tableJobList.push(newService);
+                    }
                   });
-                  console.log(jobs);
+                });
+                console.log(jobs);
               });
-              
+
 
               this.selectedState = this.quotationDetails.state;
             },
-            
+
           });
           setTimeout(() => {
-            
+
           }, 0);
-          
+
         }
       },
     });
 
     console.log(this.materials);
     console.log(this.jobs);
-   
+
 
     console.log(this.tableJobList);
   }
 
-  
-  getState(id: number): string{
-    if(id == 0){
+
+  getState(id: number): string {
+    if (id == 0) {
       return this.statesMapping[0];
     }
     else if (id == 1) {
       return this.statesMapping[1];
     }
     else if (id == 2) {
-          return this.statesMapping[2];
+      return this.statesMapping[2];
     }
     return "Hibás státusz."
   }
-  
 
-  
+
+
 
   acceptState() {
     this.selectedState = 1;
@@ -222,7 +223,7 @@ export class DetailsQuotationComponent implements OnInit {
       },
     });
 
-    }
+  }
 
   rejectState() {
 

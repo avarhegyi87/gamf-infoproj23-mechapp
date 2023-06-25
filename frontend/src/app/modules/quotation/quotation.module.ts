@@ -22,6 +22,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import {MatGridListModule} from '@angular/material/grid-list';
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatAutocompleteModule,
     MatCardModule,
     MatDividerModule,
+    MatGridListModule,
   ],
 })
 export class QuotationModule {}

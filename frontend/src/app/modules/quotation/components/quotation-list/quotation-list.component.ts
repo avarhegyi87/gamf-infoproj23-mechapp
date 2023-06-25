@@ -48,7 +48,7 @@ export class QuotationListComponent implements OnInit {
   isMobile = false;
   quotationsLoaded$ = new BehaviorSubject<boolean>(false);
 
-    constructor(
+  constructor(
     private quotationService: QuotationService,
     private vehicleService: VehicleService,
     private customerService: CustomerService,
@@ -77,87 +77,87 @@ export class QuotationListComponent implements OnInit {
         this.isMobile = result.matches;
       });
 
-      this.filteredCustomers = this.customerControl.valueChanges.pipe(
-        startWith(''),
-        map(value => {
-          const customerName = typeof value === 'string' ? value : value?.name;
-          return customerName
-            ? this._filter(customerName as string)
-            : this.customers.slice();
-        }),
-      );
+    this.filteredCustomers = this.customerControl.valueChanges.pipe(
+      startWith(''),
+      map(value => {
+        const customerName = typeof value === 'string' ? value : value?.name;
+        return customerName
+          ? this._filter(customerName as string)
+          : this.customers.slice();
+      }),
+    );
 
-      this.quotationService.getAllQuotations().subscribe({
-        next: quotations => {
-          this.quotations.data = this.selectedCustomer
-            ? quotations.filter(
-              quotation => quotation.customerId === this.selectedCustomer?.id,
-            )
-            : quotations;
-          this.quotations.data.map(
-            item =>
-              (item.customerId =
-                this.customers.find(c => c.id === item.customerId) ||
-                item.customerId,
-                item.vehicleId = this.vehicles.find(v => v.id === item.vehicleId) || 
-                item.vehicleId),
-          );
+    this.quotationService.getAllQuotations().subscribe({
+      next: quotations => {
+        this.quotations.data = this.selectedCustomer
+          ? quotations.filter(
+            quotation => quotation.customerId === this.selectedCustomer?.id,
+          )
+          : quotations;
+        this.quotations.data.map(
+          item =>
+          (item.customerId =
+            this.customers.find(c => c.id === item.customerId) ||
+            item.customerId,
+            item.vehicleId = this.vehicles.find(v => v.id === item.vehicleId) ||
+            item.vehicleId),
+        );
 
-          this.displayedColumns = Object.keys(this.quotations.data[0]).filter(
-            column => !['createdBy', 'updatedBy', 'description', 'finalizeDate', 'created_at', 'updated_at', ''].includes(column),
-          );
-  
-          if (this.currentUser && this.currentUser?.role >= Role.Manager)
-            this.displayedColumns.push('description');
-          this.quotationsLoaded$.next(true);
-  
-          this.quotations.sortingDataAccessor = (
-            item: Quotation,
-            property: string,
-          ) => {
-            switch (property) {
-              case 'id':
-                return item.id;
-                case 'vehicleId':
-                  return item.vehicleId.toString().toLowerCase();  
-              case 'customerId':
-                return item.customerId.toString().toLowerCase();
-              case 'state':
-                return item.state.toString().toLowerCase();
+        this.displayedColumns = Object.keys(this.quotations.data[0]).filter(
+          column => !['createdBy', 'updatedBy', 'description', 'finalizeDate', 'created_at', 'updated_at', ''].includes(column),
+        );
 
-              default:
-                return '';
-            }
-          };
-          setTimeout(() => {
-            this.quotations.sort = this.sort;
-            this.quotations.paginator = this.paginator;
-          }, 0);
-        },
-        error: response => {
-          this.snackBar.open(response, 'Bezár', {
-            duration: 5000,
-            panelClass: ['mat-toolbar', 'mat-warn'],
-          });
-        },
-      });
+        if (this.currentUser && this.currentUser?.role >= Role.Manager)
+          this.displayedColumns.push('description');
+        this.quotationsLoaded$.next(true);
+
+        this.quotations.sortingDataAccessor = (
+          item: Quotation,
+          property: string,
+        ) => {
+          switch (property) {
+            case 'id':
+              return item.id;
+            case 'vehicleId':
+              return item.vehicleId.toString().toLowerCase();
+            case 'customerId':
+              return item.customerId.toString().toLowerCase();
+            case 'state':
+              return item.state.toString().toLowerCase();
+
+            default:
+              return '';
+          }
+        };
+        setTimeout(() => {
+          this.quotations.sort = this.sort;
+          this.quotations.paginator = this.paginator;
+        }, 0);
+      },
+      error: response => {
+        this.snackBar.open(response, 'Bezár', {
+          duration: 5000,
+          panelClass: ['mat-toolbar', 'mat-warn'],
+        });
+      },
+    });
 
 
   }
 
-  getState(id: number): string{
-    if(id == 0){
+  getState(id: number): string {
+    if (id == 0) {
       return this.statesMapping[0];
     }
     else if (id == 1) {
-    
+
       return this.statesMapping[1];
     }
     else if (id == 2) {
-          return this.statesMapping[2];
+      return this.statesMapping[2];
     }
     return "Hibás státusz."
-    
+
   }
 
   displayFn(customer: Customer): string {
