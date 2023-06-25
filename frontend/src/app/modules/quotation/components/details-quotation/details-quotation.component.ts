@@ -133,6 +133,7 @@ export class DetailsQuotationComponent implements OnInit {
                   this.materials.forEach(material => {
                     this.jobs.forEach(job => {
                       console.log(job.materialId + "===" + material.materialNumber);
+                      console.log(job);
                       if(String(job.materialId) == material.materialNumber) {
                         const newService: QuotationJobList = {
                           materialNumber: material.materialNumber,
@@ -166,24 +167,7 @@ export class DetailsQuotationComponent implements OnInit {
 
     console.log(this.materials);
     console.log(this.jobs);
-    this.materials.forEach(material => {
-      this.jobs.forEach(job => {
-        console.log(job.materialId + "===" + material.materialNumber);
-        if(String(job.materialId) == material.materialNumber) {
-          const newService: QuotationJobList = {
-            materialNumber: material.materialNumber,
-            description: material.description,
-            quantity: job.quantity,
-            unitPrice: material.netPrice,
-            subTotal:
-              material.netPrice *
-              job.quantity,
-          };
-          this.totalNet = this.totalNet + newService.subTotal;
-          this.tableJobList.push(newService);
-        }
-      });
-    });
+   
 
     console.log(this.tableJobList);
   }

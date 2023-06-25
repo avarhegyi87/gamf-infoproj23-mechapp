@@ -6,5 +6,5 @@ export interface Job {
   quotationId?: Quotation | number;
   //worksheetId?: Worksheet | number;
   materialId: Material | number;
-  quantity: number;
+  unit: number;
 }
