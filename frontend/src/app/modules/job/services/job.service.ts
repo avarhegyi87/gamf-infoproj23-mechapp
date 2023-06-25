@@ -19,11 +19,11 @@ export class JobService {
   }
 
   getByQuotationId(quotationId: number): Observable<Job[]> {
-    return this.http.get<Job[]>(`'${this.url}/getByQuotationId/${quotationId}`);
+    return this.http.get<Job[]>(`${this.url}/getByQuotationId/${quotationId}`);
   }
 
   getByWorksheetId(worksheetId: number): Observable<Job[]> {
-    return this.http.get<Job[]>(`'${this.url}/getByWorksheetId/${worksheetId}`);
+    return this.http.get<Job[]>(`${this.url}/getByWorksheetId/${worksheetId}`);
   }
 
   addJob(addJobRequest: Job): Observable<Job> {
