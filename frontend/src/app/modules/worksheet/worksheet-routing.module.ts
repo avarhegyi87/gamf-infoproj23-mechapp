@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AddWorksheetComponent } from './components/add-worksheet/add-worksheet.component';
 
 const routes: Routes = [
-  { path: '', component: AddWorksheetComponent },
+  { path: 'add', component: AddWorksheetComponent },
 ];
 
 @NgModule({

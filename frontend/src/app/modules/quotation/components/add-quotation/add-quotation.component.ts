@@ -32,17 +32,16 @@ import { QuotationService } from '../../services/quotation.service';
   styleUrls: ['./add-quotation.component.scss'],
 })
 export class AddQuotationComponent implements OnInit {
-  // Quotation request and main form, and the types of data stored in it
+  // Quotation request and main form
   private _addQuotationRequest: any;
   private _addJobRequest: any;
   addQuotationForm!: FormGroup;
-  customers: Customer[] = [];
-  jobs: Job[] = [];
 
   // accessor for the dynamic tables storing the added materials and services
   @ViewChildren(DynamicTableComponent)
   dynamicTables!: QueryList<DynamicTableComponent>;
   private _allProductsAndServices: QuotationJobList[] = [];
+  jobs: Job[] = [];
 
   // Form for adding products, and data passed on to its dynamic table
   partsTableForm!: FormGroup;
@@ -67,6 +66,7 @@ export class AddQuotationComponent implements OnInit {
   filteredServices!: Observable<Material[]>;
 
   // properties for filtering Customers in the auto-complete field of addQuotationForm
+  customers: Customer[] = [];
   filteredCustomers!: Observable<Customer[]>;
   customerControl = new FormControl<string | Customer>('');
   customerSelected = false;
@@ -93,6 +93,7 @@ export class AddQuotationComponent implements OnInit {
     private snackBar: MatSnackBar,
   ) {
     authService.getCurrentUser.subscribe(user => (this.currentUser = user));
+
     this.customerService.getAllCustomers().subscribe(customers => {
       this.customers = customers;
     });
