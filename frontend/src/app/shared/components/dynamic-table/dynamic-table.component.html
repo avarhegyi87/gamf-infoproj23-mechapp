@@ -1,0 +1,37 @@
+<table class="mat-elevation-z8 dyntbl">
+  <thead>
+    <tr class="dyntbl-row">
+      <th class="dyntbl-cell hdr">Cikkszám</th>
+      <th class="dyntbl-cell hdr">Megnevezés</th>
+      <th class="dyntbl-cell hdr">Mennyiség</th>
+      <th class="dyntbl-cell hdr">Nettó egyságár</th>
+      <th class="dyntbl-cell hdr">Nettó ár</th>
+      <th class="dyntbl-cell hdr">Bruttó ár</th>
+      <th class="dyntbl-cell hdr"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngIf="data.length > 0; else noDataTemplate">
+      <tr *ngFor="let item of data" class="dyntbl-row">
+        <td class="dyntbl-cell">{{ item.materialNumber }}</td>
+        <td class="dyntbl-cell">{{ item.description }}</td>
+        <td class="dyntbl-cell">{{ item.quantity }}</td>
+        <td class="dyntbl-cell">{{ item.unitPrice }}</td>
+        <td class="dyntbl-cell">{{ item.subTotal }}</td>
+        <td class="dyntbl-cell">{{ item.subTotal * (1 + vat) }}</td>
+        <td class="dyntbl-cell"><button (click)="deleteItem(item)"><mat-icon>delete</mat-icon></button></td>
+      </tr>
+      <tr class="dyntbl-row">
+        <td colspan="4" class="dyntbl-cell subtotals">Össz. (ÁFA: {{ vat * 100 }}%):</td>
+        <td class="dyntbl-cell">{{ totalNet }}</td>
+        <td class="dyntbl-cell">{{ totalNet * (1 + vat) }}</td>
+        <td class="dyntbl-cell">HUF</td>
+      </tr>
+    </ng-container>
+    <ng-template #noDataTemplate>
+      <tr class="dyntbl-row">
+        <td colspan="7" class="dyntbl-cell warn-nodata"><i>Egy alkatrész/szolgáltatás sem került hozzáadásra!</i></td>
+      </tr>
+    </ng-template>
+  </tbody>
+</table>

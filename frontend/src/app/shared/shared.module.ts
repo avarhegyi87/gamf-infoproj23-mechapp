@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 import { LoginModule } from '../modules/login/login.module';
 import { HeaderComponent } from './components/header/header.component';
@@ -13,6 +14,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from "@angular/material/sidenav";
 import { MatTabsModule } from "@angular/material/tabs";
 import { MatDialogModule } from "@angular/material/dialog";
+import { MatTableModule } from '@angular/material/table';
 
 @NgModule({
   declarations: [HeaderComponent, DeletionModalComponent],
@@ -20,6 +22,7 @@ import { MatDialogModule } from "@angular/material/dialog";
     CommonModule,
     RouterModule,
     LoginModule,
+    FormsModule,
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
@@ -27,6 +30,7 @@ import { MatDialogModule } from "@angular/material/dialog";
     MatSidenavModule,
     MatTabsModule,
     MatDialogModule,
+    MatTableModule,
   ],
   exports: [HeaderComponent, DeletionModalComponent],
 })

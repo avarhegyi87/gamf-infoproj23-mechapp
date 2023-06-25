@@ -1,13 +1,87 @@
-h1, h2, h3 {
+h1,
+h2,
+h3 {
   text-align: center;
+}
+
+mat-divider {
+  margin-bottom: 2rem;
+}
+
+mat-card {
+  margin: 0 10px 0 0;
+  background-color: indianred;
+  color: white;
+}
+
+mat-card:not(:first-child) {
+  margin-top: 10px;
 }
 
 .form-container {
   display: flex;
   flex-wrap: wrap;
-  max-width: 1000px;
+  max-width: 1200px;
   margin: auto;
   margin-top: 3rem;
+
+  &.no-margin {
+    margin-top: 0;
+  }
+
+  &.two-column-input-container {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    gap: 15px;
+
+    .input-container{
+      width: 100%;
+
+      .input-field {
+        margin-bottom: 1rem;
+        width: 100%;
+
+        @media (min-width: 768px) {
+          margin: 0 10px;
+          max-width: 450px;
+        }
+
+        @media (max-width: 767px) {
+          margin: auto;
+          max-width: 300px;
+        }
+
+        &.narrow {
+          max-width: 200px;
+        }
+      }
+
+      .input-field:first-child {
+        margin-left: 0;
+      }
+
+      .no-left-margin {
+        margin-left: 0;
+      }
+
+      .sub-form {
+        display: flex;
+        width: 100%;
+
+        .sub-form-button {
+          justify-content: right;
+          padding: 10px 16px;
+          max-width: 64px;
+          max-height: 50px;
+        }
+      }
+
+      .parts-table-container {
+        width: 100%;
+        margin-bottom: 2rem;
+      }
+    }
+  }
 
   .input-container {
     display: flex;
@@ -49,7 +123,8 @@ h1, h2, h3 {
       align-content: center;
     }
 
-    .submit-button, .cancel-button {
+    .submit-button,
+    .cancel-button {
       width: 100%;
       max-width: 300px;
 

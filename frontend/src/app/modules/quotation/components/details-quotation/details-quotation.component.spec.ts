@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditQuotationComponent } from './edit-quotation.component';
+import { EditQuotationComponent } from './details-quotation.component';
 
 describe('EditQuotationComponent', () => {
   let component: EditQuotationComponent;

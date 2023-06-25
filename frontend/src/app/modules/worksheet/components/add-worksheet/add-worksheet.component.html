@@ -1,0 +1,24 @@
+<h1>Munkalap készítése</h1>
+<h3>Válasszon ügyfelet, majd járművet és ajánlatot a részletek betöltéséhez, majd egészítse ki, amennyiben szükséges!</h3>
+
+<div class="form-container two-column-input-container">
+
+  <div>
+    <form [formGroup]="addWorksheetForm">
+      <div class="input-container">
+
+        <mat-form-field class="input-field no-left-margin">
+          <mat-label>Válasszon partnert!</mat-label>
+          <input matInput [formControl]="customerControl" [matAutocomplete]="autoCustomer">
+          <mat-autocomplete #autoCustomer="matAutocomplete" [displayWith]="displayCustomer"
+            (optionSelected)="onCustomerOptionSelected($event.option.value)">
+            <mat-option *ngFor="let customer of filteredCustomers | async" [value]="customer">
+              {{ customer.id }}: {{ customer.name }} ({{ customer.postcode }} {{ customer.city }})
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+
+</div>

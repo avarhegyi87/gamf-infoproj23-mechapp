@@ -38,8 +38,8 @@ class VehicleController extends Controller
                 'errors' => $validator->errors()
             ], 400);
         } else {
-            Vehicle::create($request->all());
-            return response()->json('Successfully added');
+            $vehicle = Vehicle::create($request->all());
+            return response()->json($vehicle);
         }
     }
 

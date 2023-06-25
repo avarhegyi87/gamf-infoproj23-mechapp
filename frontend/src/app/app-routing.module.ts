@@ -14,7 +14,7 @@ const routes: Routes = [
       import('./modules/customer/customer.module').then(
         m => m.CustomerModule,
       ),
-      canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'material',
@@ -22,19 +22,29 @@ const routes: Routes = [
       import('./modules/material/material.module').then(
         m => m.MaterialModule,
       ),
-      canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'vehicle',
     loadChildren: () =>
       import('./modules/vehicle/vehicle.module').then(m => m.VehicleModule),
-      canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
   },
   {
     path: 'quotation',
     loadChildren: () =>
-      import('./modules/quotation/quotation.module').then(m => m.QuotationModule),
-      canActivate: [AuthGuard]
+      import('./modules/quotation/quotation.module').then(
+        m => m.QuotationModule,
+      ),
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'worksheet',
+    loadChildren: () =>
+      import('./modules/worksheet/worksheet.module').then(
+        m => m.WorksheetModule,
+      ),
+    canActivate: [AuthGuard],
   },
   { path: '**', redirectTo: '' },
 ];

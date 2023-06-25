@@ -68,7 +68,7 @@ Route::get('/quotation/getInactiveByVehicleId/{id}', [QuotationController::class
 Route::get('/quotation/get/{quotation}', [QuotationController::class, 'get'])->name('get');
 Route::get('/quotation/getAll', [QuotationController::class, 'getAll'])->name('getAll');
 Route::post('/quotation/create', [QuotationController::class, 'create'])->name('create');
-Route::post('/quotation/{quotation}', [QuotationController::class, 'update'])->name('update');
+Route::post('/quotation/put/{quotation}', [QuotationController::class, 'update'])->name('update');
 
 //Job routes
 Route::get('/job/get/{job}', [JobController::class, 'get'])->name('get');

@@ -1,12 +1,11 @@
-export enum FuelTypeEnum {
-    Created,
-    Active,
-    Inactive,
+export enum QuotationStateEnum {
+  Created = 0,
+  Active = 1,
+  Inactive = 2,
+}
 
-  }
-  
-  export const FuelTypeToLabelMapping: Record<FuelTypeEnum, string> = {
-    [FuelTypeEnum.Created]: 'Létrehozott',
-    [FuelTypeEnum.Active]: 'Elfogadott',
-    [FuelTypeEnum.Inactive]: 'Elutasított',
-  }
+export const QuotationStateToLabelMapping: Record<QuotationStateEnum, string> = {
+  [QuotationStateEnum.Created]: 'Létrehozott',
+  [QuotationStateEnum.Active]: 'Elfogadott',
+  [QuotationStateEnum.Inactive]: 'Elutasított',
+};

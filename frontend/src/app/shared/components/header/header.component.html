@@ -21,17 +21,11 @@
     <button mat-button [matMenuTriggerFor]="invoiceMenu" *ngIf="canSeeMenuItem(accessLevels.Manager)">Számlák</button>
 
     <mat-menu #quotationMenu="matMenu">
-      <button mat-menu-item routerLink="/quotation/view" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
-        Ajánlat megtekintése
-      </button>
       <button mat-menu-item routerLink="/quotation/list" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Ajánlatok listázása
       </button>
       <button mat-menu-item routerLink="/quotation/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Ajánlat készítése
-      </button>
-      <button mat-menu-item routerLink="/quotation/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
-        Ajánlat módosítása
       </button>
     </mat-menu>
 

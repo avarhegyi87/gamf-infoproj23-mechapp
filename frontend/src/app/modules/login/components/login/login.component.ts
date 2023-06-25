@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthenticationService,
   ) {
     authService.getCurrentUser.subscribe(x => (this.currentUser = x));
-    if (this.currentUser?.$id) {
+    if (this.currentUser?.id) {
       (async () => {
         await this.router.navigate(['/']);
       })();
