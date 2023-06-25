@@ -38,6 +38,14 @@ const routes: Routes = [
       ),
     canActivate: [AuthGuard],
   },
+  {
+    path: 'worksheet',
+    loadChildren: () =>
+      import('./modules/worksheet/worksheet.module').then(
+        m => m.WorksheetModule,
+      ),
+    canActivate: [AuthGuard],
+  },
   { path: '**', redirectTo: '' },
 ];
 
