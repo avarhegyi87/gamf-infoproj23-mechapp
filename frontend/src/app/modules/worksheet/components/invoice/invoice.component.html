@@ -1,7 +1,7 @@
 <ng-container *ngIf="worksheetsLoaded$ | async; else templateLoading">
-    <div id="htmlData">
-    <mat-grid-list cols="3" rowHeight="1:1">
-        <mat-grid-tile>
+    <div id="htmlData" >
+    <mat-grid-list cols="1" rowHeight="7:2">
+        <mat-grid-tile style="text-align: left !important;">
             <mat-card>
               <mat-card-header>
                 <mat-card-title>Cégadatok</mat-card-title>
@@ -144,7 +144,7 @@
       </mat-grid-tile>
 
     </mat-grid-list>
-    <mat-grid-list cols="2" rowHeight="3:1" title="Ajánlat adatok">
+    <mat-grid-list cols="1" rowHeight="8:1" title="Ajánlat adatok">
       <mat-grid-tile>
         <mat-card>
           <mat-card-header>
@@ -157,62 +157,7 @@
             <mat-divider></mat-divider>
           </mat-card-content>
         </mat-card>
-      </mat-grid-tile>
-      <mat-grid-tile>
         <mat-card>
-          <mat-card-header>
-            <mat-card-title>Munka végzése közben hozzáadott szükséges alkatrészek és műveletek összesítése</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <table class="mat-elevation-z8 dyntbl">
-              <thead>
-                <tr class="dyntbl-row">
-                  <th class="dyntbl-cell hdr">Cikkszám</th>
-                  <th class="dyntbl-cell hdr">Megnevezés</th>
-                  <th class="dyntbl-cell hdr">Mennyiség</th>
-                  <th class="dyntbl-cell hdr">Nettó egyságár</th>
-                  <th class="dyntbl-cell hdr">Nettó ár</th>
-                  <th class="dyntbl-cell hdr">Bruttó ár</th>
-                  <th class="dyntbl-cell hdr"></th>
-                </tr>
-              </thead>
-              <tbody>
-                <ng-container *ngIf="tableJobList.length > 0; else noDataTemplate">
-                  <tr *ngFor="let item of tableJobList" class="dyntbl-row">
-                    <td class="dyntbl-cell">{{ item.materialNumber }}</td>
-                    <td class="dyntbl-cell">{{ item.description }}</td>
-                    <td class="dyntbl-cell">{{ item.quantity }}</td>
-                    <td class="dyntbl-cell">{{ item.unitPrice }}</td>
-                    <td class="dyntbl-cell">{{ item.subTotal }}</td>
-                    <td class="dyntbl-cell">{{ item.subTotal * (1 + vat) }}</td>
-                  </tr>
-                  <tr class="dyntbl-row">
-                    <td colspan="4" class="dyntbl-cell subtotals">
-                      Össz. (ÁFA: {{ vat * 100 }}%):
-                    </td>
-                    <td class="dyntbl-cell">{{ totalNet }}</td>
-                    <td class="dyntbl-cell">{{ totalNet * (1 + vat) }}</td>
-                    <td class="dyntbl-cell">HUF</td>
-                  </tr>
-                </ng-container>
-                <ng-template #noDataTemplate>
-                  <tr class="dyntbl-row">
-                    <td colspan="7" class="dyntbl-cell warn-nodata">
-                      <i>Egy alkatrész/szolgáltatás sem került hozzáadásra!</i>
-                    </td>
-                  </tr>
-                </ng-template>
-              </tbody>
-            </table>
-  
-            <mat-divider></mat-divider>
-          </mat-card-content>
-        </mat-card>
-      </mat-grid-tile>
-    </mat-grid-list>
-    <mat-grid-list cols="2" rowHeight="3:1" title="Ajánlat adatok">
-        <mat-grid-tile>
-          <mat-card>
             <mat-card-header>
               <mat-card-title>Munkát elvégző személy általi megjegyzés</mat-card-title>
             </mat-card-header>
@@ -223,7 +168,10 @@
               <mat-divider></mat-divider>
             </mat-card-content>
           </mat-card>
-        </mat-grid-tile>
+      </mat-grid-tile>
+    </mat-grid-list>
+    <mat-grid-list cols="1" rowHeight="3:1">
+        
         <mat-grid-tile>
           <mat-card>
             <mat-card-header>
@@ -270,13 +218,58 @@
                   </ng-template>
                 </tbody>
               </table>
-    
               <mat-divider></mat-divider>
             </mat-card-content>
+            <mat-card-header>
+                <mat-card-title>Munka végzése közben hozzáadott szükséges alkatrészek és műveletek összesítése</mat-card-title>
+              </mat-card-header>
+            <mat-card-content>
+                <table class="mat-elevation-z8 dyntbl">
+                  <thead>
+                    <tr class="dyntbl-row">
+                      <th class="dyntbl-cell hdr">Cikkszám</th>
+                      <th class="dyntbl-cell hdr">Megnevezés</th>
+                      <th class="dyntbl-cell hdr">Mennyiség</th>
+                      <th class="dyntbl-cell hdr">Nettó egyságár</th>
+                      <th class="dyntbl-cell hdr">Nettó ár</th>
+                      <th class="dyntbl-cell hdr">Bruttó ár</th>
+                      <th class="dyntbl-cell hdr"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngIf="tableJobList.length > 0; else noDataTemplate">
+                      <tr *ngFor="let item of tableJobList" class="dyntbl-row">
+                        <td class="dyntbl-cell">{{ item.materialNumber }}</td>
+                        <td class="dyntbl-cell">{{ item.description }}</td>
+                        <td class="dyntbl-cell">{{ item.quantity }}</td>
+                        <td class="dyntbl-cell">{{ item.unitPrice }}</td>
+                        <td class="dyntbl-cell">{{ item.subTotal }}</td>
+                        <td class="dyntbl-cell">{{ item.subTotal * (1 + vat) }}</td>
+                      </tr>
+                      <tr class="dyntbl-row">
+                        <td colspan="4" class="dyntbl-cell subtotals">
+                          Össz. (ÁFA: {{ vat * 100 }}%):
+                        </td>
+                        <td class="dyntbl-cell">{{ totalNet }}</td>
+                        <td class="dyntbl-cell">{{ totalNet * (1 + vat) }}</td>
+                        <td class="dyntbl-cell">HUF</td>
+                      </tr>
+                    </ng-container>
+                    <ng-template #noDataTemplate>
+                      <tr class="dyntbl-row">
+                        <td colspan="7" class="dyntbl-cell warn-nodata">
+                          <i>Egy alkatrész/szolgáltatás sem került hozzáadásra!</i>
+                        </td>
+                      </tr>
+                    </ng-template>
+                  </tbody>
+                </table>
+                <mat-divider></mat-divider>
+              </mat-card-content>
           </mat-card>
         </mat-grid-tile>
       </mat-grid-list>
-      <mat-grid-list cols="2" rowHeight="3:1" title="Ajánlat adatok">
+      <mat-grid-list cols="2" rowHeight="5:1">
         <mat-grid-tile>
           <mat-card>
             <mat-card-header>
