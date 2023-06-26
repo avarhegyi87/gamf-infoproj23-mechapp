@@ -3,7 +3,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { User } from 'src/app/modules/users/models/user.model';
-import { BehaviorSubject, Observable, startWith, map } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { AuthenticationService } from 'src/app/modules/users/services/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
@@ -22,7 +22,7 @@ import { Worksheet } from '../../models/worksheet.model';
 @Component({
   selector: 'app-worksheet-list',
   templateUrl: './worksheet-list.component.html',
-  styleUrls: ['./worksheet-list.component.scss']
+  styleUrls: ['./worksheet-list.component.scss'],
 })
 export class WorksheetListComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -30,7 +30,7 @@ export class WorksheetListComponent implements OnInit {
 
   worksheets = new MatTableDataSource<Worksheet>([]);
   displayedColumns: Array<string> = [];
-  
+
 
   quotations: Quotation [] = [];
   currentUser: User | undefined;
@@ -53,7 +53,7 @@ export class WorksheetListComponent implements OnInit {
   ) {
     this.authService.getCurrentUser.subscribe(x => (this.currentUser = x));
     this.quotationService.getAllQuotations().subscribe(quotations => {
-          this.quotations = quotations;
+      this.quotations = quotations;
     });
   }
 
@@ -135,13 +135,13 @@ export class WorksheetListComponent implements OnInit {
   }
 
   getInvoiced(inv: Number): string {
-  
-    if (inv == 0){
+
+    if (inv == 0)
       return "Nem";
-    }
-    else if (inv == 1){
+
+    else if (inv == 1)
       return "Igen";
-    }
+
     return "Olvasási hiba";
   }
 
