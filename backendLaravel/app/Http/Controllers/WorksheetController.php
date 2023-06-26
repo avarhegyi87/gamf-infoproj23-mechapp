@@ -24,24 +24,28 @@ class WorksheetController extends Controller
         {
             if (User::where('id', $request->mechanicId)->exists())
             {
-                // validate form data
-                $formFields = $request->validate([
+                $validator =  Validator::make($request->all(), [
                     'mechanicId' => ['required'],
                     'startDate' => ['required'],
                     'endDate' => ['nullable'],
-                    'createdBy' => ['required'],
-                    'updatedBy' => ['nullable'],
                     'garageId' => ['required'],
                     'quotationId' => ['required'],
-                    'comment' => ['nullable'],
-                    'additionalWork' => ['nullable'],
-                    'additionalParts' => ['nullable'],
-                    'invoiced' => ['nullable'],
+                    'comment' => ['required'],
+                    'invoiced' => ['required'],
+                
                 ]);
 
-                $worksheet = Worksheet::create($formFields);
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'validation error',
+                        'errors' => $validator->errors()
+                    ], 400);
+                } else {
+                    $worksheet = Worksheet::create($request->all());
 
-                return response()->json($worksheet);
+                    return response()->json($worksheet);
+                }
             }
             else
             {
@@ -79,8 +83,6 @@ class WorksheetController extends Controller
                     'garageId' => ['required'],
                     'quotationId' => ['required'],
                     'comment' => ['nullable'],
-                    'additionalWork' => ['nullable'],
-                    'additionalParts' => ['nullable'],
                     'invoiced' => ['required'],
                 
                 ]);
