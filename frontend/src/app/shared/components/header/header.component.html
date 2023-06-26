@@ -51,14 +51,11 @@
     </mat-menu>
 
     <mat-menu #worksheetMenu="matMenu">
-      <button mat-menu-item routerLink="/worksheet/view" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
-        Munkalap megtekintése
+      <button mat-menu-item routerLink="/worksheet/list" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
+        Munkalapok listázása
       </button>
       <button mat-menu-item routerLink="/worksheet/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
         Munkalap készítése
-      </button>
-      <button mat-menu-item routerLink="/worksheet/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
-        Munkalap módosítása
       </button>
       <button mat-menu-item routerLink="/worksheet/edit-closed" *ngIf="canSeeMenuItem(accessLevels.Manager)">
         Lezárt munkalap módosítása
@@ -177,14 +174,11 @@
       </mat-menu>
 
       <mat-menu #worksheetMenuMobile="matMenu">
-        <button mat-menu-item routerLink="/worksheet/view" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
-          Munkalap megtekintése
+        <button mat-menu-item routerLink="/worksheet/list" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
+          Munkalapok listázása
         </button>
         <button mat-menu-item routerLink="/worksheet/add" *ngIf="canSeeMenuItem(accessLevels.Mechanic)">
           Munkalap készítése
-        </button>
-        <button mat-menu-item routerLink="/worksheet/edit" *ngIf="canSeeMenuItem(accessLevels.Manager)">
-          Munkalap módosítása
         </button>
         <button mat-menu-item routerLink="/worksheet/edit-closed" *ngIf="canSeeMenuItem(accessLevels.Manager)">
           Lezárt munkalap módosítása

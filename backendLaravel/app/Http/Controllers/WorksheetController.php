@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Worksheet;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class WorksheetController extends Controller
 {
@@ -28,6 +29,8 @@ class WorksheetController extends Controller
                     'mechanicId' => ['required'],
                     'startDate' => ['required'],
                     'endDate' => ['nullable'],
+                    'createdBy' => ['required'],
+                    'updatedBy' => ['nullable'],
                     'garageId' => ['required'],
                     'quotationId' => ['required'],
                     'comment' => ['nullable'],
@@ -57,7 +60,7 @@ class WorksheetController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Quotation $quotation)
+    public function update(Request $request, Worksheet $worksheet)
     {
         /*if ( Auth::id() != 2 && Auth::user()->role != 3) {
             return abort(403);
@@ -68,21 +71,30 @@ class WorksheetController extends Controller
             if (User::where('id', $request->mechanicId)->exists())
             {
                 // validate form data
-                $formFields = $request->validate([
+
+                $validator =  Validator::make($request->all(), [
                     'mechanicId' => ['required'],
                     'startDate' => ['required'],
-                    'endDate' => ['nullable'],
+                    'endDate' => ['required'],
                     'garageId' => ['required'],
                     'quotationId' => ['required'],
                     'comment' => ['nullable'],
                     'additionalWork' => ['nullable'],
                     'additionalParts' => ['nullable'],
-                    'invoiced' => ['nullable'],
+                    'invoiced' => ['required'],
+                
                 ]);
 
-                $quotation->update($formFields);
-
-                return response()->json("Succesfully created");
+                if ($validator->fails()) {
+                    return response()->json([
+                        'status' => false,
+                        'message' => 'validation error',
+                        'errors' => $validator->errors()
+                    ], 400);
+                } else {
+                    $worksheet->update($request->all());
+                    return response()->json($worksheet);
+                }
             }
             else
             {

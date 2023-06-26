@@ -20,13 +20,22 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { EditWorksheetComponent } from './components/edit-worksheet/edit-worksheet.component';
+import { WorksheetListComponent } from './components/worksheet-list/worksheet-list.component';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatRadioModule } from '@angular/material/radio';
+import { InvoiceComponent } from './components/invoice/invoice.component';
 
 @NgModule({
   declarations: [
     AddWorksheetComponent,
+    EditWorksheetComponent,
+    WorksheetListComponent,
+    InvoiceComponent,
   ],
   imports: [
     CommonModule,
+    MatRadioModule,
     WorksheetRoutingModule,
     FormsModule,
     ReactiveFormsModule,
@@ -44,6 +53,7 @@ import { MatDividerModule } from '@angular/material/divider';
     MatAutocompleteModule,
     MatCardModule,
     MatDividerModule,
+    MatGridListModule,
   ],
 })
 export class WorksheetModule { }

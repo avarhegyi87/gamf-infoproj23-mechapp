@@ -4,12 +4,12 @@ import { User } from '../../users/models/user.model';
 export interface Worksheet {
   id: number,
   mechanicId: User | number,
-  startDate: Date,
-  endDate?: Date,
+  startDate: string,
+  endDate?: string,
   garageId: number,
   createdBy: User | number,
   updatedBy?: User | number,
   quotationId: Quotation | number,
   comment: string,
-  invoiced: boolean,
+  invoiced: number,
 }
