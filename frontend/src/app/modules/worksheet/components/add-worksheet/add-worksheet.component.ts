@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChildren } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable, map, startWith } from 'rxjs';
 import { Customer } from 'src/app/modules/customer/models/customer.model';
@@ -15,6 +15,8 @@ import { AuthenticationService } from 'src/app/modules/users/services/authentica
 import { Vehicle } from 'src/app/modules/vehicle/models/vehicle.model';
 import { VehicleService } from 'src/app/modules/vehicle/services/vehicle.service';
 import { DynamicTableComponent } from 'src/app/shared/components/dynamic-table/dynamic-table.component';
+import { WorksheetService } from '../../services/worksheet.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-worksheet',
@@ -27,6 +29,7 @@ export class AddWorksheetComponent implements OnInit {
 
   // worksheet request and main form
   private _addWorksheetRequest: any;
+  private _addJobRequest: any;
   addWorksheetForm!: FormGroup;
 
   // properties for filtering Customers in the auto-complete field of addWorksheetForm
@@ -50,6 +53,12 @@ export class AddWorksheetComponent implements OnInit {
   selectedQuotation: Quotation | undefined;
   jobsOnQuotation: Job[] = [];
 
+  // properties for Garages
+  garages = [1, 2, 3, 4, 5];
+
+  // properties for startDate
+  selectedDateValue!: Date;
+
   // properties for Jobs
 
   // properties for filtering Materials in the auto-complete field of addWorksheetForm
@@ -61,7 +70,7 @@ export class AddWorksheetComponent implements OnInit {
   materialsAdded: QuotationJobList[] = [];
 
   // DynamicTableComponent for adding materials
-  @ViewChildren(DynamicTableComponent) dynamicTable!: DynamicTableComponent;
+  @ViewChildren(DynamicTableComponent) dynamicTable!: QueryList<DynamicTableComponent>;
 
   // other properties
   error = '';
@@ -75,6 +84,8 @@ export class AddWorksheetComponent implements OnInit {
     private materialService: MaterialService,
     private jobService: JobService,
     private authService: AuthenticationService,
+    private worksheetService: WorksheetService,
+    private snackBar: MatSnackBar,
   ) {
     this.authService.getCurrentUser.subscribe(user => this.currentUser = user);
 
@@ -95,6 +106,14 @@ export class AddWorksheetComponent implements OnInit {
       invoiced: false,
     }
 
+    this._addJobRequest = {
+      id: 0,
+      quotationId: 0,
+      worksheetId: 0,
+      materialId: '',
+      unit: 0,
+    }
+
     this.addWorksheetForm = this.formBuilder.group(
       {
         customer: [null],
@@ -102,8 +121,11 @@ export class AddWorksheetComponent implements OnInit {
         quotation: [null],
         comment: [''],
         garage: ['', Validators.compose([Validators.required])],
+        startDate: null,
       },
     );
+
+    this.addWorksheetForm.get('startDate')?.valueChanges.subscribe(date => this.selectedDateValue = date);
 
     this.addMaterialForm = this.formBuilder.group({
       material: [null],
@@ -212,7 +234,7 @@ export class AddWorksheetComponent implements OnInit {
   }
 
   getJobMaterialById(id: string): Material | undefined {
-    return this.materials.find(m => m.materialNumber === id);
+    return this.materials.find(m => m.materialNumber.toString() === id);
   }
 
   onInputBlur(event: Event, source: string): void {
@@ -263,5 +285,72 @@ export class AddWorksheetComponent implements OnInit {
 
   displayMaterials(material: Material): string {
     return material.description || '';
+  }
+
+  get jobsToAddFromWorksheet(): QuotationJobList[] {
+    let data: QuotationJobList[] = [];
+    if (this.dynamicTable) {
+      this.dynamicTable.forEach((tbl: DynamicTableComponent) => {
+        data = [...data, ...tbl.data];
+      });
+    }
+    return data;
+  }
+
+  onSubmit(): void {
+    this.submitted = true;
+    if (this.addWorksheetForm.invalid) return;
+
+    this._addWorksheetRequest.mechanicId = this.selectedQuotation?.createdBy;
+    this._addWorksheetRequest.startDate =
+      this.selectedDateValue.toISOString().split('T')[0] +
+      ' ' +
+      this.selectedDateValue.toISOString().split('T')[1].split('.')[0];
+    this._addWorksheetRequest.garageId =
+      this.addWorksheetForm.get('garage')?.value;
+    this._addWorksheetRequest.createdBy = this.currentUser?.id;
+    this._addWorksheetRequest.quotationId = this.selectedQuotation?.id;
+    this._addWorksheetRequest.comment = `Ajánlat: ${
+      this.selectedQuotation?.description
+    }\nMunkalap: ${this.addWorksheetForm.get('comment')?.value}`;
+    this._addWorksheetRequest.invoiced = false;
+
+    this.worksheetService.addWorksheet(this._addWorksheetRequest).subscribe({
+      next: ws => {
+        this.snackBar.open(
+          `Munkalap sikeresen hozzáadva, id: ${ws.id}`,
+          'OK',
+          {
+            duration: 3000,
+            panelClass: ['mat-toolbar', 'mat-primary'],
+          },
+        );
+        this.jobsToAddFromWorksheet.forEach((job: QuotationJobList) => {
+          this._addJobRequest.quotationId = this.selectedQuotation?.id;
+          this._addJobRequest.worksheetId = ws.id;
+          this._addJobRequest.materialId = job.materialNumber;
+          this._addJobRequest.unit = job.quantity;
+
+          this.jobService.addJob(this._addJobRequest).subscribe({
+            next: j => {
+              /** */
+            },
+            error: e => {
+              this.snackBar.open(`Hiba ${job.description} mentésekor: ${e}`, 'Bezár', {
+                duration: 7000,
+                panelClass: ['mat-toolbar', 'mat-warn'],
+              });
+            },
+          });
+        });
+      },
+      error: err => {
+        this.error = err;
+        this.snackBar.open(this.error, 'Bezár', {
+          duration: 5000,
+          panelClass: ['mat-toolbar', 'mat-warn'],
+        })
+      },
+    })
   }
 }

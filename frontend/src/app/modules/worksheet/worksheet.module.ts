@@ -5,6 +5,9 @@ import { RouterModule } from '@angular/router';
 import { WorksheetRoutingModule } from './worksheet-routing.module';
 
 import { AddWorksheetComponent } from './components/add-worksheet/add-worksheet.component';
+import { InvoiceComponent } from './components/invoice/invoice.component';
+import { EditWorksheetComponent } from './components/edit-worksheet/edit-worksheet.component';
+import { WorksheetListComponent } from './components/worksheet-list/worksheet-list.component';
 
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -20,11 +23,10 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
-import { EditWorksheetComponent } from './components/edit-worksheet/edit-worksheet.component';
-import { WorksheetListComponent } from './components/worksheet-list/worksheet-list.component';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRadioModule } from '@angular/material/radio';
-import { InvoiceComponent } from './components/invoice/invoice.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MAT_DATE_FORMATS, MAT_DATE_LOCALE, MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -54,6 +56,25 @@ import { InvoiceComponent } from './components/invoice/invoice.component';
     MatCardModule,
     MatDividerModule,
     MatGridListModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+  ],
+  providers: [
+    { provide: MAT_DATE_LOCALE, useValue: 'hu-HU' },
+    {
+      provide: MAT_DATE_FORMATS,
+      useValue: {
+        parse: {
+          dateInput: 'LL',
+        },
+        display: {
+          dateInput: 'YYYY. MMMM D.',
+          monthYearLabel: 'YYYY. MMMM',
+          dateA11yLabel: 'LL',
+          monthYearA11yLabel: 'MMMM YYYY',
+        },
+      },
+    },
   ],
 })
-export class WorksheetModule { }
+export class WorksheetModule {}

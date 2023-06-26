@@ -10,11 +10,15 @@ mat-divider {
 
 mat-card {
   margin: 0 10px 0 0;
-  width: 100%;
+  width: 90%;
 
   &.highlight-card {
     color: white;
     background-color: indianred;
+  }
+
+  .ws-quotation-details {
+    width: 100%;
   }
 }
 
