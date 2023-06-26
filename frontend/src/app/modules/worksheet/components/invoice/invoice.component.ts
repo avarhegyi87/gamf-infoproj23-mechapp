@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/modules/users/models/user.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { VehicleService } from 'src/app/modules/vehicle/services/vehicle.service';
-import { ActivatedRoute, Router, withDisabledInitialNavigation } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  withDisabledInitialNavigation,
+} from '@angular/router';
 import { AuthenticationService } from 'src/app/modules/users/services/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl } from '@angular/forms';
@@ -23,13 +27,13 @@ import { QuotationJobList } from 'src/app/modules/quotation/models/quotation-job
 import { VAT_HUN } from 'src/app/shared/constants/constants';
 import { WorksheetService } from 'src/app/modules/worksheet/services/worksheet.service';
 import { Worksheet } from 'src/app/modules/worksheet/models/worksheet.model';
-import jsPDF  from 'jspdf';
+import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-invoice',
   templateUrl: './invoice.component.html',
-  styleUrls: ['./invoice.component.scss']
+  styleUrls: ['./invoice.component.scss'],
 })
 export class InvoiceComponent implements OnInit {
   currentUser!: User;
@@ -61,32 +65,32 @@ export class InvoiceComponent implements OnInit {
   vat = VAT_HUN;
 
   error = '';
-  paymentMethod: number = 1;
+  paymentMethod = 1;
   paymentMethodText = '';
 
   worksheetDetails: Worksheet = {
     id: 0,
     mechanicId: 0,
-    startDate: "",
-    endDate: "",
+    startDate: '',
+    endDate: '',
     garageId: 0,
     createdBy: 0,
     updatedBy: 0,
     quotationId: 0,
-    comment: "",
+    comment: '',
     invoiced: 0,
   };
 
   worksheet: Worksheet = {
     id: 0,
     mechanicId: 0,
-    startDate: "",
-    endDate: "",
+    startDate: '',
+    endDate: '',
     garageId: 0,
     createdBy: 0,
     updatedBy: 0,
     quotationId: 0,
-    comment: "",
+    comment: '',
     invoiced: 0,
   };
 
@@ -139,18 +143,17 @@ export class InvoiceComponent implements OnInit {
     this.materialService.getAllMaterials().subscribe(materials => {
       this.materials = materials;
     });
-    
-   }
-   public openPDF(): void {
+  }
+  public openPDF(): void {
     let DATA: any = document.getElementById('htmlData');
-    html2canvas(DATA).then((canvas) => {
+    html2canvas(DATA).then(canvas => {
       let fileWidth = 208;
       let fileHeight = (canvas.height * fileWidth) / canvas.width;
       const FILEURI = canvas.toDataURL('image/png');
       let PDF = new jsPDF('p', 'mm', 'a4');
       let position = 0;
       PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-      PDF.save('szamla'+this.worksheetDetails.id +'.pdf');
+      PDF.save('szamla' + this.worksheetDetails.id + '.pdf');
     });
   }
 
@@ -169,12 +172,16 @@ export class InvoiceComponent implements OnInit {
                 .subscribe({
                   next: quotationResponse => {
                     this.quotationDetails = quotationResponse;
-                    this.customerService.getCustomer(String(this.quotationDetails.customerId)).subscribe(customer => {
-                      this.customer = customer;
-                    });
-                    this.vehicleService.getVehicle(Number(this.quotationDetails.vehicleId)).subscribe(vehicle => {
-                      this.vehicle = vehicle;
-                    });
+                    this.customerService
+                      .getCustomer(String(this.quotationDetails.customerId))
+                      .subscribe(customer => {
+                        this.customer = customer;
+                      });
+                    this.vehicleService
+                      .getVehicle(Number(this.quotationDetails.vehicleId))
+                      .subscribe(vehicle => {
+                        this.vehicle = vehicle;
+                      });
 
                     this.jobService
                       .getByQuotationId(Number(response.quotationId))
@@ -182,7 +189,9 @@ export class InvoiceComponent implements OnInit {
                         this.quotationJobs = jobs;
                         this.materials.forEach(material => {
                           this.quotationJobs.forEach(job => {
-                            if (String(job.materialId) == material.materialNumber) {
+                            if (
+                              String(job.materialId) == material.materialNumber
+                            ) {
                               const newService: QuotationJobList = {
                                 materialNumber: material.materialNumber,
                                 description: material.description,
@@ -190,7 +199,8 @@ export class InvoiceComponent implements OnInit {
                                 unitPrice: material.netPrice,
                                 subTotal: material.netPrice * job.unit,
                               };
-                              this.totalNet = this.totalNet + newService.subTotal;
+                              this.totalNet =
+                                this.totalNet + newService.subTotal;
                               this.tableJobList.push(newService);
                             }
                           });
@@ -203,7 +213,9 @@ export class InvoiceComponent implements OnInit {
                         this.worksheetJobs = jobs;
                         this.materials.forEach(material => {
                           this.worksheetJobs.forEach(job => {
-                            if (String(job.materialId) == material.materialNumber) {
+                            if (
+                              String(job.materialId) == material.materialNumber
+                            ) {
                               const newService: QuotationJobList = {
                                 materialNumber: material.materialNumber,
                                 description: material.description,
@@ -211,33 +223,27 @@ export class InvoiceComponent implements OnInit {
                                 unitPrice: material.netPrice,
                                 subTotal: material.netPrice * job.unit,
                               };
-                              this.totalNet = this.totalNet + newService.subTotal;
+                              this.totalNet =
+                                this.totalNet + newService.subTotal;
                               this.worksheetJobList.push(newService);
                             }
                           });
                         });
                       });
-
-                  }
-                })
-            }
-          })
+                  },
+                });
+            },
+          });
         }
         this.worksheetsLoaded$.next(true);
       },
     });
-    if (this.paymentMethod == 1){
+    if (this.paymentMethod == 1)
       this.paymentMethodText = 'Készpénz';
-    }
-    else if (this.paymentMethod == 2){
+    else if (this.paymentMethod == 2)
       this.paymentMethodText = 'Bankkártya';
-    }
-    else if (this.paymentMethod == 3){
+    else if (this.paymentMethod == 3)
       this.paymentMethodText = 'Átutalás';
-    }
+
   }
-
-
-
 }
-

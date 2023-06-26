@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/modules/users/models/user.model';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { VehicleService } from 'src/app/modules/vehicle/services/vehicle.service';
-import { ActivatedRoute, Router, withDisabledInitialNavigation } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+} from '@angular/router';
 import { AuthenticationService } from 'src/app/modules/users/services/authentication.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormControl } from '@angular/forms';
@@ -27,7 +30,7 @@ import { Worksheet } from '../../models/worksheet.model';
 @Component({
   selector: 'app-edit-worksheet',
   templateUrl: './edit-worksheet.component.html',
-  styleUrls: ['./edit-worksheet.component.scss']
+  styleUrls: ['./edit-worksheet.component.scss'],
 })
 export class EditWorksheetComponent implements OnInit {
   currentUser!: User;
@@ -59,31 +62,31 @@ export class EditWorksheetComponent implements OnInit {
   vat = VAT_HUN;
 
   error = '';
-  paymentMethod: number = 1;
+  paymentMethod = 1;
 
   worksheetDetails: Worksheet = {
     id: 0,
     mechanicId: 0,
-    startDate: "",
-    endDate: "",
+    startDate: '',
+    endDate: '',
     garageId: 0,
     createdBy: 0,
     updatedBy: 0,
     quotationId: 0,
-    comment: "",
+    comment: '',
     invoiced: 0,
   };
 
   worksheet: Worksheet = {
     id: 0,
     mechanicId: 0,
-    startDate: "",
-    endDate: "",
+    startDate: '',
+    endDate: '',
     garageId: 0,
     createdBy: 0,
     updatedBy: 0,
     quotationId: 0,
-    comment: "",
+    comment: '',
     invoiced: 0,
   };
 
@@ -141,12 +144,16 @@ export class EditWorksheetComponent implements OnInit {
                 .subscribe({
                   next: quotationResponse => {
                     this.quotationDetails = quotationResponse;
-                    this.customerService.getCustomer(String(this.quotationDetails.customerId)).subscribe(customer => {
-                      this.customer = customer;
-                    });
-                    this.vehicleService.getVehicle(Number(this.quotationDetails.vehicleId)).subscribe(vehicle => {
-                      this.vehicle = vehicle;
-                    });
+                    this.customerService
+                      .getCustomer(String(this.quotationDetails.customerId))
+                      .subscribe(customer => {
+                        this.customer = customer;
+                      });
+                    this.vehicleService
+                      .getVehicle(Number(this.quotationDetails.vehicleId))
+                      .subscribe(vehicle => {
+                        this.vehicle = vehicle;
+                      });
 
                     this.jobService
                       .getByQuotationId(Number(response.quotationId))
@@ -154,7 +161,9 @@ export class EditWorksheetComponent implements OnInit {
                         this.quotationJobs = jobs;
                         this.materials.forEach(material => {
                           this.quotationJobs.forEach(job => {
-                            if (String(job.materialId) == material.materialNumber) {
+                            if (
+                              String(job.materialId) == material.materialNumber
+                            ) {
                               const newService: QuotationJobList = {
                                 materialNumber: material.materialNumber,
                                 description: material.description,
@@ -162,7 +171,8 @@ export class EditWorksheetComponent implements OnInit {
                                 unitPrice: material.netPrice,
                                 subTotal: material.netPrice * job.unit,
                               };
-                              this.totalNet = this.totalNet + newService.subTotal;
+                              this.totalNet =
+                                this.totalNet + newService.subTotal;
                               this.tableJobList.push(newService);
                             }
                           });
@@ -175,7 +185,9 @@ export class EditWorksheetComponent implements OnInit {
                         this.worksheetJobs = jobs;
                         this.materials.forEach(material => {
                           this.worksheetJobs.forEach(job => {
-                            if (String(job.materialId) == material.materialNumber) {
+                            if (
+                              String(job.materialId) == material.materialNumber
+                            ) {
                               const newService: QuotationJobList = {
                                 materialNumber: material.materialNumber,
                                 description: material.description,
@@ -183,58 +195,59 @@ export class EditWorksheetComponent implements OnInit {
                                 unitPrice: material.netPrice,
                                 subTotal: material.netPrice * job.unit,
                               };
-                              this.totalNet = this.totalNet + newService.subTotal;
+                              this.totalNet =
+                                this.totalNet + newService.subTotal;
                               this.worksheetJobList.push(newService);
                             }
                           });
                         });
                       });
-
-                  }
-                })
-            }
-          })
+                  },
+                });
+            },
+          });
         }
         this.worksheetsLoaded$.next(true);
       },
     });
   }
 
-finish(){
-  this.worksheetDetails.invoiced = 1;
-  var now = new Date();
-  var formatted =
-  now.toISOString().split('T')[0] +
-  ' ' +
-  now.toISOString().split('T')[1].split('.')[0];
-  this.worksheetDetails.endDate = formatted;
-  this.worksheetDetails.updatedBy = this.currentUser.id;
-  this.worksheetService.updateWorksheet(this.worksheetDetails.id, this.worksheetDetails).subscribe({
-    next: worksheet => {
-      this.snackBar.open(
-        `${this.worksheetDetails.id} - azonosítójú űrlap sikeresen módosítva.`,
-        'OK',
-        {
-          duration: 3000,
-          panelClass: ['mat-toolbar', 'mat-primary'],
+  finish() {
+    this.worksheetDetails.invoiced = 1;
+    var now = new Date();
+    var formatted =
+      now.toISOString().split('T')[0] +
+      ' ' +
+      now.toISOString().split('T')[1].split('.')[0];
+    this.worksheetDetails.endDate = formatted;
+    this.worksheetDetails.updatedBy = this.currentUser.id;
+    this.worksheetService
+      .updateWorksheet(this.worksheetDetails.id, this.worksheetDetails)
+      .subscribe({
+        next: worksheet => {
+          this.snackBar.open(
+            `${this.worksheetDetails.id} - azonosítójú űrlap sikeresen módosítva.`,
+            'OK',
+            {
+              duration: 3000,
+              panelClass: ['mat-toolbar', 'mat-primary'],
+            },
+          );
+          (async () => {
+            await this.router.navigate([
+              'worksheet/invoice',
+              this.worksheetDetails.id,
+              this.paymentMethod,
+            ]);
+          })();
         },
-      );
-      (async () => {
-        await this.router.navigate(['worksheet/invoice',this.worksheetDetails.id, this.paymentMethod]);
-      })();
-    },
-    error: error => {
-      this.error = error;
-      this.snackBar.open(this.error, 'Bezár', {
-        duration: 5000,
-        panelClass: ['mat-toolbar', 'mat-warn'],
+        error: error => {
+          this.error = error;
+          this.snackBar.open(this.error, 'Bezár', {
+            duration: 5000,
+            panelClass: ['mat-toolbar', 'mat-warn'],
+          });
+        },
       });
-    },
-  });
-
+  }
 }
-
-
-}
-
-
