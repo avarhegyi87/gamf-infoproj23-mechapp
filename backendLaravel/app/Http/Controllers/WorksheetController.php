@@ -30,8 +30,8 @@ class WorksheetController extends Controller
                     'endDate' => ['nullable'],
                     'garageId' => ['required'],
                     'quotationId' => ['required'],
-                    'comment' => ['nullable'],
-                    'invoiced' => ['nullable'],
+                    'comment' => ['required'],
+                    'invoiced' => ['required'],
                 
                 ]);
 
