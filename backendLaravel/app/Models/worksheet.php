@@ -9,7 +9,7 @@ class worksheet extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'mechanicId', 'startDate', 'endDate', 'garageId', 'quotationId', 'comment', 'additionalWork', 'additionalParts', 'invoiced'
+        'mechanicId', 'startDate', 'endDate', 'garageId','createdBy', 'updatedBy', 'quotationId', 'comment', 'invoiced'
        ];
 
     public function quotation()

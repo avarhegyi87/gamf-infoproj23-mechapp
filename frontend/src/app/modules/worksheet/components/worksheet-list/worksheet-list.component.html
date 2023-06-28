@@ -1,0 +1,51 @@
+<h1>Munkalapok listázása</h1>
+<ng-container *ngIf="worksheetsLoaded$ | async; else templateLoading">
+  <table mat-table [dataSource]="worksheets" matSort (matSortChange)="announceSortChange($event)"
+    class="mat-elevation-z8 list-table">
+    <ng-container matColumnDef="id">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="ID szerint">Munkalap ID</th>
+      <td mat-cell *matCellDef="let element">{{ element.id }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="quotationId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Ajánlat azonosító szerint">Ajánlat
+        azonosítója</th>
+      <td mat-cell *matCellDef="let element">{{ element.quotationId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="mechanicId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Szerelő azonosító szerint">Szerelő
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element.mechanicId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="garageId">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Garázs azonosító szerint">Garázs
+        azonosító</th>
+      <td mat-cell *matCellDef="let element">{{ element.garageId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="invoiced">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header sortActionDescription="Számlázás alapján">Számlázott-e</th>
+      <td mat-cell *matCellDef="let element">{{ getInvoiced(element.invoiced) }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef> Módosítás </th>
+      <td mat-cell class="edit-cell" *matCellDef="let element">
+        <a [routerLink]="'/worksheet/edit/' + element.id">
+          <mat-icon color="edit">edit</mat-icon>
+        </a>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[25, 50, 100]" showFirstLastButtons aria-label="Select page">
+  </mat-paginator>
+</ng-container>
+<ng-template #templateLoading>
+  <p>Töltés...</p>
+</ng-template>

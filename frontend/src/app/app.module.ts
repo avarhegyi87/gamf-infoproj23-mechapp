@@ -16,11 +16,10 @@ import {
 } from '@angular/common/http';
 import { UserService } from './modules/users/services/user.service';
 import { ErrorInterceptor, FakeBackendInterceptor, JwtInterceptor, fakeBackendProvider } from './shared/helpers';
-import { JobComponent } from './modules/job/job.component';
 
 import { MatTableModule } from '@angular/material/table' ;
 @NgModule({
-  declarations: [AppComponent, JobComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

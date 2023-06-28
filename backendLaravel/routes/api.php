@@ -84,5 +84,5 @@ Route::delete('/job/{job}', [JobController::class, 'delete'])->name('delete');
 Route::get('/worksheet/get/{worksheet}', [WorksheetController::class, 'get'])->name('get');
 Route::get('/worksheet/getAll', [WorksheetController::class, 'getAll'])->name('getAll');
 Route::post('/worksheet/create', [WorksheetController::class, 'create'])->name('create');
-Route::post('/worksheet/{worksheet}', [WorksheetController::class, 'update'])->name('update');
+Route::post('/worksheet/put/{worksheet}', [WorksheetController::class, 'update'])->name('update');
 Route::delete('/worksheet/{worksheet}', [WorksheetController::class, 'delete'])->name('delete');

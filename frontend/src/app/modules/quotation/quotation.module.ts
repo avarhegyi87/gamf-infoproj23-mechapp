@@ -5,10 +5,11 @@ import { QuotationRoutingModule } from './quotation-routing.module';
 import { AddQuotationComponent } from './components/add-quotation/add-quotation.component';
 import { DetailsQuotationComponent } from './components/details-quotation/details-quotation.component';
 import { QuotationListComponent } from './components/quotation-list/quotation-list.component';
-import { DynamicTableComponent } from 'src/app/shared/components/dynamic-table/dynamic-table.component';
 
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import { SharedModule } from 'src/app/shared/shared.module';
 
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -29,7 +30,6 @@ import { MatGridListModule } from '@angular/material/grid-list';
     AddQuotationComponent,
     DetailsQuotationComponent,
     QuotationListComponent,
-    DynamicTableComponent,
   ],
   imports: [
     CommonModule,
@@ -37,6 +37,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
+    SharedModule,
     MatFormFieldModule,
     MatInputModule,
     MatSelectModule,

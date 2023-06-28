@@ -426,12 +426,12 @@ export class AddQuotationComponent implements OnInit {
               /** */
             },
             error: e => {
-              this.snackBar.open(`${job.description}-t nem sikerült hozzáadni az ajánlathoz! Hiba: ${e}`, 'Bezár', {
+              this.snackBar.open(`Hiba ${job.description} mentésekor: ${e}`, 'Bezár', {
                 duration: 7000,
                 panelClass: ['mat-toolbar', 'mat-warn'],
               })
             },
-          })
+          });
         });
       },
       error: err => {
